@@ -1,0 +1,13 @@
+[user]
+	name = Freeman
+	email = freeman.peng@fairlinkcentury.com
+[alias]
+	st = status
+	co = checkout
+	cm = commit
+	ck = checkout
+	lg = log --graph --oneline --decorate
+[color]
+	ui = true
+[receive]
+	denyCurrentBranch = warn
