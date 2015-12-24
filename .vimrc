@@ -42,6 +42,7 @@ set backspace=indent,eol,start	" more powerful backspacing
 set wrap
 set history=500
 set stal=2
+set cursorline
 
 "this can be fix sume redraw problem 
 set lazyredraw
@@ -110,6 +111,8 @@ let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
 let g:tagbar_autoclose = 1
+let g:tagbar_left = 1
+let g:tagbar_map_help = ""
 
 "neocomplete
 "let g:neocomplete#enable_at_startup = 1 
@@ -136,6 +139,8 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+noremap <silent> gh :match MatchParen /\<<c-r>=expand("<cword>")<cr>\>/<cr>
+noremap <silent> gH :match<cr>
 
 "map
 map j gj
@@ -146,18 +151,15 @@ nnoremap <leader>w :w!<CR>
 nnoremap <leader><space> :A<CR>
 nnoremap <leader>e :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap go :only<CR>
 nnoremap <leader>1 :!cp -rf ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./<CR>
-"inoremap <expr><space> pumvisible() ? "\<c-y>" : "\<space>"
 
 "autocmd
-autocmd Filetype c  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
-autocmd Filetype cpp  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80
-autocmd Filetype h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80
+autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
+autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
+autocmd BufRead *.go nnoremap <buffer><F11> :!go build<CR>
+autocmd Filetype c,cpp nnoremap gd :YcmCompleter GoTo<CR>
 
 
 function Findfile_recusion(name)

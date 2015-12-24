@@ -18,10 +18,12 @@ fi
 unzip master > /dev/null 2>&1
 mkdir -p ~/.vim
 cp -rf Vundle.vim-master/* ~/.vim/
-cp -rf .vimrc ~/
-vim +PluginInstall +qall
-which ctags && echo "There is no Ctags, the Plugin of Vim \"tagbar\" will not work "
 
 #git
 which git && echo "There is no git" || exit 1
 cp -rf .gitconfig ~/
+cp -rf .vimrc ~/
+
+vim +PluginInstall +qall
+which ctags && echo "There is no Ctags, the Plugin of Vim \"tagbar\" will not work "
+
