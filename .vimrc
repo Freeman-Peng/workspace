@@ -8,7 +8,8 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'ctrlp.vim'
 "Plugin 'scrooloose/syntastic.git'
-Plugin 'The-NERD-tree'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/bufexplorer.zip.git'
 "Plugin 'bling/vim-airline.git'
@@ -22,6 +23,10 @@ Plugin 'honza/vim-snippets'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-surround.git'
 Plugin 'plasticboy/vim-markdown.git'
+Plugin 'dgryski/vim-godef'
+Plugin 'tpope/vim-repeat.git'
+Plugin 'Blackrush/vim-gocode'
+Plugin 'dhruvasagar/vim-table-mode.git'
 call vundle#end()
 
 
@@ -30,6 +35,9 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
+set encoding=utf8
+set fileencoding=utf8
+set termencoding=utf8
 set autoread
 set autoindent
 set hlsearch
@@ -42,7 +50,9 @@ set backspace=indent,eol,start	" more powerful backspacing
 set wrap
 set history=500
 set stal=2
-set cursorline
+if exists($TMUX)
+	set cursorline
+endif
 
 "this can be fix sume redraw problem 
 set lazyredraw
@@ -62,14 +72,10 @@ set shiftwidth=4
 
 "undo file
 if finddir("undo", $HOME . "/.cache/") == ""
-  call mkdir($HOME . "/.cache/undo/")
+	call mkdir($HOME . "/.cache/undo/")
 endif
 set undodir=~/.cache/undo/
 set undofile
-
-"onmi-comp
-"set backspace=indent,eol,start
-
 
 "YCM
 let g:ycm_confirm_extra_conf = 0
@@ -113,6 +119,39 @@ let g:UltiSnipsEditSplit="vertical"
 let g:tagbar_autoclose = 1
 let g:tagbar_left = 1
 let g:tagbar_map_help = ""
+"for go lang
+let g:tagbar_type_go = {
+			\ 'ctagstype' : 'go',
+			\ 'kinds'     : [
+				\ 'p:package',
+				\ 'i:imports:1',
+				\ 'c:constants',
+				\ 'v:variables',
+				\ 't:types',
+				\ 'n:interfaces',
+				\ 'w:fields',
+				\ 'e:embedded',
+				\ 'm:methods',
+				\ 'r:constructor',
+				\ 'f:functions'
+			\ ],
+			\ 'sro' : '.',
+			\ 'kind2scope' : {
+				\ 't' : 'ctype',
+				\ 'n' : 'ntype'
+			\ },
+			\ 'scope2kind' : {
+				\ 'ctype' : 't',
+				\ 'ntype' : 'n'
+			\ },
+			\ 'ctagsbin'  : 'gotags',
+			\ 'ctagsargs' : '-sort -silent'
+			\ }
+
+
+"godef
+let g:godef_split=0
+let g:godef_same_file_in_same_window=1
 
 "neocomplete
 "let g:neocomplete#enable_at_startup = 1 
@@ -124,6 +163,24 @@ if exists("gtags-cscope")
 endif
 set cscopequickfix=s-,t-,d-,g-,c-,f-,i- 
 
+"NERD Tree
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+
+" Table-Mode
+let g:table_mode_corner_corner="+"
+
 
 "key map
 noremap <F12> :set ff=unix<cr>
@@ -134,6 +191,7 @@ nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
 nnoremap <F2> :tabnew<cr>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
@@ -156,11 +214,13 @@ nnoremap <leader>1 :!cp -rf ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm
 
 "autocmd
 autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
+autocmd FileType md	setlocal expandtab softtabstop=4
+autocmd Filetype c,cpp,h nnoremap gd :YcmCompleter GoTo<CR>
 autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
 autocmd BufRead *.go nnoremap <buffer><F11> :!go build<CR>
-autocmd Filetype c,cpp nnoremap gd :YcmCompleter GoTo<CR>
-
+autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_github -t html5 % -o /tmp/md.html\|chromium /tmp/md.html<CR>:unsilent<CR>
+autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 function Findfile_recusion(name)
 let pwd = getcwd()
