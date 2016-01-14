@@ -64,6 +64,7 @@ let g:ctrlp_by_filename = 1
 
 "Markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd Filetype markdown setlocal expandtab tabstop=4
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 "tab width
@@ -214,7 +215,6 @@ nnoremap <leader>1 :!cp -rf ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm
 
 "autocmd
 autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
-autocmd FileType md	setlocal expandtab softtabstop=4
 autocmd Filetype c,cpp,h nnoremap gd :YcmCompleter GoTo<CR>
 autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
@@ -223,20 +223,20 @@ autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_g
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 function Findfile_recusion(name)
-let pwd = getcwd()
-while 1
-	if findfile(a:name, pwd . "/") != ""
-		return pwd . "/" . a:name
-	endif
+	let pwd = getcwd()
+	while 1
+		if findfile(a:name, pwd . "/") != ""
+			return pwd . "/" . a:name
+		endif
 
-	let idx=matchend(pwd, ".*/")
+		let idx=matchend(pwd, ".*/")
 
-	if idx - 1 >= 0
-		let pwd=strpart(pwd, 0, idx - 1)
-	else
-		return 
-	endif
-endwhile
+		if idx - 1 >= 0
+			let pwd=strpart(pwd, 0, idx - 1)
+		else
+			return 
+		endif
+	endwhile
 endfunction
 
 let s:gtags_path = Findfile_recusion("GTAGS")
