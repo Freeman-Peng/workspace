@@ -7,7 +7,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'ctrlp.vim'
-"Plugin 'scrooloose/syntastic.git'
+Plugin 'scrooloose/syntastic.git'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tomasr/molokai'
@@ -25,7 +25,8 @@ Plugin 'tpope/vim-surround.git'
 Plugin 'plasticboy/vim-markdown.git'
 Plugin 'dgryski/vim-godef'
 Plugin 'tpope/vim-repeat.git'
-Plugin 'Blackrush/vim-gocode'
+"Plugin 'Blackrush/vim-gocode'
+Plugin 'fatih/vim-go.git'
 Plugin 'dhruvasagar/vim-table-mode.git'
 call vundle#end()
 
@@ -110,8 +111,8 @@ let g:rehash256 = 1
 let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsListSnippets="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<c-h>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
@@ -206,9 +207,9 @@ map j gj
 map k gk
 nnoremap <silent> <F1> :TagbarToggle<CR>
 nnoremap <F11> :w!<CR>\|:silent make -j2\|redraw!<CR>
-nnoremap <leader>w :w!<CR>
+nnoremap <leader>w :silent w!<CR>
 nnoremap <leader><space> :A<CR>
-nnoremap <leader>e :BufExplorer<CR>
+nnoremap <leader>q :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
 nnoremap go :only<CR>
 nnoremap <leader>1 :!cp -rf ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./<CR>
@@ -218,9 +219,12 @@ autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandta
 autocmd Filetype c,cpp,h nnoremap gd :YcmCompleter GoTo<CR>
 autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
-autocmd BufRead *.go nnoremap <buffer><F11> :!go build<CR>
 autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_github -t html5 % -o /tmp/md.html\|chromium /tmp/md.html<CR>:unsilent<CR>
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
+
+
+autocmd BufRead *.go nnoremap <silent><buffer><f11> :call RunGoMake()<cr>
+autocmd BufRead *.go setlocal makeprg=go\ build
 
 function Findfile_recusion(name)
 	let pwd = getcwd()
@@ -277,4 +281,15 @@ function! VisualSelection(direction) range
 
 	let @/ = l:pattern
 	let @" = l:saved_reg
+endfunction
+
+function RunGoMake()
+	if search("package\\s\\+main", 'b') != 0
+		setlocal makeprg=go\ run
+		make %
+	else
+		setlocal makeprg=go\ build
+		make
+		redraw!
+	endif
 endfunction
