@@ -223,7 +223,7 @@ autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_g
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 
-autocmd BufRead *.go nnoremap <silent><buffer><f11> :call RunGoMake()<cr>
+autocmd BufRead *.go nnoremap <buffer><f11> :call RunGoMake()<cr>
 autocmd BufRead *.go setlocal makeprg=go\ build
 
 function Findfile_recusion(name)
@@ -289,7 +289,7 @@ function RunGoMake()
 		make %
 	else
 		setlocal makeprg=go\ build
-		make
+		silent make
 		redraw!
 	endif
 endfunction
