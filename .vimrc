@@ -19,11 +19,11 @@ Plugin 'vim-scripts/bufexplorer.zip.git'
 Plugin 'majutsushi/tagbar'
 Plugin 'a.vim'
 Plugin 'Valloric/YouCompleteMe.git'
-Plugin 'honza/vim-snippets'
-Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
+"Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-surround.git'
 Plugin 'plasticboy/vim-markdown.git'
-Plugin 'dgryski/vim-godef'
+"Plugin 'dgryski/vim-godef'
 Plugin 'tpope/vim-repeat.git'
 "Plugin 'Blackrush/vim-gocode'
 Plugin 'fatih/vim-go.git'
@@ -80,14 +80,15 @@ set undodir=~/.cache/undo/
 set undofile
 
 "YCM
+set completeopt=menu,preview,longest
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_error_symbol = '!!'
 let g:ycm_warning_symbol = '->'
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_key_list_select_completion = ['<Down>']
-set completeopt=longest,menu,preview
-"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+let g:ycm_add_preview_to_completeopt=1
+
 
 "key map
 map <F3> :cp<cr>
@@ -108,14 +109,14 @@ let g:molokai_original = 0
 let g:rehash256 = 1
 
 "UltiSnip
-let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsListSnippets="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-h>"
-let g:UltiSnipsJumpBackwardTrigger="<c-l>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+"let g:UltiSnipsUsePythonVersion = 2
+"let g:UltiSnipsExpandTrigger="<c-k>"
+"let g:UltiSnipsListSnippets="<c-tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-h>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+"
+"" If you want :UltiSnipsEdit to split your window.
+"let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
 let g:tagbar_autoclose = 1
@@ -166,6 +167,8 @@ endif
 set cscopequickfix=s-,t-,d-,g-,c-,f-,i- 
 
 "NERD Tree
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeIndicatorMapCustom = {
@@ -186,15 +189,16 @@ let g:table_mode_corner_corner="+"
 
 "key map
 noremap <F12> :set ff=unix<cr>
+nnoremap <F2> :tabnew<cr>
 noremap <F3> :cp<cr>
 noremap <F4> :cn<cr>
-nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
-nnoremap <F2> :tabnew<cr>
+nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
+nnoremap <leader><space>g :cs find g <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader><space>s :cs find s <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader><space>t :cs find t <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader><space>f :cs find f <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader><space>c :cs find c <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader><space>d :cs find d <C-R>=expand("<cword>")<cr><cr>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
@@ -205,6 +209,7 @@ noremap <silent> gH :match<cr>
 "map
 map j gj
 map k gk
+nnoremap <f5> :NERDTree<cr>
 nnoremap <silent> <F1> :TagbarToggle<CR>
 nnoremap <F11> :w!<CR>\|:silent make -j2\|redraw!<CR>
 nnoremap <leader>w :silent w!<CR>
@@ -223,7 +228,10 @@ autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_g
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 
-autocmd BufRead *.go nnoremap <buffer><f11> :call RunGoMake()<cr>
+autocmd BufRead *.go nnoremap <buffer><f11> :call RunGoMake("")<cr>
+autocmd BufRead *.go nnoremap <buffer><f12> :GoImport 
+autocmd BufRead *.go nnoremap <buffer><leader><f12> :GoDrop 
+autocmd BufRead *.go nnoremap <buffer><f10> :GoTest<cr>
 autocmd BufRead *.go setlocal makeprg=go\ build
 
 function Findfile_recusion(name)
@@ -243,18 +251,23 @@ function Findfile_recusion(name)
 	endwhile
 endfunction
 
-let s:gtags_path = Findfile_recusion("GTAGS")
-if s:gtags_path != ""
-	exe "cs add " . s:gtags_path
-	let tags = s:gtags_path
-endif
+function AddGtags()
+	let a:path = Findfile_recusion("GTAGS")
+	if a:path != ""
+		exe "cs add " . a:path
+	endif
+endfunction
+autocmd BufRead * call AddGtags()
 
-let s:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
-if s:ycm_conf != ""
-	let g:ycm_global_ycm_extra_conf = s:ycm_conf
-else
-	let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-endif
+function FindYCMConfig()
+	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
+	if a:ycm_conf != ""
+		let g:ycm_global_ycm_extra_conf = a:ycm_conf
+	else
+		let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YoukCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+	endif
+endfunction
+autocmd BufEnter * call FindYCMConfig()
 
 function! CmdLine(str)
 	exe "menu Foo.Bar :" . a:str
@@ -283,9 +296,10 @@ function! VisualSelection(direction) range
 	let @" = l:saved_reg
 endfunction
 
-function RunGoMake()
+function RunGoMake(file)
 	if search("package\\s\\+main", 'b') != 0
 		setlocal makeprg=go\ run
+		let a:cursor = getcurpos()
 		make %
 	else
 		setlocal makeprg=go\ build
