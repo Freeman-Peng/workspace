@@ -7,7 +7,14 @@
 	cm = commit
 	ck = checkout
 	lg = log --graph --oneline --decorate
+	df = difftool
 [color]
 	ui = true
 [receive]
 	denyCurrentBranch = warn
+[url "git@code.flcentury.cn:"]
+	insteadOf = https://code.flcentury.cn/
+[merge]
+	tool = meld
+[mergetool]
+	prompt = false
