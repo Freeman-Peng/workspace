@@ -6,6 +6,8 @@
 #alias
 alias ls='ls --color=always'
 alias grep='grep --color=always'
+export LC_CTYPE=zh_CN.UTF-8
+export LANG=en_US.UTF-8
 
 
 #git profile
@@ -13,23 +15,21 @@ _gitbranch() {
 local _branchname=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
 [[ ! -z "$_branchname" ]] && echo "($_branchname)"
 }
-PS1="[\u@\h \W]\[\e[1;33m\]\$(_gitbranch)\[\e[0m\]\$"
+PS1="[\u@\h \W]\[\e[1;33m\]\$(_gitbranch)\[\e[00m\]\$"
 
 #ssh-agent
+_cleanssh() {
+	kill $SSH_AGENT_PID
+}
+trap _cleanssh EXIT
 eval `ssh-agent` >/dev/null 2>&1
 ssh-add ~/.ssh/id_rsa_github >/dev/null 2>&1
 
 #go profile
 export GOPATH=~/go
-export GOBIN=~/go/bin
-export PATH=$PATH:$GOBIN
+export PATH=$PATH:~/go/bin
 
 #less profile
 export LESSCHARSET=UTF-8
+export QT_IM_MODULE=ibus
 
-
-
-#export JAVA_HOME=/usr/lib/jvm/default
-#export JRE_HOME=$JAVA_HOME/jre
-#export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:
-#export PATH=$JAVA_HOME/bin:$PATH

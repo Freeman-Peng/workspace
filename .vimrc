@@ -28,6 +28,7 @@ Plugin 'tpope/vim-repeat.git'
 "Plugin 'Blackrush/vim-gocode'
 Plugin 'fatih/vim-go.git'
 Plugin 'dhruvasagar/vim-table-mode.git'
+Plugin 'ingydotnet/yaml-vim'
 call vundle#end()
 
 
@@ -86,21 +87,19 @@ let g:ycm_error_symbol = '!!'
 let g:ycm_warning_symbol = '->'
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
-let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_add_preview_to_completeopt=1
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_cache_omnifunc=0
+let g:ycm_seed_identifiers_with_syntax=1
 
 
 "key map
 map <F3> :cp<cr>
 map <F4> :cn<cr>
+map <c-F3> :lp<cr>
+map <c-F4> :lN<cr>
 
-
-"AirLine
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '|'
-"set laststatus=2
-"let g:airline_powerline_fonts = 1
 
 "Molokai
 set t_Co=256
@@ -151,6 +150,13 @@ let g:tagbar_type_go = {
 			\ 'ctagsargs' : '-sort -silent'
 			\ }
 
+"vim-go
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
 "godef
 let g:godef_split=0
@@ -193,12 +199,12 @@ nnoremap <F2> :tabnew<cr>
 noremap <F3> :cp<cr>
 noremap <F4> :cn<cr>
 nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
-nnoremap <leader><space>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader><space>s :cs find s <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader><space>t :cs find t <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader><space>f :cs find f <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader><space>c :cs find c <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader><space>d :cs find d <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
+nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
@@ -228,10 +234,12 @@ autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_g
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 
+autocmd BufRead *.go nnoremap <buffer>gc :GoReferrers<cr>
 autocmd BufRead *.go nnoremap <buffer><f11> :call RunGoMake("")<cr>
 autocmd BufRead *.go nnoremap <buffer><f12> :GoImport 
 autocmd BufRead *.go nnoremap <buffer><leader><f12> :GoDrop 
-autocmd BufRead *.go nnoremap <buffer><f10> :GoTest<cr>
+autocmd BufRead *.go nnoremap <buffer><f10> :GoTestFunc<cr>
+autocmd BufRead *.go nnoremap <buffer><leader><f10> :GoTest<cr>
 autocmd BufRead *.go setlocal makeprg=go\ build
 
 function Findfile_recusion(name)
@@ -257,7 +265,7 @@ function AddGtags()
 		exe "cs add " . a:path
 	endif
 endfunction
-autocmd BufRead * call AddGtags()
+autocmd VimEnter * call AddGtags()
 
 function FindYCMConfig()
 	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
