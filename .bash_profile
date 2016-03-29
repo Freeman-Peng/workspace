@@ -31,5 +31,5 @@ export PATH=$PATH:~/go/bin
 
 #less profile
 export LESSCHARSET=UTF-8
+export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
-

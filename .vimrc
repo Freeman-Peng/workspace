@@ -28,7 +28,6 @@ Plugin 'tpope/vim-repeat.git'
 "Plugin 'Blackrush/vim-gocode'
 Plugin 'fatih/vim-go.git'
 Plugin 'dhruvasagar/vim-table-mode.git'
-Plugin 'ingydotnet/yaml-vim'
 call vundle#end()
 
 
