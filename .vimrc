@@ -36,6 +36,7 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
+set hidden
 set encoding=utf8
 set fileencoding=utf8
 set termencoding=utf8
