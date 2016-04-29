@@ -36,7 +36,7 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
-set hidden
+"set hidden
 set encoding=utf8
 set fileencoding=utf8
 set termencoding=utf8
@@ -68,6 +68,7 @@ let g:ctrlp_by_filename = 1
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd Filetype markdown setlocal expandtab tabstop=4
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:vim_markdown_folding_disabled = 1
 
 "tab width
 set tabstop=4
@@ -211,6 +212,7 @@ vnoremap <silent> gv :call VisualSelection('gv')<CR>
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 noremap <silent> gh :match MatchParen /\<<c-r>=expand("<cword>")<cr>\>/<cr>
 noremap <silent> gH :match<cr>
+inoremap <c-l> <silent> <esc>ui
 
 "map
 map j gj
@@ -306,9 +308,9 @@ endfunction
 
 function RunGoMake(file)
 	if search("package\\s\\+main", 'b') != 0
-		setlocal makeprg=go\ run
-		let a:cursor = getcurpos()
-		make %
+		let a:cursor=getcurpos()
+		GoRun	
+		call setpos(".", a:cursor)
 	else
 		setlocal makeprg=go\ build
 		silent make
