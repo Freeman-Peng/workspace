@@ -95,12 +95,6 @@ let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
 
 
-"key map
-map <F3> :cp<cr>
-map <F4> :cn<cr>
-map <c-F3> :lp<cr>
-map <c-F4> :lN<cr>
-
 
 "Molokai
 set t_Co=256
@@ -159,6 +153,9 @@ let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
+"syntastic
+let g:syntastic_auto_loc_list = 3
+
 "godef
 let g:godef_split=0
 let g:godef_same_file_in_same_window=1
@@ -193,12 +190,15 @@ let g:NERDTreeIndicatorMapCustom = {
 " Table-Mode
 let g:table_mode_corner_corner="+"
 
-
 "key map
 noremap <F12> :set ff=unix<cr>
 nnoremap <F2> :tabnew<cr>
 noremap <F3> :cp<cr>
 noremap <F4> :cn<cr>
+set <S-F3>=O1;2R
+set <S-F4>=O1;2S
+noremap <S-F3> :lne<cr>
+noremap <S-F4> :lr<cr>
 nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
 nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
