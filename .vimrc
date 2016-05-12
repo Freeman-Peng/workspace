@@ -236,14 +236,21 @@ autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_g
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 
-autocmd BufRead *.go nnoremap <buffer>gc :GoReferrers<cr>
-autocmd BufRead *.go nnoremap <buffer><f11> :call RunGoMake("")<cr>
-autocmd BufRead *.go nnoremap <buffer><f12> :GoImport 
-autocmd BufRead *.go nnoremap <buffer><leader><f12> :GoDrop 
-autocmd BufRead *.go nnoremap <buffer><f10> :GoTestFunc<cr>
-autocmd BufRead *.go nnoremap <buffer><leader><f10> :GoTest<cr>
-autocmd BufRead *.go setlocal makeprg=go\ build
+autocmd FileType go call InitGoProfile()
 
+function InitGoProfile() 
+	if !exists("b:golang_vim")
+		let b:golang_vim = 1
+		nnoremap <buffer>gc :GoReferrers<cr>
+		nnoremap <buffer><f11> :call RunGoMake("")<cr>
+		nnoremap <buffer><f12> :GoImport 
+		nnoremap <buffer><leader><f12> :GoDrop 
+		nnoremap <buffer><f10> :GoTestFunc<cr>        	
+		nnoremap <buffer><leader><f10> :GoTest<cr>    
+	endif
+endfunction
+
+setlocal makeprg=go\ build
 function Findfile_recusion(name)
 	let pwd = getcwd()
 	while 1
