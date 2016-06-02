@@ -4,32 +4,54 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/Plugin/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'ctrlp.vim'
-Plugin 'scrooloose/syntastic.git'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'tomasr/molokai'
-Plugin 'vim-scripts/bufexplorer.zip.git'
-"Plugin 'bling/vim-airline.git'
-"Plugin 'Shougo/neocomplete'
-"Plugin 'Shougo/neosnippet'
-"Plugin 'Shougo/neosnippet-snippets'
-Plugin 'majutsushi/tagbar'
-Plugin 'a.vim'
-Plugin 'Valloric/YouCompleteMe.git'
-"Plugin 'honza/vim-snippets'
-"Plugin 'SirVer/ultisnips'
-Plugin 'tpope/vim-surround.git'
-Plugin 'plasticboy/vim-markdown.git'
-"Plugin 'dgryski/vim-godef'
-Plugin 'tpope/vim-repeat.git'
-"Plugin 'Blackrush/vim-gocode'
-Plugin 'fatih/vim-go.git'
-Plugin 'dhruvasagar/vim-table-mode.git'
-call vundle#end()
+Plugin 'VundleVim/Vundle.vim.git'
 
+"fast move plugin, action key is <leader>\
+"current <leader> = \
+Plugin 'Lokaltog/vim-easymotion'
+
+"fast switch file in directory
+Plugin 'ctrlp.vim'
+
+"syntax motion
+Plugin 'scrooloose/syntastic.git'
+
+"dirctory plugin keymap <F5>
+Plugin 'scrooloose/nerdtree'
+"add git plugin for nerdtree
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+"color theme
+Plugin 'tomasr/molokai'
+
+"switch buffer
+Plugin 'vim-scripts/bufexplorer.zip.git'
+
+"function list for a file,  support go
+Plugin 'majutsushi/tagbar'
+
+"switch header file and source file for CPP
+Plugin 'a.vim'
+
+"surround quote
+Plugin 'tpope/vim-surround.git'
+
+"markdown syntax and function
+Plugin 'plasticboy/vim-markdown.git'
+
+"more repeat acion support with key "."
+Plugin 'tpope/vim-repeat.git'
+
+"go lang support 
+Plugin 'fatih/vim-go.git'
+
+"table mode, create ascii table easily
+Plugin 'dhruvasagar/vim-table-mode.git'
+
+"complete plugin for many languague
+Plugin 'Valloric/YouCompleteMe.git'
+
+call vundle#end()
 
 "Normal 
 syntax on
@@ -91,7 +113,7 @@ let g:ycm_complete_in_strings = 1
 let g:ycm_add_preview_to_completeopt=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_cache_omnifunc=0
+let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
 
 
@@ -154,7 +176,7 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
 "syntastic
-let g:syntastic_auto_loc_list = 3
+let g:syntastic_auto_loc_list = 0
 
 "godef
 let g:godef_split=0
@@ -197,8 +219,8 @@ noremap <F3> :cp<cr>
 noremap <F4> :cn<cr>
 set <S-F3>=O1;2R
 set <S-F4>=O1;2S
-noremap <S-F3> :lne<cr>
-noremap <S-F4> :lr<cr>
+noremap <S-F3> :lr<cr>
+noremap <S-F4> :lne<cr>
 nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
 nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
@@ -212,7 +234,6 @@ vnoremap <silent> gv :call VisualSelection('gv')<CR>
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 noremap <silent> gh :match MatchParen /\<<c-r>=expand("<cword>")<cr>\>/<cr>
 noremap <silent> gH :match<cr>
-inoremap <c-l> <silent> <esc>ui
 
 "map
 map j gj
@@ -232,7 +253,6 @@ autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandta
 autocmd Filetype c,cpp,h nnoremap gd :YcmCompleter GoTo<CR>
 autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
-autocmd BufRead *.md nnoremap <buffer><F11> :silent<CR>:!pandoc -s -f markdown_github -t html5 % -o /tmp/md.html\|chromium /tmp/md.html<CR>:unsilent<CR>
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 
@@ -322,5 +342,26 @@ function RunGoMake(file)
 		setlocal makeprg=go\ build
 		silent make
 		redraw!
+	endif
+endfunction
+
+
+"markdown autocmd
+set <S-F12>=[24;2~
+autocmd FileType markdown nnoremap <S-F12> :call PreviewMarkDown()<cr>
+
+function PreviewMarkDown()
+	silent let a:ret = system("netstat -tln|grep 6419")
+	if a:ret != ""
+		silent exec "!pkill grip"|redraw!
+	endif
+	silent exec "!grip --quiet -b " . expand("%") . " 127.0.0.1:6149 2>/dev/null >/dev/null &"|redraw!
+	let g:vim_markdown_preview_on=1
+endfunction
+
+autocmd BufUnload *.md,*.markdown call PreviewMarkDownClose()
+function PreviewMarkDownClose()
+	if exists("g:vim_markdown_preview_on")
+		silent exec "!pkill grip"
 	endif
 endfunction
