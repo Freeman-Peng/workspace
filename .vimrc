@@ -217,10 +217,12 @@ noremap <F12> :set ff=unix<cr>
 nnoremap <F2> :tabnew<cr>
 noremap <F3> :cp<cr>
 noremap <F4> :cn<cr>
-set <S-F3>=O1;2R
-set <S-F4>=O1;2S
+set <S-F3>=[25~
+set <S-F4>=[26~
 noremap <S-F3> :lr<cr>
 noremap <S-F4> :lne<cr>
+"urxvt key map <S-F4> is <Undo>
+noremap <Undo> :lne<cr>
 nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
 nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
@@ -347,7 +349,7 @@ endfunction
 
 
 "markdown autocmd
-set <S-F12>=[24;2~
+set <S-F12>=[24$
 autocmd FileType markdown nnoremap <S-F12> :call PreviewMarkDown()<cr>
 
 function PreviewMarkDown()

@@ -1,8 +1,10 @@
+*inputMethod: ibus
 !-*-{ Xft settings
 Xft*dpi:       96
 Xft*antialias: True
 Xft*hinting:   Full
 !!-*-}
+
 *background: #0f0f0f
 *foreground: #c8c8c8
 
@@ -32,14 +34,18 @@ Xft*hinting:   Full
 *color7:  #babdb9
 *color15: #EEEEEC
 
-URxvt.font: xft:Inconsolata for Powerline:size=12:antialias=True:hinting=Full
+URxvt.imLocale: en_US.utf8
+URxvt.loginShell: True
+URxvt.font: xft:Inconsolata for Powerline:size=12:antialias=true:autohint=true,xft:思源黑体 CN:size=30:style=normal
 URxvt.boldFont:xft:Inconsolatazi4:style=bold:size=12:antialias=True:hinting=Full
 
 URxvt.perl-ext: default,matcher,clipboard,url-select
 URxvt.url-launcher:   /usr/bin/chromium
 URxvt.underlineURLs:  True
 URxvt.matcher.button: 3
-URxvt.loginShell: True
 URxvt.saveLines: 5000
 URxvt.keysym.C-Insert: perl:clipboard:copy
 URxvt.keysym.S-Insert: perl:clipboard:paste
+! input method
+URxvt.inputMethod: ibus
+URxvt.selection.pattern-0: ([^"&'()*,;<=>?@[\\\\]^`{|})]+)
