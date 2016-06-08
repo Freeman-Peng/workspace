@@ -1,6 +1,11 @@
+Xft.antialias: true
+Xft.autohint: 0
+Xft.hinting: 1
+Xft.hintstyle: hintfull
+
 *inputMethod: ibus
 !-*-{ Xft settings
-Xft*dpi:       96
+Xft.dpi:       96
 Xft*antialias: True
 Xft*hinting:   Full
 !!-*-}
@@ -34,10 +39,15 @@ Xft*hinting:   Full
 *color7:  #babdb9
 *color15: #EEEEEC
 
+URxvt.scrollBar:: false
 URxvt.imLocale: en_US.utf8
 URxvt.loginShell: True
-URxvt.font: xft:Inconsolata for Powerline:size=12:antialias=true:autohint=true,xft:思源黑体 CN:size=30:style=normal
-URxvt.boldFont:xft:Inconsolatazi4:style=bold:size=12:antialias=True:hinting=Full
+URxvt.xftAntialias: true
+!URxvt.font: xft:Inconsolata for Powerline:size=10:antialias=true:autohint=true,xft:思源黑体 CN:size=30:style=normal
+!URxvt.boldFont:xft:Inconsolatazi4:style=bold:size=10:antialias=True:hinting=Full
+URxvt.font: xft:Consolas:pixelsize=14:antialias=true:autohint=true:hinting=Full,xft:思源黑体 CN:size=30:style=Regulay
+URxvt.boldFont:xft:Consolas:style=Bold:pixelsize=14:antialias=True:hinting=Full
+urxvt.letterSpace: -1
 
 URxvt.perl-ext: default,matcher,clipboard,url-select
 URxvt.url-launcher:   /usr/bin/chromium
@@ -49,3 +59,6 @@ URxvt.keysym.S-Insert: perl:clipboard:paste
 ! input method
 URxvt.inputMethod: ibus
 URxvt.selection.pattern-0: ([^"&'()*,;<=>?@[\\\\]^`{|})]+)
+URxvt.iso14755: true
+URxvt.iso14755_52: true
+URxvt.buffered: true
