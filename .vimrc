@@ -74,6 +74,8 @@ set backspace=indent,eol,start	" more powerful backspacing
 set wrap
 set history=500
 set stal=2
+set backup
+set backupdir=~/.cache/bak
 if exists($TMUX)
 	set cursorline
 endif
@@ -123,6 +125,7 @@ set t_Co=256
 color molokai
 let g:molokai_original = 0
 let g:rehash256 = 1
+
 
 "UltiSnip
 "let g:UltiSnipsUsePythonVersion = 2
@@ -174,6 +177,11 @@ let g:go_highlight_structs = 1
 let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+let g:go_fmt_command = "goimports"
+let g:go_list_type = "quickfix"
+au filetype go let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+au filetype go let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+au FileType go nmap <Leader>e <Plug>(go-rename)
 
 "syntastic
 let g:syntastic_auto_loc_list = 0
@@ -341,9 +349,7 @@ function RunGoMake(file)
 		GoRun	
 		call setpos(".", a:cursor)
 	else
-		setlocal makeprg=go\ build
-		silent make
-		redraw!
+		GoErrCheck
 	endif
 endfunction
 
