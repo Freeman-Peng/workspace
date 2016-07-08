@@ -48,6 +48,9 @@ Plugin 'fatih/vim-go.git'
 "table mode, create ascii table easily
 Plugin 'dhruvasagar/vim-table-mode.git'
 
+"ultisnips engine
+Plugin 'SirVer/ultisnips'
+
 "complete plugin for many languague
 Plugin 'Valloric/YouCompleteMe.git'
 
@@ -117,7 +120,7 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
-
+let g:ycm_key_list_select_completion = ['<Down>']
 
 
 "Molokai
@@ -128,14 +131,12 @@ let g:rehash256 = 1
 
 
 "UltiSnip
-"let g:UltiSnipsUsePythonVersion = 2
-"let g:UltiSnipsExpandTrigger="<c-k>"
-"let g:UltiSnipsListSnippets="<c-tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-h>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-l>"
-"
-"" If you want :UltiSnipsEdit to split your window.
-"let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-f>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
 let g:tagbar_autoclose = 1
