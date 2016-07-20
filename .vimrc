@@ -101,6 +101,14 @@ let g:vim_markdown_folding_disabled = 1
 set tabstop=4
 set shiftwidth=4
 
+"bak dir
+if finddir("bak", $HOME . "/.cache/") == ""
+	call mkdir($HOME . "/.cache/bak/")
+endif
+
+set backup
+set backupdir=~/.cache/bak
+
 "undo file
 if finddir("undo", $HOME . "/.cache/") == ""
 	call mkdir($HOME . "/.cache/undo/")
@@ -289,11 +297,9 @@ function Findfile_recusion(name)
 			return pwd . "/" . a:name
 		endif
 
-		let idx=matchend(pwd, ".*/")
+		let pwd=fnamemodify(pwd, ":h")
 
-		if idx - 1 >= 0
-			let pwd=strpart(pwd, 0, idx - 1)
-		else
+		if pwd == "/"
 			return 
 		endif
 	endwhile
