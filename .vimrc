@@ -51,6 +51,13 @@ Plugin 'dhruvasagar/vim-table-mode.git'
 "ultisnips engine
 Plugin 'SirVer/ultisnips'
 
+"QML Syntax
+Plugin 'peterhoeg/vim-qml.git'
+
+"Indent
+Plugin 'Yggdroot/indentLine.git'
+
+
 "complete plugin for many languague
 Plugin 'Valloric/YouCompleteMe.git'
 
@@ -229,6 +236,11 @@ let g:NERDTreeIndicatorMapCustom = {
 " Table-Mode
 let g:table_mode_corner_corner="+"
 
+"Indent guides
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+
 "key map
 noremap <F12> :set ff=unix<cr>
 nnoremap <F2> :tabnew<cr>
@@ -276,6 +288,9 @@ autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsile
 
 
 autocmd FileType go call InitGoProfile()
+
+"QML make
+autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 function InitGoProfile() 
 	if !exists("b:golang_vim")
