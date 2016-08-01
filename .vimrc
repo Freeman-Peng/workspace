@@ -50,6 +50,8 @@ Plugin 'dhruvasagar/vim-table-mode.git'
 
 "ultisnips engine
 Plugin 'SirVer/ultisnips'
+"snippets
+Plugin 'honza/vim-snippets'
 
 "QML Syntax
 Plugin 'peterhoeg/vim-qml.git'
@@ -57,6 +59,11 @@ Plugin 'peterhoeg/vim-qml.git'
 "Indent
 Plugin 'Yggdroot/indentLine.git'
 
+"Color_coded
+"Plugin 'jeaye/color_coded.git'
+
+"YCM-Generator
+Plugin 'rdnetto/YCM-Generator.git'
 
 "complete plugin for many languague
 Plugin 'Valloric/YouCompleteMe.git'
@@ -277,7 +284,6 @@ nnoremap <leader><space> :A<CR>
 nnoremap <leader>q :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
 nnoremap go :only<CR>
-nnoremap <leader>1 :!cp -rf ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./<CR>
 
 "autocmd
 autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 

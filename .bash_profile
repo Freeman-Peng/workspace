@@ -16,7 +16,7 @@ _gitbranch() {
 local _branchname=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
 [[ ! -z "$_branchname" ]] && echo "($_branchname)"
 }
-PS1="[\u@\h \W]\[\e[1;33m\]\[\$(_gitbranch)\]\[\e[00m\]\$"
+PS1="[\u@\h \W]\[\e[1;33m\]\[$(_gitbranch)\]\[\e[00m\]\$"
 
 #ssh-agent
 _cleanssh() {
