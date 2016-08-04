@@ -48,6 +48,9 @@ Plugin 'fatih/vim-go.git'
 "table mode, create ascii table easily
 Plugin 'dhruvasagar/vim-table-mode.git'
 
+"Comment
+Plugin 'tpope/vim-commentary.git'
+
 "ultisnips engine
 Plugin 'SirVer/ultisnips'
 "snippets
