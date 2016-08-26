@@ -71,6 +71,12 @@ Plugin 'rdnetto/YCM-Generator.git'
 "complete plugin for many languague
 Plugin 'Valloric/YouCompleteMe.git'
 
+"json
+Plugin 'elzr/vim-json.git'
+
+"multi cursor
+Plugin 'terryma/vim-multiple-cursors'
+
 call vundle#end()
 
 "Normal 
@@ -78,7 +84,10 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
-"set hidden
+set ffs=unix,dos,mac
+set ai
+set si
+set laststatus=2
 set encoding=utf8
 set fileencoding=utf8
 set termencoding=utf8
@@ -146,6 +155,7 @@ let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_python_binary_path = 'python'
 
 
 "Molokai
@@ -262,7 +272,7 @@ noremap <S-F3> :lr<cr>
 noremap <S-F4> :lne<cr>
 "urxvt key map <S-F4> is <Undo>
 noremap <Undo> :lne<cr>
-nnoremap <c-\> :vimgrep // **/*<Left><Left><Left><Left><Left><Left>
+nnoremap <c-\> :vimgrep /<c-r>=expand("<cword>")<cr>/ **/*
 nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
 nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
@@ -295,13 +305,16 @@ autocmd Filetype java setlocal cc=80
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
-
-autocmd FileType go call InitGoProfile()
-
 "QML make
 autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
+"C style
+autocmd FileType cpp,c nnoremap <F12> :make<cr>
+
+autocmd FileType go call InitGoProfile()
+
 function InitGoProfile() 
+	set makeprg=go\ build
 	if !exists("b:golang_vim")
 		let b:golang_vim = 1
 		nnoremap <buffer>gc :GoReferrers<cr>
@@ -313,7 +326,6 @@ function InitGoProfile()
 	endif
 endfunction
 
-setlocal makeprg=go\ build
 function Findfile_recusion(name)
 	let pwd = getcwd()
 	while 1
