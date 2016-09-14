@@ -1,4 +1,5 @@
 set nocompatible              " be iMproved, required
+
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -61,9 +62,6 @@ Plugin 'peterhoeg/vim-qml.git'
 
 "Indent
 Plugin 'Yggdroot/indentLine.git'
-
-"Color_coded
-"Plugin 'jeaye/color_coded.git'
 
 "YCM-Generator
 Plugin 'rdnetto/YCM-Generator.git'
@@ -144,6 +142,8 @@ set undofile
 
 "YCM
 set completeopt=menu,preview,longest
+let g:ycm_global_ycm_extra_conf= '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_use_ultisnips_completer=1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_error_symbol = '!!'
 let g:ycm_warning_symbol = '->'
@@ -154,7 +154,8 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_select_completion = ['<c-n>','<Down>']
+let g:ycm_key_list_previous_completion = ['<c-p>','<Down>']
 let g:ycm_python_binary_path = 'python'
 
 
@@ -169,8 +170,7 @@ let g:rehash256 = 1
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-
-" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
@@ -225,9 +225,6 @@ let g:syntastic_auto_loc_list = 0
 "godef
 let g:godef_split=0
 let g:godef_same_file_in_same_window=1
-
-"neocomplete
-"let g:neocomplete#enable_at_startup = 1 
 
 "global gnu
 set cscopeprg=gtags-cscope
