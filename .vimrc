@@ -75,6 +75,9 @@ Plugin 'elzr/vim-json.git'
 "multi cursor
 Plugin 'terryma/vim-multiple-cursors'
 
+"haskell
+Plugin 'neovimhaskell/haskell-vim'
+
 call vundle#end()
 
 "Normal 
@@ -142,7 +145,6 @@ set undofile
 
 "YCM
 set completeopt=menu,preview,longest
-let g:ycm_global_ycm_extra_conf= '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_use_ultisnips_completer=1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_error_symbol = '!!'
@@ -154,8 +156,8 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_key_list_select_completion = ['<c-n>','<Down>']
-let g:ycm_key_list_previous_completion = ['<c-p>','<Down>']
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Down>']
 let g:ycm_python_binary_path = 'python'
 
 
@@ -170,7 +172,7 @@ let g:rehash256 = 1
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
@@ -310,6 +312,14 @@ autocmd FileType cpp,c nnoremap <F12> :make<cr>
 
 autocmd FileType go call InitGoProfile()
 
+"haskell
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+
 function InitGoProfile() 
 	set makeprg=go\ build
 	if !exists("b:golang_vim")
@@ -351,7 +361,7 @@ function FindYCMConfig()
 	if a:ycm_conf != ""
 		let g:ycm_global_ycm_extra_conf = a:ycm_conf
 	else
-		let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YoukCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+		let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 	endif
 endfunction
 autocmd BufEnter * call FindYCMConfig()
