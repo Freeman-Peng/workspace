@@ -50,7 +50,7 @@ Plugin 'fatih/vim-go.git'
 Plugin 'dhruvasagar/vim-table-mode.git'
 
 "Comment
-Plugin 'tpope/vim-commentary.git'
+"Plugin 'tpope/vim-commentary.git'
 
 "ultisnips engine
 Plugin 'SirVer/ultisnips'
@@ -61,7 +61,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'peterhoeg/vim-qml.git'
 
 "Indent
-Plugin 'Yggdroot/indentLine.git'
+"Plugin 'Yggdroot/indentLine.git'
 
 "YCM-Generator
 Plugin 'rdnetto/YCM-Generator.git'
@@ -77,6 +77,9 @@ Plugin 'terryma/vim-multiple-cursors'
 
 "haskell
 Plugin 'neovimhaskell/haskell-vim'
+
+"asyncrun
+"Plugin 'skywind3000/asyncrun.vim'
 
 call vundle#end()
 
@@ -106,6 +109,7 @@ set history=500
 set stal=2
 set backup
 set backupdir=~/.cache/bak
+set cursorline
 if exists($TMUX)
 	set cursorline
 endif
@@ -158,14 +162,13 @@ let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Down>']
-let g:ycm_python_binary_path = 'python'
-
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 "Molokai
 set t_Co=256
 color molokai
-let g:molokai_original = 0
-let g:rehash256 = 1
+let g:molokai_original = 1
+let g:rehash256 = 0
 
 
 "UltiSnip
@@ -348,23 +351,25 @@ function Findfile_recusion(name)
 	endwhile
 endfunction
 
-function AddGtags()
-	let a:path = Findfile_recusion("GTAGS")
-	if a:path != ""
-		exe "cs add " . a:path
-	endif
-endfunction
-autocmd VimEnter * call AddGtags()
+"function AddGtags()
+"	let a:path = Findfile_recusion("GTAGS")
+"	if a:path != ""
+"		exe "cs add " . a:path
+"	endif
+"endfunction
+"stop using gtags or ctags
+"autocmd VimEnter * call AddGtags()
 
 function FindYCMConfig()
 	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
 	if a:ycm_conf != ""
 		let g:ycm_global_ycm_extra_conf = a:ycm_conf
 	else
-		let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+		silent !cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./
+		let g:ycm_global_ycm_extra_conf = './.ycm_extra_conf.py'
 	endif
 endfunction
-autocmd BufEnter * call FindYCMConfig()
+autocmd Filetype c,cpp,h,hpp call FindYCMConfig()
 
 function! CmdLine(str)
 	exe "menu Foo.Bar :" . a:str
