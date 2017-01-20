@@ -81,6 +81,9 @@ Plugin 'neovimhaskell/haskell-vim'
 "asyncrun
 "Plugin 'skywind3000/asyncrun.vim'
 
+"clip
+Plugin 'fakeclip'
+
 call vundle#end()
 
 "Normal 
@@ -168,7 +171,6 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 set t_Co=256
 color molokai
 let g:molokai_original = 1
-let g:rehash256 = 0
 
 
 "UltiSnip
@@ -358,7 +360,7 @@ endfunction
 "	endif
 "endfunction
 "stop using gtags or ctags
-"autocmd VimEnter * call AddGtags()
+"autocmd VimEnter *.cpp,*.hpp,*.h,*.c call AddGtags()
 
 function FindYCMConfig()
 	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
