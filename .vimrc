@@ -70,7 +70,7 @@ Plugin 'rdnetto/YCM-Generator.git'
 Plugin 'Valloric/YouCompleteMe.git'
 
 "json
-Plugin 'elzr/vim-json.git'
+Plugin 'leshill/vim-json'
 
 "multi cursor
 Plugin 'terryma/vim-multiple-cursors'
