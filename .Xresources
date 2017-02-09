@@ -11,41 +11,57 @@ Xft*hinting:   Full
 !!-*-}
 
 
-*background: #0f0f0f
-*foreground: #c8c8c8
-
+!deepin-match
+#define deepin_style_bg #252932
+#define deepin_style_fg #c8c8c8
+#define deepin_style_fade #121419
 !Tango
-! black
-*color0:  #2E3436
-*color8:  #555753
-! red
-*color1:  #a40000
-*color9:  #EF2929
-! green
-*color2:  #4E9A06
-*color10: #8AE234
-! yellow
-*color3:  #C4A000
-*color11: #FCE94F
-! blue
-*color4:  #3465A4
-*color12: #729FCF
-! purple
-*color5:  #75507B
-*color13: #AD7FA8
-! orange (replaces cyan)
-*color6:  #ce5c00
-*color14: #fcaf3e
-! white
-*color7:  #babdb9
-*color15: #EEEEEC
+#define Tango_color01 #2E3436
+#define Tango_color02 #4E9A06
+#define Tango_color03 #C4A000
+#define Tango_color04 #3465A4
+#define Tango_color05 #75507B
+#define Tango_color06 #CE5C00
+#define Tango_color07 #BABDB9
+#define Tango_color08 #555753
+#define Tango_color09 #EF2929
+#define Tango_color10 #9AE234
+#define Tango_color11 #FCE94F
+#define Tango_color12 #729FCF
+#define Tango_color13 #AD7FA8
+#define Tango_color14 #FCAF3E
+#define Tango_color15 #EEEEEC
 
+!theme
+*background: deepin_style_bg
+*foreground: deepin_style_fg
+*fading: 40
+*fadeColor: deepin_style_fade
+*cursorColor: #2aa198
+!*pointerColorBackground: S_base01
+!*pointerColorForeground: S_base1
 
-URxvt.cursorColor: #6495ED
+*color0: Tango_color0
+*color1: Tango_color1
+*color2: Tango_color2
+*color3: Tango_color3
+*color4: Tango_color4
+*color5: Tango_color5
+*color6: Tango_color6
+*color7: Tango_color7
+*color9: Tango_color8
+*color8: Tango_color9
+*color10:Tango_color10
+*color11:Tango_color11
+*color12:Tango_color12
+*color13:Tango_color13
+*color14:Tango_color14
+*color15:Tango_color15
+
 URxvt.imLocale: en_US.utf8
 URxvt.loginShell: True
 URxvt.xftAntialias: true
-#URxvt.font: xft:Inziu IosevkaCC CL:pixelsize=13:antialias=true:autohint=true
+URxvt.font: xft:Inziu IosevkaCC CL:pixelsize=13:antialias=true:autohint=true
 urxvt.letterSpace: -1
 
 URxvt.perl-ext-common: default,matcher,clipboard,url-select
@@ -62,5 +78,6 @@ URxvt.iso14755: true
 URxvt.iso14755_52: true
 URxvt.buffered: true
 URxvt.lineSpace:1
-urxvt*transparent: true
-urxvt*shading: 15
+URxvt.shading: 15
+!URxvt.intensityStyles: false
+URxvt.scrollBar: false
