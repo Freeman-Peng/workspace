@@ -42,16 +42,16 @@ Xft*hinting:   Full
 !*pointerColorBackground: S_base01
 !*pointerColorForeground: S_base1
 
-*color0: Tango_color0
-*color1: Tango_color1
-*color2: Tango_color2
-*color3: Tango_color3
-*color4: Tango_color4
-*color5: Tango_color5
-*color6: Tango_color6
-*color7: Tango_color7
-*color9: Tango_color8
-*color8: Tango_color9
+*color0: Tango_color00
+*color1: Tango_color01
+*color2: Tango_color02
+*color3: Tango_color03
+*color4: Tango_color04
+*color5: Tango_color05
+*color6: Tango_color06
+*color7: Tango_color07
+*color9: Tango_color08
+*color8: Tango_color09
 *color10:Tango_color10
 *color11:Tango_color11
 *color12:Tango_color12
