@@ -15,6 +15,7 @@ Xft*hinting:   Full
 #define deepin_style_bg #252932
 #define deepin_style_fg #c8c8c8
 #define deepin_style_fade #121419
+#define deepin_cursor #2aa198
 !Tango
 #define Tango_color01 #2E3436
 #define Tango_color02 #4E9A06
@@ -37,7 +38,7 @@ Xft*hinting:   Full
 *foreground: deepin_style_fg
 *fading: 40
 *fadeColor: deepin_style_fade
-*cursorColor: #2aa198
+*cursorColor: deepin_cursor
 !*pointerColorBackground: S_base01
 !*pointerColorForeground: S_base1
 
