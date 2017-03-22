@@ -300,22 +300,30 @@ nnoremap <leader>w :silent w!<CR>
 nnoremap <leader><space> :A<CR>
 nnoremap <leader>q :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
-nnoremap go :only<CR>
 
 "autocmd
-autocmd Filetype c,cpp,h  setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
-autocmd Filetype c,cpp,h nnoremap gd :YcmCompleter GoTo<CR>
 autocmd Filetype java setlocal cc=80
-autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
+
+"python 
+autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
+autocmd BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4 cc=80
+autocmd FileType python nnoremap gd :YcmCompleter GoTo<CR>
 
 "QML make
 autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
-"C style
+"C/C++ style
 autocmd FileType cpp,c nnoremap <F12> :make<cr>
+autocmd FileType c,cpp,h,hpp setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
+autocmd FileType c,cpp,h,hpp nnoremap gd :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,h,hpp call AddGtags()
 
+"Go
 autocmd FileType go call InitGoProfile()
+
+"javascript/Nodejs
+autocmd FileType javascript nnoremap gd :YcmCompleter GoTo<CR>
 
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -407,26 +415,5 @@ function RunGoMake(file)
 		call setpos(".", a:cursor)
 	else
 		GoErrCheck
-	endif
-endfunction
-
-
-"markdown autocmd
-set <S-F12>=[24$
-autocmd FileType markdown nnoremap <S-F12> :call PreviewMarkDown()<cr>
-
-function PreviewMarkDown()
-	silent let a:ret = system("netstat -tln|grep 6419")
-	if a:ret != ""
-		silent exec "!pkill grip"|redraw!
-	endif
-	silent exec "!grip --quiet -b " . expand("%") . " 127.0.0.1:6149 2>/dev/null >/dev/null &"|redraw!
-	let g:vim_markdown_preview_on=1
-endfunction
-
-autocmd BufUnload *.md,*.markdown call PreviewMarkDownClose()
-function PreviewMarkDownClose()
-	if exists("g:vim_markdown_preview_on")
-		silent exec "!pkill grip"
 	endif
 endfunction
