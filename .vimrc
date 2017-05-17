@@ -91,6 +91,7 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
+set matchpairs=(:),[:],{:},<:>
 set ffs=unix,dos,mac
 set ai
 set si
@@ -167,6 +168,12 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Down>']
 let g:ycm_python_binary_path = '/usr/bin/python3'
 
+"syntastic
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
 "Molokai
 set t_Co=256
 color molokai
@@ -212,19 +219,19 @@ let g:tagbar_type_go = {
 			\ 'ctagsbin'  : 'gotags',
 			\ 'ctagsargs' : '-sort -silent'
 			\ }
+let g:tagbar_autopreview=1
 
 "vim-go
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
-let g:go_list_type = "quickfix"
+let g:go_list_type="quickfix"
 au filetype go let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 au filetype go let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-au FileType go nmap <Leader>e <Plug>(go-rename)
 
 "syntastic
 let g:syntastic_auto_loc_list = 0
@@ -325,6 +332,9 @@ autocmd FileType go call InitGoProfile()
 "javascript/Nodejs
 autocmd FileType javascript nnoremap gd :YcmCompleter GoTo<CR>
 
+"csharp
+autocmd FileType cs nnoremap gd :YcmCompleter GoTo<CR>
+
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
@@ -361,25 +371,25 @@ function Findfile_recusion(name)
 	endwhile
 endfunction
 
-"function AddGtags()
-"	let a:path = Findfile_recusion("GTAGS")
-"	if a:path != ""
-"		exe "cs add " . a:path
-"	endif
-"endfunction
-"stop using gtags or ctags
-"autocmd VimEnter *.cpp,*.hpp,*.h,*.c call AddGtags()
+function AddGtags()
+	let a:path = Findfile_recusion("GTAGS")
+	if a:path != ""
+		exe "cs add " . a:path
+	endif
+endfunction
 
 function FindYCMConfig()
 	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
 	if a:ycm_conf != ""
 		let g:ycm_global_ycm_extra_conf = a:ycm_conf
 	else
-		silent !cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./
-		let g:ycm_global_ycm_extra_conf = './.ycm_extra_conf.py'
+		if !exists(".ycm_extra_conf")
+			silent !cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./
+		endif
+		let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	endif
 endfunction
-autocmd Filetype c,cpp,h,hpp call FindYCMConfig()
+autocmd FileType c,cpp,h,hpp call FindYCMConfig()
 
 function! CmdLine(str)
 	exe "menu Foo.Bar :" . a:str
