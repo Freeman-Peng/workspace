@@ -222,6 +222,7 @@ let g:tagbar_type_go = {
 let g:tagbar_autopreview=1
 
 "vim-go
+let g:go_auto_type_info = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
@@ -284,12 +285,6 @@ noremap <S-F4> :lne<cr>
 "urxvt key map <S-F4> is <Undo>
 noremap <Undo> :lne<cr>
 nnoremap <c-\> :vimgrep /<c-r>=expand("<cword>")<cr>/ **/*
-nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
-nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
@@ -321,10 +316,17 @@ autocmd FileType python nnoremap gd :YcmCompleter GoTo<CR>
 autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 "C/C++ style
-autocmd FileType cpp,c nnoremap <F12> :make<cr>
-autocmd FileType c,cpp,h,hpp setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
-autocmd FileType c,cpp,h,hpp nnoremap gd :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,h,hpp call AddGtags()
+autocmd FileType c,cpp nnoremap <F12> :make<cr>
+autocmd FileType c,cpp setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
+autocmd FileType c,cpp nnoremap gd :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp call AddGtags()
+autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
+
 
 "Go
 autocmd FileType go call InitGoProfile()
