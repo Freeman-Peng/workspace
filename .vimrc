@@ -222,14 +222,14 @@ let g:tagbar_type_go = {
 let g:tagbar_autopreview=1
 
 "vim-go
-let g:go_auto_type_info = 1
+let g:go_auto_type_info = 0
+let g:go_highlight_chan_whitespace_error = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_extra_types = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
-let g:go_highlight_types = 1
-let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-let g:go_fmt_command = "goimports"
+let g:go_highlight_generate_tags = 1
 let g:go_list_type="quickfix"
 au filetype go let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 au filetype go let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
