@@ -84,6 +84,12 @@ Plugin 'neovimhaskell/haskell-vim'
 "clip
 Plugin 'fakeclip'
 
+"align
+Plugin 'junegunn/vim-easy-align'
+
+"code colored
+Plugin 'jeaye/color_coded'
+
 call vundle#end()
 
 "Normal 
@@ -178,6 +184,8 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 set t_Co=256
 color molokai
 let g:molokai_original = 1
+let g:rehash256 = 1
+hi CursorLine term=underline ctermbg=237 guibg=#ADCCFF
 
 
 "UltiSnip
@@ -231,8 +239,9 @@ let g:go_highlight_fields = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_list_type="quickfix"
-au filetype go let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-au filetype go let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_fmt_command = "goimports"
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
 "syntastic
 let g:syntastic_auto_loc_list = 0
@@ -287,7 +296,7 @@ noremap <Undo> :lne<cr>
 nnoremap <c-\> :vimgrep /<c-r>=expand("<cword>")<cr>/ **/*
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
-vnoremap <silent> gv :call VisualSelection('gv')<CR>
+vnoremap <silent> <c-\> :call VisualSelection('gv')<CR>
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 noremap <silent> gh :match MatchParen /\<<c-r>=expand("<cword>")<cr>\>/<cr>
 noremap <silent> gH :match<cr>
@@ -344,6 +353,14 @@ let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
 let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+
+"align
+nmap \a <Plug>(EasyAlign)
+xmap \a <Plug>(EasyAlign)
+
+"cpp syntax scheme
+let g:color_coded_enabled = 1
+let g:color_coded_filetypes = ['c', 'cpp', 'objc']
 
 function InitGoProfile() 
 	set makeprg=go\ build
