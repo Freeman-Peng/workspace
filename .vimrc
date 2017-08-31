@@ -84,11 +84,17 @@ Plugin 'neovimhaskell/haskell-vim'
 "clip
 Plugin 'fakeclip'
 
+"expand region
+Plugin 'terryma/vim-expand-region'
+
 "align
 Plugin 'junegunn/vim-easy-align'
 
 "code colored
 Plugin 'jeaye/color_coded'
+
+"airline
+Plugin 'vim-airline/vim-airline'
 
 call vundle#end()
 
@@ -354,6 +360,10 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 
+"expand-region
+map K <Plug>(expand_region_expand)
+map J <Plug>(expand_region_shrink)
+
 "align
 nmap \a <Plug>(EasyAlign)
 xmap \a <Plug>(EasyAlign)
@@ -361,6 +371,11 @@ xmap \a <Plug>(EasyAlign)
 "cpp syntax scheme
 let g:color_coded_enabled = 1
 let g:color_coded_filetypes = ['c', 'cpp', 'objc']
+
+"airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
+
 
 function InitGoProfile() 
 	set makeprg=go\ build
