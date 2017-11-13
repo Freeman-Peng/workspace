@@ -84,9 +84,6 @@ Plugin 'neovimhaskell/haskell-vim'
 "clip
 Plugin 'fakeclip'
 
-"expand region
-Plugin 'terryma/vim-expand-region'
-
 "align
 Plugin 'junegunn/vim-easy-align'
 
@@ -95,6 +92,9 @@ Plugin 'jeaye/color_coded'
 
 "airline
 Plugin 'vim-airline/vim-airline'
+
+"signature
+Plugin 'kshenoy/vim-signature'
 
 call vundle#end()
 
@@ -281,7 +281,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 " Table-Mode
-let g:table_mode_corner_corner="+"
+"let g:table_mode_corner_corner="+"
 
 "Indent guides
 let g:indent_guides_auto_colors = 0
@@ -359,10 +359,6 @@ let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
 let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-
-"expand-region
-map K <Plug>(expand_region_expand)
-map J <Plug>(expand_region_shrink)
 
 "align
 nmap \a <Plug>(EasyAlign)
