@@ -96,6 +96,9 @@ Plugin 'vim-airline/vim-airline'
 "signature
 Plugin 'kshenoy/vim-signature'
 
+"diff direcotry
+Plugin 'will133/vim-dirdiff'
+
 call vundle#end()
 
 "Normal 
