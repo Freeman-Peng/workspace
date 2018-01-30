@@ -375,6 +375,8 @@ let g:color_coded_filetypes = ['c', 'cpp', 'objc']
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 
+" this must put at the end of vimrc
+autocmd Filetype * call SetExtendVimrc()
 
 function InitGoProfile() 
 	set makeprg=go\ build
@@ -389,7 +391,7 @@ function InitGoProfile()
 	endif
 endfunction
 
-function Findfile_recusion(name)
+function FindFileRecuse(name)
 	let pwd = getcwd()
 	while 1
 		if findfile(a:name, pwd . "/") != ""
@@ -405,14 +407,14 @@ function Findfile_recusion(name)
 endfunction
 
 function AddGtags()
-	let a:path = Findfile_recusion("GTAGS")
+	let a:path = FindFileRecuse("GTAGS")
 	if a:path != ""
 		exe "cs add " . a:path
 	endif
 endfunction
 
 function FindYCMConfig()
-	let a:ycm_conf = Findfile_recusion(".ycm_extra_conf.py")
+	let a:ycm_conf = FindFileRecuse(".ycm_extra_conf.py")
 	if a:ycm_conf != ""
 		let g:ycm_global_ycm_extra_conf = a:ycm_conf
 	else
@@ -458,5 +460,12 @@ function RunGoMake(file)
 		call setpos(".", a:cursor)
 	else
 		GoErrCheck
+	endif
+endfunction
+
+function SetExtendVimrc()
+	let a:vimrc = FindFileRecuse(".vim")
+	if a:vimrc != "" 
+		exe "source " . a:vimrc
 	endif
 endfunction

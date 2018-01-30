@@ -1,6 +1,6 @@
 [user]
-	name = Freeman
-	email = freeman.peng@fairlinkcentury.com
+	name = username
+	email = useremail
 [alias]
 	st = status
 	co = checkout
@@ -12,9 +12,7 @@
 	ui = true
 [receive]
 	denyCurrentBranch = warn
-[url "git@code.flcentury.cn:"]
-	insteadOf = https://code.flcentury.cn/
 [merge]
-	tool = meld
+	tool = vimdiff
 [mergetool]
 	prompt = false

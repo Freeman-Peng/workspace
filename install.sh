@@ -1,29 +1,21 @@
 #!/bin/bash
-which wget
-if [ "x$?" == 0 ] ; then
-	wget -t 0 "https://github.com/VundleVim/Vundle.vim/archive/master.zip" 
-	getVimrc=1
-else
-	echo there is no wget
-fi
-
-which curl
-if [ -v getVimrc && "x$?" == 0 ] ; then 
-	curl -O "https://github.com/VundleVim/Vundle.vim/archive/master.zip"
-else
-	echo there is no curl
-	exit 1
-fi
+set -e
+curl -O "https://github.com/VundleVim/Vundle.vim/archive/master.zip"
 
 unzip master > /dev/null 2>&1
 mkdir -p ~/.vim
 cp -rf Vundle.vim-master/* ~/.vim/
 
 #git
-which git && echo "There is no git" || exit 1
 cp -rf .gitconfig ~/
+echo "intput username of git:"
+read -r username
+sed -i "s/username/$username/g" ~/.gitconfig
+
+echo "input email of git:"
+read -r email
+sed -i "s/useremail/$email/g" ~/.gitconfig
+
 cp -rf .vimrc ~/
 
 vim +PluginInstall +qall
-which ctags && echo "There is no Ctags, the Plugin of Vim \"tagbar\" will not work "
-
