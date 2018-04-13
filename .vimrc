@@ -119,7 +119,7 @@ set autoindent
 set hlsearch
 set ignorecase
 set incsearch
-set nu
+set rnu
 set ruler 
 set cindent
 set backspace=indent,eol,start	" more powerful backspacing
