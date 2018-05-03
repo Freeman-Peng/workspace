@@ -1,105 +1,104 @@
-set nocompatible              " be iMproved, required
-
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/Plugin/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim.git'
+call plug#begin('~/.vim/plugged')
 
 "fast move plugin, action key is <leader>\
 "current <leader> = \
-Plugin 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 
 "fast switch file in directory
-Plugin 'ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 
 "syntax motion
-Plugin 'scrooloose/syntastic.git'
+Plug 'scrooloose/syntastic'
 
 "dirctory plugin keymap <F5>
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 "add git plugin for nerdtree
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "color theme
-Plugin 'tomasr/molokai'
+Plug 'tomasr/molokai'
 
 "switch buffer
-Plugin 'vim-scripts/bufexplorer.zip.git'
+Plug 'vim-scripts/bufexplorer.zip'
 
 "function list for a file,  support go
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 "switch header file and source file for CPP
-Plugin 'a.vim'
+Plug 'vim-scripts/a.vim'
 
 "surround quote
-Plugin 'tpope/vim-surround.git'
+Plug 'tpope/vim-surround'
 
 "markdown syntax and function
-Plugin 'plasticboy/vim-markdown.git'
+Plug 'plasticboy/vim-markdown'
 
 "more repeat acion support with key "."
-Plugin 'tpope/vim-repeat.git'
+Plug 'tpope/vim-repeat'
 
 "go lang support 
-Plugin 'fatih/vim-go.git'
+Plug 'fatih/vim-go'
 
 "table mode, create ascii table easily
-Plugin 'dhruvasagar/vim-table-mode.git'
+Plug 'dhruvasagar/vim-table-mode'
 
 "Comment
-"Plugin 'tpope/vim-commentary.git'
+"Plugin 'tpope/vim-commentary'
 
 "ultisnips engine
-Plugin 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 "snippets
-Plugin 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 
 "QML Syntax
-Plugin 'peterhoeg/vim-qml.git'
+Plug 'peterhoeg/vim-qml'
 
 "Indent
-"Plugin 'Yggdroot/indentLine.git'
+"Plugin 'Yggdroot/indentLine'
 
 "YCM-Generator
-Plugin 'rdnetto/YCM-Generator.git'
+Plug 'rdnetto/YCM-Generator'
 
 "complete plugin for many languague
-Plugin 'Valloric/YouCompleteMe.git'
+Plug 'Valloric/YouCompleteMe'
 
 "json
-Plugin 'leshill/vim-json'
+Plug 'leshill/vim-json'
 
 "multi cursor
-Plugin 'terryma/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 
 "haskell
-Plugin 'neovimhaskell/haskell-vim'
+Plug 'neovimhaskell/haskell-vim'
 
 "asyncrun
 "Plugin 'skywind3000/asyncrun.vim'
 
 "clip
-Plugin 'fakeclip'
+Plug 'kana/vim-fakeclip'
 
 "align
-Plugin 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-easy-align'
 
 "code colored
-Plugin 'jeaye/color_coded'
+Plug 'jeaye/color_coded'
 
 "airline
-Plugin 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 
 "signature
-Plugin 'kshenoy/vim-signature'
+Plug 'kshenoy/vim-signature'
 
 "diff direcotry
-Plugin 'will133/vim-dirdiff'
+Plug 'will133/vim-dirdiff'
 
-call vundle#end()
+"javascript
+Plug 'pangloss/vim-javascript'
+
+"jsx syntax
+Plug 'mxw/vim-jsx'
+
+call plug#end()
 
 "Normal 
 syntax on
@@ -119,7 +118,7 @@ set autoindent
 set hlsearch
 set ignorecase
 set incsearch
-set rnu
+set nu
 set ruler 
 set cindent
 set backspace=indent,eol,start	" more powerful backspacing

@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
-curl -O "https://github.com/VundleVim/Vundle.vim/archive/master.zip"
-
-unzip master > /dev/null 2>&1
-mkdir -p ~/.vim
-cp -rf Vundle.vim-master/* ~/.vim/
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 #git
 cp -rf .gitconfig ~/
@@ -18,4 +14,4 @@ sed -i "s/useremail/$email/g" ~/.gitconfig
 
 cp -rf .vimrc ~/
 
-vim +PluginInstall +qall
+vim +PlugInstall +qall
