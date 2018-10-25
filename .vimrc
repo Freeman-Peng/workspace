@@ -11,9 +11,9 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/syntastic'
 
 "dirctory plugin keymap <F5>
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 "add git plugin for nerdtree
-Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "color theme
 Plug 'tomasr/molokai'
@@ -59,8 +59,17 @@ Plug 'peterhoeg/vim-qml'
 "YCM-Generator
 Plug 'rdnetto/YCM-Generator'
 
+"doxygen support 
+Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
+
+function! BuildYCM(info)
+	if a:info.status == 'installed' || a:info.force
+		!./install.py --clang-completer --go-completer --js-completer --system-libclang --cs-completer --java-completer
+	endif
+endfunction
+
 "complete plugin for many languague
-Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 "json
 Plug 'leshill/vim-json'
@@ -81,7 +90,7 @@ Plug 'kana/vim-fakeclip'
 Plug 'junegunn/vim-easy-align'
 
 "code colored
-Plug 'jeaye/color_coded'
+Plug 'jeaye/color_coded' , {'do' : 'mkdir build;cd build;cmake ..;make install'}
 
 "airline
 Plug 'vim-airline/vim-airline'
@@ -98,6 +107,12 @@ Plug 'pangloss/vim-javascript'
 "jsx syntax
 Plug 'mxw/vim-jsx'
 
+"emmet for html
+Plug 'mattn/emmet-vim', {'for':['css', 'html', 'EmmetInstall']}
+
+"enhance diff
+Plug 'Chrisbra/vim-diff-enhanced'
+
 call plug#end()
 
 "Normal 
@@ -105,13 +120,14 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
+set termguicolors
 set matchpairs=(:),[:],{:},<:>
 set ffs=unix,dos,mac
 set ai
 set si
 set laststatus=2
 set encoding=utf8
-set fileencoding=utf8
+set fileencodings=ucs-bom,utf-8,gb18030,big5,latin1
 set termencoding=utf8
 set autoread
 set autoindent
@@ -123,6 +139,7 @@ set ruler
 set cindent
 set backspace=indent,eol,start	" more powerful backspacing
 set wrap
+set nowrapscan
 set history=500
 set stal=2
 set backup
@@ -190,10 +207,12 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 
 "Molokai
 set t_Co=256
+set t_ut=
 color molokai
 let g:molokai_original = 1
 let g:rehash256 = 1
-hi CursorLine term=underline ctermbg=237 guibg=#ADCCFF
+"hi CursorLine term=underline ctermbg=237 guibg=#ADCCFF
+"hi CursorLine  term=underline ctermbg=237 guibg=#232933
 
 
 "UltiSnip
@@ -263,7 +282,7 @@ set cscopeprg=gtags-cscope
 if exists("gtags-cscope")
 	set csprg=gtags-cscope
 endif
-set cscopequickfix=s-,t-,d-,g-,c-,f-,i- 
+set cscopequickfix=s-,t-,d-,g-,c-,f-,i-,e-
 
 "NERD Tree
 let NERDTreeShowHidden=1
@@ -312,7 +331,7 @@ noremap <silent> gH :match<cr>
 "map
 map j gj
 map k gk
-nnoremap <f5> :NERDTree<cr>
+nnoremap <f5> :Explore<cr>
 nnoremap <silent> <F1> :TagbarToggle<CR>
 nnoremap <F11> :w!<CR>\|:silent make -j2\|redraw!<CR>
 nnoremap <leader>w :silent w!<CR>
@@ -340,9 +359,9 @@ autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp vnoremap <leader>t y:cs find t <C-R>0<cr>
 autocmd FileType c,cpp nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>d :cs find d <C-R>=expand("<cword>")<cr><cr>
 
 
 "Go
@@ -369,6 +388,9 @@ xmap \a <Plug>(EasyAlign)
 "cpp syntax scheme
 let g:color_coded_enabled = 1
 let g:color_coded_filetypes = ['c', 'cpp', 'objc']
+if &diff
+  let g:color_coded_enabled = 0
+endif
 
 "airline
 let g:airline#extensions#tabline#enabled = 1
@@ -390,7 +412,7 @@ function InitGoProfile()
 	endif
 endfunction
 
-function FindFileRecuse(name)
+function FindFileRecuse(name, enddir)
 	let pwd = getcwd()
 	while 1
 		if findfile(a:name, pwd . "/") != ""
@@ -399,26 +421,26 @@ function FindFileRecuse(name)
 
 		let pwd=fnamemodify(pwd, ":h")
 
-		if pwd == "/"
+		if pwd == a:enddir
 			return 
 		endif
 	endwhile
 endfunction
 
 function AddGtags()
-	let a:path = FindFileRecuse("GTAGS")
+	let a:path = FindFileRecuse("GTAGS", $HOME)
 	if a:path != ""
 		exe "cs add " . a:path
 	endif
 endfunction
 
 function FindYCMConfig()
-	let a:ycm_conf = FindFileRecuse(".ycm_extra_conf.py")
+	let a:ycm_conf = FindFileRecuse(".ycm_extra_conf.py", $HOME)
 	if a:ycm_conf != ""
 		let g:ycm_global_ycm_extra_conf = a:ycm_conf
 	else
 		if !exists(".ycm_extra_conf")
-			silent !cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py ./
+			silent !cp ~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py ./
 		endif
 		let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	endif
@@ -463,8 +485,21 @@ function RunGoMake(file)
 endfunction
 
 function SetExtendVimrc()
-	let a:vimrc = FindFileRecuse(".vim")
+	let a:vimrc = FindFileRecuse(".vim", $HOME)
 	if a:vimrc != "" 
 		exe "source " . a:vimrc
 	endif
 endfunction
+
+"doxygen config
+let g:DoxygenToolkit_briefTag_pre="@brief  " 
+let g:DoxygenToolkit_paramTag_pre="@param  " 
+let g:DoxygenToolkit_returnTag="@return  " 
+"let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------" 
+"let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------" 
+
+"Enhance Diff
+if &diff
+	set diffopt+=iwhite
+	let &diffexpr = 'EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+endif
