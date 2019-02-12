@@ -64,7 +64,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 
 function! BuildYCM(info)
 	if a:info.status == 'installed' || a:info.force
-		!./install.py --clang-completer --go-completer --js-completer --system-libclang --cs-completer --java-completer
+		!./install.py --clang-completer --go-completer --ts-completer --system-libclang --cs-completer --java-completer
 	endif
 endfunction
 
@@ -72,7 +72,7 @@ endfunction
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 "json
-Plug 'leshill/vim-json'
+Plug 'elzr/vim-json'
 
 "multi cursor
 Plug 'terryma/vim-multiple-cursors'
@@ -191,6 +191,7 @@ let g:ycm_warning_symbol = '->'
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_add_preview_to_completeopt=1
+let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
@@ -198,6 +199,7 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Down>']
 let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_always_populate_location_list = 1
 
 "syntastic
 "let g:syntastic_always_populate_loc_list = 1
@@ -226,34 +228,36 @@ let g:UltiSnipsEditSplit="vertical"
 let g:tagbar_autoclose = 1
 let g:tagbar_left = 1
 let g:tagbar_map_help = ""
+
 "for go lang
+let bin_path = go#path#CheckBinPath("gotags")
 let g:tagbar_type_go = {
-			\ 'ctagstype' : 'go',
-			\ 'kinds'     : [
-				\ 'p:package',
-				\ 'i:imports:1',
-				\ 'c:constants',
-				\ 'v:variables',
-				\ 't:types',
-				\ 'n:interfaces',
-				\ 'w:fields',
-				\ 'e:embedded',
-				\ 'm:methods',
-				\ 'r:constructor',
-				\ 'f:functions'
-			\ ],
-			\ 'sro' : '.',
-			\ 'kind2scope' : {
-				\ 't' : 'ctype',
-				\ 'n' : 'ntype'
-			\ },
-			\ 'scope2kind' : {
-				\ 'ctype' : 't',
-				\ 'ntype' : 'n'
-			\ },
-			\ 'ctagsbin'  : 'gotags',
-			\ 'ctagsargs' : '-sort -silent'
-			\ }
+          \ 'ctagstype' : 'go',
+          \ 'kinds'     : [
+          \ 'p:package',
+          \ 'i:imports',
+          \ 'c:constants',
+          \ 'v:variables',
+          \ 't:types',
+          \ 'n:interfaces',
+          \ 'w:fields',
+          \ 'e:embedded',
+          \ 'm:methods',
+          \ 'r:constructor',
+          \ 'f:functions'
+          \ ],
+          \ 'sro' : '.',
+          \ 'kind2scope' : {
+          \ 't' : 'ctype',
+          \ 'n' : 'ntype'
+          \ },
+          \ 'scope2kind' : {
+          \ 'ctype' : 't',
+          \ 'ntype' : 'n'
+          \ },
+          \ 'ctagsbin'  : bin_path,
+          \ 'ctagsargs' : '-sort -silent'
+          \ }
 let g:tagbar_autopreview=1
 
 "vim-go
@@ -306,8 +310,8 @@ let g:NERDTreeIndicatorMapCustom = {
 
 "Indent guides
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+hi IndentGuidesOdd  guibg=red   ctermbg=3
+hi IndentGuidesEven guibg=green ctermbg=4
 
 "key map
 noremap <F12> :set ff=unix<cr>
@@ -353,7 +357,7 @@ autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 "C/C++ style
 autocmd FileType c,cpp nnoremap <F12> :make<cr>
-autocmd FileType c,cpp setlocal softtabstop=2 shiftwidth=2 tabstop=2 expandtab cc=80 
+autocmd FileType c,cpp setlocal shiftwidth=2 tabstop=2 noexpandtab cc=80 
 autocmd FileType c,cpp nnoremap gd :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
@@ -372,6 +376,11 @@ autocmd FileType javascript nnoremap gd :YcmCompleter GoTo<CR>
 
 "csharp
 autocmd FileType cs nnoremap gd :YcmCompleter GoTo<CR>
+
+autocmd FileType c,cpp,h,hpp call FindYCMConfig()
+
+"diff
+autocmd BufWritePost * if &diff == 1|diffupdate|endif
 
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -396,8 +405,8 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 
-" this must put at the end of vimrc
-autocmd Filetype * call SetExtendVimrc()
+"json
+let g:vim_json_syntax_conceal = 0
 
 function InitGoProfile() 
 	set makeprg=go\ build
@@ -414,6 +423,11 @@ endfunction
 
 function FindFileRecuse(name, enddir)
 	let pwd = getcwd()
+	let i=0
+	if a:enddir == pwd
+		return
+	endif
+
 	while 1
 		if findfile(a:name, pwd . "/") != ""
 			return pwd . "/" . a:name
@@ -421,9 +435,10 @@ function FindFileRecuse(name, enddir)
 
 		let pwd=fnamemodify(pwd, ":h")
 
-		if pwd == a:enddir
+		if pwd == a:enddir || pwd == "/"
 			return 
 		endif
+		let i=i+1
 	endwhile
 endfunction
 
@@ -445,7 +460,6 @@ function FindYCMConfig()
 		let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	endif
 endfunction
-autocmd FileType c,cpp,h,hpp call FindYCMConfig()
 
 function! CmdLine(str)
 	exe "menu Foo.Bar :" . a:str
@@ -503,3 +517,6 @@ if &diff
 	set diffopt+=iwhite
 	let &diffexpr = 'EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
 endif
+
+" this must put at the end of vimrc
+autocmd Filetype * call SetExtendVimrc()
