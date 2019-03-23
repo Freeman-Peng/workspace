@@ -64,7 +64,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 
 function! BuildYCM(info)
 	if a:info.status == 'installed' || a:info.force
-		!./install.py --clang-completer --go-completer --ts-completer --system-libclang --cs-completer --java-completer
+		!./install.py --clangd-copmleter --go-completer --ts-completer --cs-completer --java-completer
 	endif
 endfunction
 
@@ -145,6 +145,9 @@ set stal=2
 set backup
 set backupdir=~/.cache/bak
 set cursorline
+set showmatch
+set linebreak
+set smartcase
 if exists($TMUX)
 	set cursorline
 endif
@@ -200,6 +203,9 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Down>']
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_always_populate_location_list = 1
+let g:ycm_disable_for_files_larger_than_kb = 10000
+"support alacritty
+imap <c-x><c-o> <Nul>
 
 "syntastic
 "let g:syntastic_always_populate_loc_list = 1
@@ -373,6 +379,7 @@ autocmd FileType go call InitGoProfile()
 
 "javascript/Nodejs
 autocmd FileType javascript nnoremap gd :YcmCompleter GoTo<CR>
+autocmd FileType javascript nnoremap gc :YcmCompleter GoToReferences<CR>
 
 "csharp
 autocmd FileType cs nnoremap gd :YcmCompleter GoTo<CR>
