@@ -16,8 +16,10 @@ Plug 'scrooloose/syntastic'
 "Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "color theme
-Plug 'tomasr/molokai'
+"Plug 'tomasr/molokai'
+Plug 'joshdick/onedark.vim'
 
+Plug 'sheerun/vim-polyglot'
 "switch buffer
 Plug 'vim-scripts/bufexplorer.zip'
 
@@ -70,9 +72,6 @@ endfunction
 
 "complete plugin for many languague
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-
-"json
-Plug 'elzr/vim-json'
 
 "multi cursor
 Plug 'terryma/vim-multiple-cursors'
@@ -204,7 +203,6 @@ let g:ycm_key_list_previous_completion = ['<Down>']
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_always_populate_location_list = 1
 let g:ycm_disable_for_files_larger_than_kb = 10000
-"support alacritty
 imap <c-x><c-o> <Nul>
 
 "syntastic
@@ -214,13 +212,14 @@ imap <c-x><c-o> <Nul>
 "let g:syntastic_check_on_wq = 0
 
 "Molokai
-set t_Co=256
-set t_ut=
-color molokai
-let g:molokai_original = 1
-let g:rehash256 = 1
+"set t_Co=256
+"set t_ut=
+"color molokai
+"let g:molokai_original = 1
+"let g:rehash256 = 1
 "hi CursorLine term=underline ctermbg=237 guibg=#ADCCFF
 "hi CursorLine  term=underline ctermbg=237 guibg=#232933
+colorscheme onedark
 
 
 "UltiSnip
@@ -412,9 +411,6 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 
-"json
-let g:vim_json_syntax_conceal = 0
-
 function InitGoProfile() 
 	set makeprg=go\ build
 	if !exists("b:golang_vim")
@@ -450,19 +446,19 @@ function FindFileRecuse(name, enddir)
 endfunction
 
 function AddGtags()
-	let a:path = FindFileRecuse("GTAGS", $HOME)
-	if a:path != ""
-		exe "cs add " . a:path
+	let addtag_path = FindFileRecuse("GTAGS", $HOME)
+	if addtag_path != ""
+		exe "cs add " . addtag_path
 	endif
 endfunction
 
 function FindYCMConfig()
-	let a:ycm_conf = FindFileRecuse(".ycm_extra_conf.py", $HOME)
-	if a:ycm_conf != ""
-		let g:ycm_global_ycm_extra_conf = a:ycm_conf
+	let ycm_conf = FindFileRecuse(".ycm_extra_conf.py", $HOME)
+	if ycm_conf != ""
+		let g:ycm_global_ycm_extra_conf = ycm_conf
 	else
 		if !exists(".ycm_extra_conf")
-			silent !cp ~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py ./
+			silent !cp /home/fpeng/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py ./
 		endif
 		let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	endif
@@ -506,8 +502,8 @@ function RunGoMake(file)
 endfunction
 
 function SetExtendVimrc()
-	let a:vimrc = FindFileRecuse(".vim", $HOME)
-	if a:vimrc != "" 
+	let vimrc = FindFileRecuse(".vim", $HOME)
+	if vimrc != "" 
 		exe "source " . a:vimrc
 	endif
 endfunction
