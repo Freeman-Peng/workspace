@@ -59,14 +59,14 @@ Plug 'peterhoeg/vim-qml'
 "Plugin 'Yggdroot/indentLine'
 
 "YCM-Generator
-Plug 'rdnetto/YCM-Generator'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
 "doxygen support 
 Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 
 function! BuildYCM(info)
 	if a:info.status == 'installed' || a:info.force
-		!./install.py --clangd-copmleter --go-completer --ts-completer --cs-completer --java-completer
+		!./install.py --clangd-completer --go-completer --ts-completer --cs-completer
 	endif
 endfunction
 
@@ -83,7 +83,7 @@ Plug 'neovimhaskell/haskell-vim'
 "Plugin 'skywind3000/asyncrun.vim'
 
 "clip
-Plug 'kana/vim-fakeclip'
+"Plug 'kana/vim-fakeclip'
 
 "align
 Plug 'junegunn/vim-easy-align'
@@ -156,8 +156,14 @@ set lazyredraw
 "do not change current dir
 set noacd
 
+"clipboard
+set clipboard=unnamedplus
+
 "CtrlP
 let g:ctrlp_by_filename = 1
+
+"plantuml
+autocmd FileType plantuml nmap <F12> :call Plantuml_preview()<cr>
 
 "Markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -193,7 +199,7 @@ let g:ycm_warning_symbol = '->'
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_add_preview_to_completeopt=1
-let g:ycm_autoclose_preview_window_after_completion=1
+"let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=1
@@ -329,7 +335,7 @@ noremap <S-F3> :lr<cr>
 noremap <S-F4> :lne<cr>
 "urxvt key map <S-F4> is <Undo>
 noremap <Undo> :lne<cr>
-nnoremap <c-\> :vimgrep /<c-r>=expand("<cword>")<cr>/ **/*
+nnoremap <c-\> :grep /<c-r>=expand("<cword>")<cr>/ -R .
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> <c-\> :call VisualSelection('gv')<CR>
@@ -366,11 +372,13 @@ autocmd FileType c,cpp setlocal shiftwidth=2 tabstop=2 noexpandtab cc=80
 autocmd FileType c,cpp nnoremap gd :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp vnoremap <leader>t y:cs find t <C-R>0<cr>
-autocmd FileType c,cpp nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>s :vert scs find s <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>t :vert scs find t <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp vnoremap <leader>t :vert scs find t <C-R>0<cr>
+autocmd FileType c,cpp nnoremap <leader>f :vert scs find f <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>d :vert scs find d <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>e :vert scs find e \<<C-R><C-W>\><cr><cr>
 
 
 "Go
@@ -504,7 +512,7 @@ endfunction
 function SetExtendVimrc()
 	let vimrc = FindFileRecuse(".vim", $HOME)
 	if vimrc != "" 
-		exe "source " . a:vimrc
+		exe "source " . vimrc
 	endif
 endfunction
 
@@ -523,3 +531,19 @@ endif
 
 " this must put at the end of vimrc
 autocmd Filetype * call SetExtendVimrc()
+
+function Plantuml_preview()
+	if &filetype != 'plantuml'
+		return
+	endif
+
+	let b:imgname=expand("%:t:r").".png"
+	bufdo autocmd BufWritePost * call job_start(["/usr/bin/plantuml", expand("%:t")])
+	call job_start(["/usr/bin/plantuml", expand("%:t")])
+
+	call writefile(["<html><body><script type='text/javascript'> setInterval(function() { document.getElementById('preview').src='".b:imgname."?' + (new Date()).getTime(); }, 500);</script><img id='preview' src='".b:imgname."'/></body></html>"], ".preview.html")
+
+	bufdo autocmd BufUnload * :call job_start(["/usr/bin/rm", ".preview.html"])
+
+	call job_start(["exo-open", ".preview.html"])
+endfunction
