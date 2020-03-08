@@ -83,13 +83,13 @@ Plug 'neovimhaskell/haskell-vim'
 "Plugin 'skywind3000/asyncrun.vim'
 
 "clip
-"Plug 'kana/vim-fakeclip'
+Plug 'kana/vim-fakeclip'
 
 "align
 Plug 'junegunn/vim-easy-align'
 
 "code colored
-Plug 'jeaye/color_coded' , {'do' : 'mkdir build;cd build;cmake ..;make install'}
+"Plug 'jeaye/color_coded' , {'do' : 'mkdir build;cd build;cmake ..;make install'}
 
 "airline
 Plug 'vim-airline/vim-airline'
@@ -111,6 +111,12 @@ Plug 'mattn/emmet-vim', {'for':['css', 'html', 'EmmetInstall']}
 
 "enhance diff
 Plug 'Chrisbra/vim-diff-enhanced'
+if has("patch-8.1.0360")
+	set diffopt+=internal,algorithm:patience
+endif
+
+"draw
+Plug 'gyim/vim-boxdraw'
 
 call plug#end()
 
@@ -119,6 +125,9 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
+set cino+=N-s,g0,(1s
+set hidden
+set fo+=mB
 set termguicolors
 set matchpairs=(:),[:],{:},<:>
 set ffs=unix,dos,mac
@@ -156,9 +165,6 @@ set lazyredraw
 "do not change current dir
 set noacd
 
-"clipboard
-set clipboard=unnamedplus
-
 "CtrlP
 let g:ctrlp_by_filename = 1
 
@@ -191,9 +197,9 @@ set undodir=~/.cache/undo/
 set undofile
 
 "YCM
-set completeopt=menu,preview,longest
+set completeopt=menu,longest,popup
+set completepopup=align:menu,border:off
 let g:ycm_use_ultisnips_completer=1
-let g:ycm_confirm_extra_conf = 0
 let g:ycm_error_symbol = '!!'
 let g:ycm_warning_symbol = '->'
 let g:ycm_complete_in_comments = 1
@@ -206,9 +212,15 @@ let g:ycm_cache_omnifunc=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Down>']
-let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_always_populate_location_list = 1
 let g:ycm_disable_for_files_larger_than_kb = 10000
+let g:ycm_use_clangd=1
+let g:ycm_clangd_args = ['-log=verbose', '-pretty', '-background-index']
+let g:ycm_clangd_binary_path = exepath("clangd")
+let g:ycm_clangd_uses_ycmd_caching=1
+let g:ycm_key_detailed_diagnostics='<leader><leader>d'
+let g:ycm_python_binary_path='/usr/bin/python'
+
 imap <c-x><c-o> <Nul>
 
 "syntastic
@@ -243,32 +255,32 @@ let g:tagbar_map_help = ""
 "for go lang
 let bin_path = go#path#CheckBinPath("gotags")
 let g:tagbar_type_go = {
-          \ 'ctagstype' : 'go',
-          \ 'kinds'     : [
-          \ 'p:package',
-          \ 'i:imports',
-          \ 'c:constants',
-          \ 'v:variables',
-          \ 't:types',
-          \ 'n:interfaces',
-          \ 'w:fields',
-          \ 'e:embedded',
-          \ 'm:methods',
-          \ 'r:constructor',
-          \ 'f:functions'
-          \ ],
-          \ 'sro' : '.',
-          \ 'kind2scope' : {
-          \ 't' : 'ctype',
-          \ 'n' : 'ntype'
-          \ },
-          \ 'scope2kind' : {
-          \ 'ctype' : 't',
-          \ 'ntype' : 'n'
-          \ },
-          \ 'ctagsbin'  : bin_path,
-          \ 'ctagsargs' : '-sort -silent'
-          \ }
+			\ 'ctagstype' : 'go',
+			\ 'kinds'     : [
+			\ 'p:package',
+			\ 'i:imports',
+			\ 'c:constants',
+			\ 'v:variables',
+			\ 't:types',
+			\ 'n:interfaces',
+			\ 'w:fields',
+			\ 'e:embedded',
+			\ 'm:methods',
+			\ 'r:constructor',
+			\ 'f:functions'
+			\ ],
+			\ 'sro' : '.',
+			\ 'kind2scope' : {
+			\ 't' : 'ctype',
+			\ 'n' : 'ntype'
+			\ },
+			\ 'scope2kind' : {
+			\ 'ctype' : 't',
+			\ 'ntype' : 'n'
+			\ },
+			\ 'ctagsbin'  : bin_path,
+			\ 'ctagsargs' : '-sort -silent'
+			\ }
 let g:tagbar_autopreview=1
 
 "vim-go
@@ -305,16 +317,16 @@ let NERDTreeQuitOnOpen=1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
+			\ "Modified"  : "✹",
+			\ "Staged"    : "✚",
+			\ "Untracked" : "✭",
+			\ "Renamed"   : "➜",
+			\ "Unmerged"  : "═",
+			\ "Deleted"   : "✖",
+			\ "Dirty"     : "✗",
+			\ "Clean"     : "✔︎",
+			\ "Unknown"   : "?"
+			\ }
 
 " Table-Mode
 "let g:table_mode_corner_corner="+"
@@ -335,7 +347,7 @@ noremap <S-F3> :lr<cr>
 noremap <S-F4> :lne<cr>
 "urxvt key map <S-F4> is <Undo>
 noremap <Undo> :lne<cr>
-nnoremap <c-\> :grep /<c-r>=expand("<cword>")<cr>/ -R .
+nnoremap <c-\> :grep <c-r>=expand("<cword>")<cr> -RI .
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> <c-\> :call VisualSelection('gv')<CR>
@@ -348,14 +360,16 @@ map j gj
 map k gk
 nnoremap <f5> :Explore<cr>
 nnoremap <silent> <F1> :TagbarToggle<CR>
-nnoremap <F11> :w!<CR>\|:silent make -j2\|redraw!<CR>
+nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
 nnoremap <leader>w :silent w!<CR>
 nnoremap <leader><space> :A<CR>
 nnoremap <leader>q :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
 
-"autocmd
+"java
 autocmd Filetype java setlocal cc=80
+
+"html
 autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsilent<CR>
 
 "python 
@@ -368,7 +382,7 @@ autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 "C/C++ style
 autocmd FileType c,cpp nnoremap <F12> :make<cr>
-autocmd FileType c,cpp setlocal shiftwidth=2 tabstop=2 noexpandtab cc=80 
+autocmd FileType c,cpp setlocal noexpandtab cc=80 
 autocmd FileType c,cpp nnoremap gd :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
@@ -379,6 +393,11 @@ autocmd FileType c,cpp nnoremap <leader>f :vert scs find f <C-R>=expand("<cword>
 autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>d :vert scs find d <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>e :vert scs find e \<<C-R><C-W>\><cr><cr>
+autocmd FileType c,cpp nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
+
+
+"qml
+autocmd FileType *.qml nnoremap <F12> :!qml <C-R>=expand("<cfile>")<cr>
 
 
 "Go
@@ -391,10 +410,11 @@ autocmd FileType javascript nnoremap gc :YcmCompleter GoToReferences<CR>
 "csharp
 autocmd FileType cs nnoremap gd :YcmCompleter GoTo<CR>
 
-autocmd FileType c,cpp,h,hpp call FindYCMConfig()
-
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
+
+"mail
+"autocmd Filetype mail setlocal fo+=a
 
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -412,7 +432,7 @@ xmap \a <Plug>(EasyAlign)
 let g:color_coded_enabled = 1
 let g:color_coded_filetypes = ['c', 'cpp', 'objc']
 if &diff
-  let g:color_coded_enabled = 0
+	let g:color_coded_enabled = 0
 endif
 
 "airline
@@ -457,18 +477,6 @@ function AddGtags()
 	let addtag_path = FindFileRecuse("GTAGS", $HOME)
 	if addtag_path != ""
 		exe "cs add " . addtag_path
-	endif
-endfunction
-
-function FindYCMConfig()
-	let ycm_conf = FindFileRecuse(".ycm_extra_conf.py", $HOME)
-	if ycm_conf != ""
-		let g:ycm_global_ycm_extra_conf = ycm_conf
-	else
-		if !exists(".ycm_extra_conf")
-			silent !cp /home/fpeng/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py ./
-		endif
-		let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	endif
 endfunction
 
@@ -520,6 +528,7 @@ endfunction
 let g:DoxygenToolkit_briefTag_pre="@brief  " 
 let g:DoxygenToolkit_paramTag_pre="@param  " 
 let g:DoxygenToolkit_returnTag="@return  " 
+let g:DoxygenToolkit_commentType = "C++"
 "let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------" 
 "let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------" 
 
