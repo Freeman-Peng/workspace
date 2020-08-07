@@ -35,6 +35,9 @@ Plug 'tpope/vim-surround'
 "markdown syntax and function
 Plug 'plasticboy/vim-markdown'
 
+"markdown-preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 "more repeat acion support with key "."
 Plug 'tpope/vim-repeat'
 
@@ -58,20 +61,18 @@ Plug 'peterhoeg/vim-qml'
 "Indent
 "Plugin 'Yggdroot/indentLine'
 
-"YCM-Generator
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
-
 "doxygen support 
 Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 
-function! BuildYCM(info)
-	if a:info.status == 'installed' || a:info.force
-		!./install.py --clangd-completer --go-completer --ts-completer --cs-completer
-	endif
-endfunction
-
 "complete plugin for many languague
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --java-completer --ts-completer' }
+
+"auto complete
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 
 "multi cursor
 Plug 'terryma/vim-multiple-cursors'
@@ -87,9 +88,6 @@ Plug 'kana/vim-fakeclip'
 
 "align
 Plug 'junegunn/vim-easy-align'
-
-"code colored
-"Plug 'jeaye/color_coded' , {'do' : 'mkdir build;cd build;cmake ..;make install'}
 
 "airline
 Plug 'vim-airline/vim-airline'
@@ -177,6 +175,10 @@ autocmd Filetype markdown setlocal expandtab tabstop=4
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:vim_markdown_folding_disabled = 1
 
+"markdown preview
+let g:mkdp_refresh_slow = 0
+autocmd Filetype markdown nmap <F12> :MarkdownPreview<cr>
+
 "tab width
 set tabstop=4
 set shiftwidth=4
@@ -196,31 +198,6 @@ endif
 set undodir=~/.cache/undo/
 set undofile
 
-"YCM
-set completeopt=menu,longest,popup
-set completepopup=align:menu,border:off
-let g:ycm_use_ultisnips_completer=1
-let g:ycm_error_symbol = '!!'
-let g:ycm_warning_symbol = '->'
-let g:ycm_complete_in_comments = 1
-let g:ycm_complete_in_strings = 1
-let g:ycm_add_preview_to_completeopt=1
-"let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_cache_omnifunc=1
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Down>']
-let g:ycm_always_populate_location_list = 1
-let g:ycm_disable_for_files_larger_than_kb = 10000
-let g:ycm_use_clangd=1
-let g:ycm_clangd_args = ['-log=verbose', '-pretty', '-background-index']
-let g:ycm_clangd_binary_path = exepath("clangd")
-let g:ycm_clangd_uses_ycmd_caching=1
-let g:ycm_key_detailed_diagnostics='<leader><leader>d'
-let g:ycm_python_binary_path='/usr/bin/python'
-
 imap <c-x><c-o> <Nul>
 
 "syntastic
@@ -239,9 +216,25 @@ imap <c-x><c-o> <Nul>
 "hi CursorLine  term=underline ctermbg=237 guibg=#232933
 colorscheme onedark
 
+"lsp setting
+let g:lsp_signs_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
+highlight link LspErrorText GruvboxRedSign
+highlight clear LspWarningLine
+let g:lsp_highlights_enabled = 1
+let g:lsp_textprop_enabled = 1
+let g:lsp_highlight_references_enabled = 1
+let g:lsp_cxx_hl_use_text_props = 1
+
+"asynccomplete
+"default is on
+"let g:asyncomplete_auto_popup = 1
+
 
 "UltiSnip
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsUsePythonVersion = 3
@@ -366,6 +359,7 @@ nnoremap <leader><space> :A<CR>
 nnoremap <leader>q :BufExplorer<CR>
 nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
 
+
 "java
 autocmd Filetype java setlocal cc=80
 
@@ -375,7 +369,6 @@ autocmd BufRead *.html nnoremap <buffer><F11> :silent<CR>:!chromium %<CR>:unsile
 "python 
 autocmd BufRead *.py nnoremap <buffer><F11> :!python %<CR>
 autocmd BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4 cc=80
-autocmd FileType python nnoremap gd :YcmCompleter GoTo<CR>
 
 "QML make
 autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
@@ -383,18 +376,22 @@ autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 "C/C++ style
 autocmd FileType c,cpp nnoremap <F12> :make<cr>
 autocmd FileType c,cpp setlocal noexpandtab cc=80 
-autocmd FileType c,cpp nnoremap gd :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>s :vert scs find s <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>t :vert scs find t <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp vnoremap <leader>t :vert scs find t <C-R>0<cr>
-autocmd FileType c,cpp nnoremap <leader>f :vert scs find f <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>s :scs find s <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>t :scs find t <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp vnoremap <leader>t :scs find t <C-R>0<cr>
+autocmd FileType c,cpp nnoremap <leader>f :scs find f <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>d :vert scs find d <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>e :vert scs find e \<<C-R><C-W>\><cr><cr>
+autocmd FileType c,cpp nnoremap <leader>d :scs find d <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>e :scs find e \<<C-R><C-W>\><cr><cr>
 autocmd FileType c,cpp nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
-
+autocmd FileType c,cpp :setlocal cino=N-s,g0,(0,W2s
+"autocmd FileType c,cpp :setlocal updatetime=3000
+autocmd FileType c,cpp :autocmd CursorHold <buffer> :LspHover<cr>
+autocmd FileType c,cpp nnoremap <buffer> gd :LspDefinition<cr>
+autocmd FileType c,cpp nnoremap <buffer> gr :LspReferences<cr>
+autocmd FileType c,cpp nnoremap <buffer> <leader>h :LspHover<cr>
 
 "qml
 autocmd FileType *.qml nnoremap <F12> :!qml <C-R>=expand("<cfile>")<cr>
@@ -402,13 +399,6 @@ autocmd FileType *.qml nnoremap <F12> :!qml <C-R>=expand("<cfile>")<cr>
 
 "Go
 autocmd FileType go call InitGoProfile()
-
-"javascript/Nodejs
-autocmd FileType javascript nnoremap gd :YcmCompleter GoTo<CR>
-autocmd FileType javascript nnoremap gc :YcmCompleter GoToReferences<CR>
-
-"csharp
-autocmd FileType cs nnoremap gd :YcmCompleter GoTo<CR>
 
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
@@ -428,13 +418,6 @@ let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 nmap \a <Plug>(EasyAlign)
 xmap \a <Plug>(EasyAlign)
 
-"cpp syntax scheme
-let g:color_coded_enabled = 1
-let g:color_coded_filetypes = ['c', 'cpp', 'objc']
-if &diff
-	let g:color_coded_enabled = 0
-endif
-
 "airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
@@ -443,7 +426,6 @@ function InitGoProfile()
 	set makeprg=go\ build
 	if !exists("b:golang_vim")
 		let b:golang_vim = 1
-		nnoremap <buffer>gc :GoReferrers<cr>
 		nnoremap <buffer><f11> :call RunGoMake("")<cr>
 		nnoremap <buffer><f12> :GoImport 
 		nnoremap <buffer><leader><f12> :GoDrop 
