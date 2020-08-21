@@ -221,12 +221,13 @@ let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
-highlight link LspErrorText GruvboxRedSign
-highlight clear LspWarningLine
+highlight link  LspErrorText SpellBad
+highlight link LspWarningLine Underline
 let g:lsp_highlights_enabled = 1
 let g:lsp_textprop_enabled = 1
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_cxx_hl_use_text_props = 1
+let g:lsp_semantic_enabled = 1
 
 "asynccomplete
 "default is on
