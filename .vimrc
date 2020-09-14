@@ -8,7 +8,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'kien/ctrlp.vim'
 
 "syntax motion
-Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
 
 "dirctory plugin keymap <F5>
 "Plug 'scrooloose/nerdtree'
@@ -42,7 +42,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'tpope/vim-repeat'
 
 "go lang support 
-Plug 'fatih/vim-go'
+"Plug 'fatih/vim-go'
 
 "table mode, create ascii table easily
 Plug 'dhruvasagar/vim-table-mode'
@@ -64,15 +64,21 @@ Plug 'peterhoeg/vim-qml'
 "doxygen support 
 Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 
-"complete plugin for many languague
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --java-completer --ts-completer' }
-
 "auto complete
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
 Plug 'mattn/vim-lsp-settings'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+
+"lsp autocomplete
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+Plug 'prabirshrestha/asyncomplete-gocode.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'yami-beta/asyncomplete-omni.vim'
+
+
 
 "multi cursor
 Plug 'terryma/vim-multiple-cursors'
@@ -235,9 +241,9 @@ let g:lsp_semantic_enabled = 1
 
 
 "UltiSnip
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-f>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-n>"
+let g:UltiSnipsJumpBackwardTrigger="<c-p>"
 let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsEditSplit="vertical"
 
@@ -247,7 +253,7 @@ let g:tagbar_left = 1
 let g:tagbar_map_help = ""
 
 "for go lang
-let bin_path = go#path#CheckBinPath("gotags")
+let bin_path = system("which gotags|tr -d '\n'")
 let g:tagbar_type_go = {
 			\ 'ctagstype' : 'go',
 			\ 'kinds'     : [
@@ -294,9 +300,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 "syntastic
 let g:syntastic_auto_loc_list = 0
 
-"godef
-let g:godef_split=0
-let g:godef_same_file_in_same_window=1
 
 "global gnu
 set cscopeprg=gtags-cscope
@@ -358,7 +361,6 @@ nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
 nnoremap <leader>w :silent w!<CR>
 nnoremap <leader><space> :A<CR>
 nnoremap <leader>q :BufExplorer<CR>
-nnoremap <leader>r :%s/\<<C-R>=expand('<cword>')<CR>\>\C//g<left><left>
 
 
 "java
@@ -374,24 +376,34 @@ autocmd BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4 cc=80
 "QML make
 autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
+"lsp nmap 
+augroup lsp_install
+	autocmd User lsp_buffer_enabled nmap <buffer> gd <plug>(lsp-definition)
+	autocmd User lsp_buffer_enabled nmap <buffer> gr <plug>(lsp-references)
+	autocmd User lsp_buffer_enabled nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+	autocmd User lsp_buffer_enabled nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+	autocmd User lsp_buffer_enabled nmap <buffer> <leader>rn <plug>(lsp-rename)
+	autocmd User lsp_buffer_enabled nmap <buffer> gt <plug>(lsp-type-definition)
+	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
+	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
+augroup END
+
 "C/C++ style
 autocmd FileType c,cpp nnoremap <F12> :make<cr>
 autocmd FileType c,cpp setlocal noexpandtab cc=80 
 autocmd FileType c,cpp call AddGtags()
 autocmd FileType c,cpp nnoremap <leader>g :cs find g <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>s :scs find s <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp nnoremap <leader>t :scs find t <C-R>=expand("<cword>")<cr><cr>
-autocmd FileType c,cpp vnoremap <leader>t :scs find t <C-R>0<cr>
-autocmd FileType c,cpp nnoremap <leader>f :scs find f <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>s :cs find s <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp nnoremap <leader>t :cs find t <C-R>=expand("<cword>")<cr><cr>
+autocmd FileType c,cpp vnoremap <leader>t :cs find t <C-R><cr>
+autocmd FileType c,cpp nnoremap <leader>f :cs find f <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>c :cs find c <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>d :scs find d <C-R>=expand("<cword>")<cr><cr>
 autocmd FileType c,cpp nnoremap <leader>e :scs find e \<<C-R><C-W>\><cr><cr>
 autocmd FileType c,cpp nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
-autocmd FileType c,cpp :setlocal cino=N-s,g0,(0,W2s
+autocmd FileType c,cpp setlocal cino=N-s,g0,(0,W2s
 "autocmd FileType c,cpp :setlocal updatetime=3000
-autocmd FileType c,cpp :autocmd CursorHold <buffer> :LspHover<cr>
-autocmd FileType c,cpp nnoremap <buffer> gd :LspDefinition<cr>
-autocmd FileType c,cpp nnoremap <buffer> gr :LspReferences<cr>
+autocmd FileType c,cpp autocmd CursorHold <buffer> :LspHover<cr>
 autocmd FileType c,cpp nnoremap <buffer> <leader>h :LspHover<cr>
 
 "qml
@@ -399,7 +411,7 @@ autocmd FileType *.qml nnoremap <F12> :!qml <C-R>=expand("<cfile>")<cr>
 
 
 "Go
-autocmd FileType go call InitGoProfile()
+autocmd FileType go autocmd BufWritePre <buffer> LspDocumentFormatSync
 
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
@@ -422,18 +434,6 @@ xmap \a <Plug>(EasyAlign)
 "airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
-
-function InitGoProfile() 
-	set makeprg=go\ build
-	if !exists("b:golang_vim")
-		let b:golang_vim = 1
-		nnoremap <buffer><f11> :call RunGoMake("")<cr>
-		nnoremap <buffer><f12> :GoImport 
-		nnoremap <buffer><leader><f12> :GoDrop 
-		nnoremap <buffer><f10> :GoTestFunc<cr>        	
-		nnoremap <buffer><leader><f10> :GoTest<cr>    
-	endif
-endfunction
 
 function FindFileRecuse(name, enddir)
 	let pwd = getcwd()
