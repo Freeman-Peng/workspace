@@ -8,7 +8,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'kien/ctrlp.vim'
 
 "syntax motion
-"Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 "dirctory plugin keymap <F5>
 "Plug 'scrooloose/nerdtree'
@@ -74,7 +74,6 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 "lsp autocomplete
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-gocode.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'yami-beta/asyncomplete-omni.vim'
 
@@ -133,7 +132,7 @@ set cino+=N-s,g0,(1s
 set hidden
 set fo+=mB
 set termguicolors
-set matchpairs=(:),[:],{:},<:>
+set matchpairs=(:),[:],{:},<:>,":",':'
 set ffs=unix,dos,mac
 set ai
 set si
@@ -204,7 +203,11 @@ endif
 set undodir=~/.cache/undo/
 set undofile
 
-imap <c-x><c-o> <Nul>
+"multi curse
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+"imap <c-x><c-o> <Nul>
 
 "syntastic
 "let g:syntastic_always_populate_loc_list = 1
@@ -237,14 +240,21 @@ let g:lsp_semantic_enabled = 1
 
 "asynccomplete
 "default is on
-"let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_popup = 1
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+let g:asyncomplete_remove_duplicates = 1
+let g:asyncomplete_smart_completion = 1
+let g:asyncomplete_popup_delay = 100
 
 
 "UltiSnip
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-n>"
 let g:UltiSnipsJumpBackwardTrigger="<c-p>"
-let g:UltiSnipsUsePythonVersion = 3
+"let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsEditSplit="vertical"
 
 "tagbar
@@ -253,35 +263,33 @@ let g:tagbar_left = 1
 let g:tagbar_map_help = ""
 
 "for go lang
-let bin_path = system("which gotags|tr -d '\n'")
 let g:tagbar_type_go = {
-			\ 'ctagstype' : 'go',
-			\ 'kinds'     : [
-			\ 'p:package',
-			\ 'i:imports',
-			\ 'c:constants',
-			\ 'v:variables',
-			\ 't:types',
-			\ 'n:interfaces',
-			\ 'w:fields',
-			\ 'e:embedded',
-			\ 'm:methods',
-			\ 'r:constructor',
-			\ 'f:functions'
-			\ ],
-			\ 'sro' : '.',
-			\ 'kind2scope' : {
-			\ 't' : 'ctype',
-			\ 'n' : 'ntype'
-			\ },
-			\ 'scope2kind' : {
-			\ 'ctype' : 't',
-			\ 'ntype' : 'n'
-			\ },
-			\ 'ctagsbin'  : bin_path,
-			\ 'ctagsargs' : '-sort -silent'
-			\ }
-let g:tagbar_autopreview=1
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
 
 "vim-go
 let g:go_auto_type_info = 0
