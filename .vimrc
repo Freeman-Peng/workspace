@@ -7,8 +7,8 @@ Plug 'Lokaltog/vim-easymotion'
 "fast switch file in directory
 Plug 'kien/ctrlp.vim'
 
-"syntax motion
-Plug 'scrooloose/syntastic'
+"syntax checker
+"Plug 'scrooloose/syntastic'
 
 "dirctory plugin keymap <F5>
 "Plug 'scrooloose/nerdtree'
@@ -76,6 +76,11 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'yami-beta/asyncomplete-omni.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+
+"java lsp
+"Plug 'lgranie/vim-lsp-java'
 
 
 
@@ -121,7 +126,11 @@ endif
 "draw
 Plug 'gyim/vim-boxdraw'
 
+"IME
+Plug 'rlue/vim-barbaric'
+
 call plug#end()
+
 
 "Normal 
 syntax on
@@ -170,6 +179,17 @@ set noacd
 
 "CtrlP
 let g:ctrlp_by_filename = 1
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+\ 'file': '\v\.(exe|so|dll)$',
+\ 'link': 'some_bad_symbolic_links',
+\ }
+			
+"dart 
+autocmd FileType dart call DartInit()
 
 "plantuml
 autocmd FileType plantuml nmap <F12> :call Plantuml_preview()<cr>
@@ -230,13 +250,14 @@ let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
-highlight link  LspErrorText SpellBad
+highlight link LspErrorText SpellBad
 highlight link LspWarningLine Underline
 let g:lsp_highlights_enabled = 1
 let g:lsp_textprop_enabled = 1
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_cxx_hl_use_text_props = 1
 let g:lsp_semantic_enabled = 1
+autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
 
 "asynccomplete
 "default is on
@@ -247,7 +268,8 @@ inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
 let g:asyncomplete_remove_duplicates = 1
 let g:asyncomplete_smart_completion = 1
-let g:asyncomplete_popup_delay = 100
+" let g:asyncomplete_popup_delay = 100
+let g:asyncomplete_min_chars = 1
 
 
 "UltiSnip
@@ -261,7 +283,6 @@ let g:UltiSnipsEditSplit="vertical"
 let g:tagbar_autoclose = 1
 let g:tagbar_left = 1
 let g:tagbar_map_help = ""
-
 "for go lang
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
@@ -290,6 +311,8 @@ let g:tagbar_type_go = {
 	\ 'ctagsbin'  : 'gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
+"dart
+let g:tagbar_type_dart = { 'ctagsbin': '/home/fepng/.pub-cache/bin/dart_ctags' }
 
 "vim-go
 let g:go_auto_type_info = 0
@@ -308,6 +331,11 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 "syntastic
 let g:syntastic_auto_loc_list = 0
 
+"IME
+let g:barbaric_ime = 'fcitx'
+let g:barbaric_scope = 'buffer'
+let g:barbaric_timeout = -1
+let g:barbaric_fcitx_cmd = 'fcitx-remote'
 
 "global gnu
 set cscopeprg=gtags-cscope
@@ -394,6 +422,9 @@ augroup lsp_install
 	autocmd User lsp_buffer_enabled nmap <buffer> gt <plug>(lsp-type-definition)
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
+
+	let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go,*.dart call execute('LspDocumentFormatSync')
 augroup END
 
 "C/C++ style
@@ -546,4 +577,12 @@ function Plantuml_preview()
 	bufdo autocmd BufUnload * :call job_start(["/usr/bin/rm", ".preview.html"])
 
 	call job_start(["exo-open", ".preview.html"])
+endfunction
+
+function DartInit()
+	setlocal ts=2
+	setlocal softtabstop=2
+	setlocal shiftwidth=2
+	setlocal expandtab
+	setlocal cc=80
 endfunction
