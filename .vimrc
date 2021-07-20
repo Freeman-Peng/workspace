@@ -257,7 +257,15 @@ let g:lsp_textprop_enabled = 1
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_cxx_hl_use_text_props = 1
 let g:lsp_semantic_enabled = 1
+let g:lsp_settings_root_markers = [
+\   '.git',
+\   '.git/',
+\   '.svn',
+\   '.hg',
+\   '.bzr'
+\ ]
 autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
+
 
 "asynccomplete
 "default is on
@@ -269,7 +277,7 @@ inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr
 let g:asyncomplete_remove_duplicates = 1
 let g:asyncomplete_smart_completion = 1
 " let g:asyncomplete_popup_delay = 100
-let g:asyncomplete_min_chars = 1
+"let g:asyncomplete_min_chars = 1
 
 
 "UltiSnip
