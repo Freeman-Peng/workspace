@@ -316,7 +316,7 @@ let g:tagbar_type_go = {
 		\ 'ctype' : 't',
 		\ 'ntype' : 'n'
 	\ },
-	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsbin'  : $GOROOT . '/bin/gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 "dart
@@ -429,6 +429,7 @@ augroup lsp_install
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>rn <plug>(lsp-rename)
 	autocmd User lsp_buffer_enabled nmap <buffer> gt <plug>(lsp-type-definition)
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
+	autocmd User lsp_buffer_enabled nmap <buffer> <leader>f :LspWorkspaceSymbolSearch<cr>
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
 
 	let g:lsp_format_sync_timeout = 1000
@@ -462,6 +463,15 @@ autocmd FileType go autocmd BufWritePre <buffer> LspDocumentFormatSync
 
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
+
+"backup
+function BackupConfig()
+	let file_dir = $HOME . '/.cache/bak' . fnamemodify(expand('%:p'),':h')
+	call mkdir(file_dir, 'p')
+	let &backupdir = file_dir
+endfunction
+
+autocmd BufWritePre * call BackupConfig()
 
 "mail
 "autocmd Filetype mail setlocal fo+=a
