@@ -316,7 +316,7 @@ let g:tagbar_type_go = {
 		\ 'ctype' : 't',
 		\ 'ntype' : 'n'
 	\ },
-	\ 'ctagsbin'  : $GOROOT . '/bin/gotags',
+	\ 'ctagsbin'  : $GOPATH . '/bin/gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 "dart
