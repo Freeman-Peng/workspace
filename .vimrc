@@ -79,11 +79,6 @@ Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 
-"java lsp
-"Plug 'lgranie/vim-lsp-java'
-
-
-
 "multi cursor
 Plug 'terryma/vim-multiple-cursors'
 
@@ -112,7 +107,7 @@ Plug 'will133/vim-dirdiff'
 Plug 'pangloss/vim-javascript'
 
 "jsx syntax
-Plug 'mxw/vim-jsx'
+"Plug 'mxw/vim-jsx'
 
 "emmet for html
 Plug 'mattn/emmet-vim', {'for':['css', 'html', 'EmmetInstall']}
@@ -128,6 +123,9 @@ Plug 'gyim/vim-boxdraw'
 
 "IME
 Plug 'rlue/vim-barbaric'
+
+"auto filetype
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -176,6 +174,8 @@ endif
 set lazyredraw
 "do not change current dir
 set noacd
+"for vim-polyglot
+set nocompatible
 
 "CtrlP
 let g:ctrlp_by_filename = 1
@@ -474,7 +474,7 @@ endfunction
 autocmd BufWritePre * call BackupConfig()
 
 "mail
-"autocmd Filetype mail setlocal fo+=a
+autocmd Filetype mail setlocal fo+=am
 
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
