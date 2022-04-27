@@ -5,7 +5,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 
 "fast switch file in directory
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 "syntax checker
 "Plug 'scrooloose/syntastic'
@@ -104,10 +104,8 @@ Plug 'kshenoy/vim-signature'
 Plug 'will133/vim-dirdiff'
 
 "javascript
-Plug 'pangloss/vim-javascript'
+"Plug 'pangloss/vim-javascript'
 
-"jsx syntax
-"Plug 'mxw/vim-jsx'
 
 "emmet for html
 Plug 'mattn/emmet-vim', {'for':['css', 'html', 'EmmetInstall']}
@@ -124,7 +122,7 @@ Plug 'gyim/vim-boxdraw'
 "IME
 Plug 'rlue/vim-barbaric'
 
-"auto filetype
+"language syntax pack
 Plug 'sheerun/vim-polyglot'
 
 call plug#end()
@@ -422,14 +420,16 @@ autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 "lsp nmap 
 augroup lsp_install
-	autocmd User lsp_buffer_enabled nmap <buffer> gd <plug>(lsp-definition)
-	autocmd User lsp_buffer_enabled nmap <buffer> gr <plug>(lsp-references)
-	autocmd User lsp_buffer_enabled nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-	autocmd User lsp_buffer_enabled nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-	autocmd User lsp_buffer_enabled nmap <buffer> <leader>rn <plug>(lsp-rename)
-	autocmd User lsp_buffer_enabled nmap <buffer> gt <plug>(lsp-type-definition)
+	nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
-	autocmd User lsp_buffer_enabled nmap <buffer> <leader>f :LspWorkspaceSymbolSearch<cr>
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
 
 	let g:lsp_format_sync_timeout = 1000
@@ -463,6 +463,9 @@ autocmd FileType go autocmd BufWritePre <buffer> LspDocumentFormatSync
 
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
+
+"R
+autocmd FileType r autocmd BufWritePre <buffer> LspDocumentFormatSync
 
 "backup
 function BackupConfig()
