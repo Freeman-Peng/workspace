@@ -5,7 +5,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 
 "fast switch file in directory
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 
 "syntax checker
 "Plug 'scrooloose/syntastic'
@@ -604,3 +604,9 @@ function DartInit()
 	setlocal expandtab
 	setlocal cc=80
 endfunction
+
+"global grep ignore sample
+"let grepignoredir=[]
+"if !empty(grepignoredir)
+"	let &gp="grep -n \$\* /dev/null "  . join(map(g:grepignoredir, '"--exclude-dir=" . v:val . " "'), " ")
+"endif
