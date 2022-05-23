@@ -26,9 +26,6 @@ Plug 'vim-scripts/bufexplorer.zip'
 "function list for a file,  support go
 Plug 'majutsushi/tagbar'
 
-"switch header file and source file for CPP
-Plug 'vim-scripts/a.vim'
-
 "surround quote
 Plug 'tpope/vim-surround'
 
@@ -51,15 +48,12 @@ Plug 'dhruvasagar/vim-table-mode'
 "Plugin 'tpope/vim-commentary'
 
 "ultisnips engine
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 "snippets
-Plug 'honza/vim-snippets'
+"Plug 'honza/vim-snippets'
 
 "QML Syntax
 Plug 'peterhoeg/vim-qml'
-
-"Indent
-"Plugin 'Yggdroot/indentLine'
 
 "doxygen support 
 Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
@@ -68,7 +62,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp', 'java', 'cs']}
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/async.vim'
 Plug 'mattn/vim-lsp-settings'
-Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+"Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'thomasfaingnaert/vim-lsp-snippets'
 
 "lsp autocomplete
@@ -181,7 +175,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
-\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+\ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
 \ 'file': '\v\.(exe|so|dll)$',
 \ 'link': 'some_bad_symbolic_links',
 \ }
@@ -431,9 +425,9 @@ augroup lsp_install
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
-
+	autocmd User lsp_buffer_enabled setlocal list lcs=tab:┆\ 
 	let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go,*.dart call execute('LspDocumentFormatSync')
+    autocmd! BufWritePre *.tsx,*.jsx,*.rs,*.go,*.dart call execute('LspDocumentFormatSync')
 augroup END
 
 "C/C++ style
@@ -495,29 +489,27 @@ xmap \a <Plug>(EasyAlign)
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 
-function FindFileRecuse(name, enddir)
-	let pwd = getcwd()
-	let i=0
-	if a:enddir == pwd
-		return
-	endif
+function FindFileRecurseUntilRoot(fname, enddir)
+	let l:dir = getcwd()
+	let l:enddir = expand(a:enddir)
+	"keep $HOME/.vimrc load once
 
 	while 1
-		if findfile(a:name, pwd . "/") != ""
-			return pwd . "/" . a:name
+		let l:fpath =  l:dir . "/" . a:fname
+		if filereadable(l:fpath)
+			return l:fpath
 		endif
 
-		let pwd=fnamemodify(pwd, ":h")
+		let l:dir=fnamemodify(l:dir, ":h:p")
 
-		if pwd == a:enddir || pwd == "/"
-			return 
+		if l:dir == l:enddir || l:dir == "/"
+			return ""
 		endif
-		let i=i+1
 	endwhile
 endfunction
 
 function AddGtags()
-	let addtag_path = FindFileRecuse("GTAGS", $HOME)
+	let addtag_path = FindFileRecurseUntilRoot("GTAGS", $HOME)
 	if addtag_path != ""
 		exe "cs add " . addtag_path
 	endif
@@ -561,9 +553,13 @@ function RunGoMake(file)
 endfunction
 
 function SetExtendVimrc()
-	let vimrc = FindFileRecuse(".vim", $HOME)
-	if vimrc != "" 
-		exe "source " . vimrc
+	"append seting must include setting in first line
+	let l:vimrc = FindFileRecurseUntilRoot(".vimrc", $HOME)
+	if l:vimrc != "" && l:vimrc != expand("~/.vimrc")
+		let l:line = readfile(l:vimrc, '', 1)
+		if !empty(l:line) && stridx(l:line[0], "setting") != -1
+			exe "source " . l:vimrc
+		endif
 	endif
 endfunction
 
@@ -581,8 +577,9 @@ if &diff
 	let &diffexpr = 'EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
 endif
 
-" this must put at the end of vimrc
-autocmd Filetype * call SetExtendVimrc()
+"load append setting once
+call SetExtendVimrc()
+
 
 function Plantuml_preview()
 	if &filetype != 'plantuml'
