@@ -33,7 +33,7 @@ Plug 'tpope/vim-surround'
 Plug 'plasticboy/vim-markdown'
 
 "markdown-preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'npm -g install instant-markdown-d'}
 
 "more repeat acion support with key "."
 Plug 'tpope/vim-repeat'
@@ -195,7 +195,7 @@ let g:vim_markdown_folding_disabled = 1
 
 "markdown preview
 let g:mkdp_refresh_slow = 0
-autocmd Filetype markdown nmap <F12> :MarkdownPreview<cr>
+autocmd Filetype markdown nmap <F12> :InstantMarkdownPreview<cr>
 
 "tab width
 set tabstop=4
@@ -381,7 +381,7 @@ noremap <S-F3> :lr<cr>
 noremap <S-F4> :lne<cr>
 "urxvt key map <S-F4> is <Undo>
 noremap <Undo> :lne<cr>
-nnoremap <c-\> :grep <c-r>=expand("<cword>")<cr> -RI .
+nnoremap <c-\> :grep <c-r>=expand("<cword>")<cr>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> <c-\> :call VisualSelection('gv')<CR>
@@ -609,5 +609,5 @@ endfunction
 "global grep ignore sample
 let grepignoredir=[]
 if !empty(grepignoredir)
-	let &gp="grep -n \$\* /dev/null "  . join(map(g:grepignoredir, '"--exclude-dir=" . v:val . " "'), " ")
+	let &gp="grep -n \$\* -RI . /dev/null "  . join(map(g:grepignoredir, '"--exclude-dir=" . v:val . " "'), " ")
 endif
