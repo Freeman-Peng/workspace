@@ -194,7 +194,7 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:vim_markdown_folding_disabled = 1
 
 "markdown preview
-let g:mkdp_refresh_slow = 0
+let g:instant_markdown_autostart=0
 autocmd Filetype markdown nmap <F12> :InstantMarkdownPreview<cr>
 
 "tab width
