@@ -179,6 +179,7 @@ let g:ctrlp_custom_ignore = {
 \ 'file': '\v\.(exe|so|dll)$',
 \ 'link': 'some_bad_symbolic_links',
 \ }
+let g:ctrlp_show_hidden=1
 			
 "dart 
 autocmd FileType dart call DartInit()
@@ -606,7 +607,7 @@ function DartInit()
 endfunction
 
 "global grep ignore sample
-"let grepignoredir=[]
-"if !empty(grepignoredir)
-"	let &gp="grep -n \$\* /dev/null "  . join(map(g:grepignoredir, '"--exclude-dir=" . v:val . " "'), " ")
-"endif
+let grepignoredir=[]
+if !empty(grepignoredir)
+	let &gp="grep -n \$\* /dev/null "  . join(map(g:grepignoredir, '"--exclude-dir=" . v:val . " "'), " ")
+endif
