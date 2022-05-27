@@ -288,6 +288,7 @@ let vista_sidebar_position='vertical topleft'
 let vista_sidebar_width=50
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_close_on_jump=1
+let g:vista_default_executive='vim_lsp'
 
 
 "vim-go
