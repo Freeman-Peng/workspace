@@ -24,7 +24,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'vim-scripts/bufexplorer.zip'
 
 "function list for a file,  support go
-Plug 'majutsushi/tagbar'
+Plug 'liuchengxu/vista.vim'
 
 "surround quote
 Plug 'tpope/vim-surround'
@@ -279,40 +279,16 @@ let g:UltiSnipsJumpBackwardTrigger="<c-p>"
 "let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsEditSplit="vertical"
 
-"tagbar
-let g:tagbar_autoclose = 1
-let g:tagbar_left = 1
-let g:tagbar_map_help = ""
-"for go lang
-let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : $GOPATH . '/bin/gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
-"dart
-let g:tagbar_type_dart = { 'ctagsbin': '/home/fepng/.pub-cache/bin/dart_ctags' }
+"vista
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
+let vista_sidebar_position='vertical topleft'
+let vista_sidebar_width=50
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_close_on_jump=1
+
 
 "vim-go
 let g:go_auto_type_info = 0
@@ -392,7 +368,7 @@ noremap <silent> gH :match<cr>
 map j gj
 map k gk
 nnoremap <f5> :Explore<cr>
-nnoremap <silent> <F1> :TagbarToggle<CR>
+nnoremap <silent> <F1> :Vista!!<CR>
 nnoremap <F11> :w!<CR>\|:silent make -j8\|redraw!<CR>
 nnoremap <leader>w :silent w!<CR>
 nnoremap <leader><space> :A<CR>
@@ -414,15 +390,15 @@ autocmd BufRead *.qml nnoremap <F12> :!qml %<CR>
 
 "lsp nmap 
 augroup lsp_install
-	nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+	autocmd User lsp_buffer_enabled nmap <buffer> gd <plug>(lsp-definition)
+    autocmd User lsp_buffer_enabled nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    autocmd User lsp_buffer_enabled nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    autocmd User lsp_buffer_enabled nmap <buffer> gr <plug>(lsp-references)
+    autocmd User lsp_buffer_enabled nmap <buffer> gi <plug>(lsp-implementation)
+    autocmd User lsp_buffer_enabled nmap <buffer> gt <plug>(lsp-type-definition)
+    autocmd User lsp_buffer_enabled nmap <buffer> <leader>rn <plug>(lsp-rename)
+    autocmd User lsp_buffer_enabled nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    autocmd User lsp_buffer_enabled nmap <buffer> ]g <plug>(lsp-next-diagnostic)
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
 	autocmd User lsp_buffer_enabled setlocal list lcs=tab:┆\ 
