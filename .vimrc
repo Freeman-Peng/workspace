@@ -170,10 +170,9 @@ set noacd
 set nocompatible
 
 "CtrlP
-let g:ctrlp_by_filename = 1
+let g:ctrlp_by_filename = 0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
 \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
 \ 'file': '\v\.(exe|so|dll)$',
