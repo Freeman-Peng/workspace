@@ -1,0 +1,10 @@
+patch:
+  schema_list:
+    - schema: double_pinyin
+  ascii_composer/switch_key:
+    Shift_L: noop
+    Shift_R: noop
+  key_binder/bindings:
+    - { when: always, accept: Control+Shift+2, noop }
+    - { when: always, accept: Control+Shift+at, noop }
+    - { when: always, accept: Shift+space, noop } 
