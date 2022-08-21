@@ -403,8 +403,10 @@ augroup lsp_install
 	autocmd User lsp_buffer_enabled nmap <buffer> <leader>h <plug>(lsp-hover)
 	autocmd User lsp_buffer_enabled autocmd CursorHold <buffer> :LspHover<cr>
 	autocmd User lsp_buffer_enabled setlocal list lcs=tab:┆\ 
+	autocmd User lsp_buffer_enabled inoremap <c-f> <c-o>:execute('LspCodeActionSync refactor.rewrite')<cr>
 	let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.tsx,*.jsx,*.rs,*.go,*.dart call execute('LspDocumentFormatSync')
+    autocmd! BufWritePre *.go call execute('LspCodeActionSync source.organizeImports')
 augroup END
 
 "C/C++ style
@@ -427,10 +429,6 @@ autocmd FileType c,cpp nnoremap <buffer> <leader>h :LspHover<cr>
 
 "qml
 autocmd FileType *.qml nnoremap <F12> :!qml <C-R>=expand("<cfile>")<cr>
-
-
-"Go
-autocmd FileType go autocmd BufWritePre <buffer> LspDocumentFormatSync
 
 "diff
 autocmd BufWritePost * if &diff == 1|diffupdate|endif
