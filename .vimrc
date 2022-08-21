@@ -405,8 +405,9 @@ augroup lsp_install
 	autocmd User lsp_buffer_enabled setlocal list lcs=tab:┆\ 
 	autocmd User lsp_buffer_enabled inoremap <c-f> <c-o>:execute('LspCodeActionSync refactor.rewrite')<cr>
 	let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.tsx,*.jsx,*.rs,*.go,*.dart call execute('LspDocumentFormatSync')
-    autocmd! BufWritePre *.go call execute('LspCodeActionSync source.organizeImports')
+    autocmd! BufWritePre *.tsx,*.jsx,*.rs,*.dart call execute('LspDocumentFormatSync')
+    autocmd! BufWritePre *.go call execute('LspDocumentFormatSync') |
+		\ call execute('LspCodeAction source.organizeImports')
 augroup END
 
 "C/C++ style
