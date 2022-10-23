@@ -42,7 +42,7 @@ Plug 'tpope/vim-repeat'
 "Plug 'fatih/vim-go'
 
 "table mode, create ascii table easily
-Plug 'dhruvasagar/vim-table-mode'
+Plug 'godlygeek/tabular'
 
 "Comment
 "Plugin 'tpope/vim-commentary'
@@ -97,8 +97,11 @@ Plug 'kshenoy/vim-signature'
 "diff direcotry
 Plug 'will133/vim-dirdiff'
 
-"javascript
-"Plug 'pangloss/vim-javascript'
+"auto close
+"Plug 'Raimondi/delimitMate'
+
+"comment
+Plug 'preservim/nerdcommenter'
 
 
 "emmet for html
@@ -337,9 +340,6 @@ let g:NERDTreeIndicatorMapCustom = {
 			\ "Clean"     : "✔︎",
 			\ "Unknown"   : "?"
 			\ }
-
-" Table-Mode
-"let g:table_mode_corner_corner="+"
 
 "Indent guides
 let g:indent_guides_auto_colors = 0
