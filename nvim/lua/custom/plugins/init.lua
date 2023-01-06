@@ -1,6 +1,6 @@
-
+local overrides = require "custom.plugins.overrides"
 local M = {
-    -- Override plugin definition options
+  -- Override plugin definition options
   ["neovim/nvim-lspconfig"] = {
     config = function()
       require "plugins.configs.lspconfig"
@@ -19,9 +19,9 @@ local M = {
   -- surround
   ["kylechui/nvim-surround"] = {
     tag = "*",
-    config = function ()
-      require("nvim-surround").setup{}
-    end
+    config = function()
+      require("nvim-surround").setup {}
+    end,
   },
 }
 

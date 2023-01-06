@@ -22,6 +22,7 @@ local sources = {
       "javascriptreact",
       "javascript",
       "less",
+      "vue"
     },
   },
 
