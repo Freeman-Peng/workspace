@@ -1,13 +1,22 @@
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 
-local servers = { "gopls", "html", "cssls", "tsserver", "clangd" , "volar"}
+local servers = { "gopls", "html", "cssls", "tsserver", "volar", "pylsp" }
 
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
+	lspconfig[lsp].setup({
+		on_attach = on_attach,
+		capabilities = capabilities,
+	})
 end
+
+lspconfig["clangd"].setup({
+	cmd = {
+		"clangd",
+		"--clang-tidy",
+	},
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
