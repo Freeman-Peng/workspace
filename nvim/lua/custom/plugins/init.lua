@@ -1,4 +1,3 @@
-local overrides = require "custom.plugins.overrides"
 local M = {
   -- Override plugin definition options
   ["neovim/nvim-lspconfig"] = {
@@ -23,6 +22,22 @@ local M = {
       require("nvim-surround").setup {}
     end,
   },
+  ["liuchengxu/vista.vim"] = {
+    config = function()
+      vim.g.vista_default_executive = 'nvim_lsp'
+      vim.g.vista_close_on_jump = 1
+    end,
+  },
+
+  ["hrsh7th/nvim-cmp"] = {
+    override_options = function()
+      return {
+        mapping = {
+          ["<C-o>"] = require "cmp".mapping.complete(),
+        }
+      }
+    end,
+  }
 }
 
 return M
