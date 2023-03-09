@@ -33,7 +33,7 @@ local M = {
     override_options = function()
       return {
         mapping = {
-          ["<C-o>"] = require "cmp".mapping.complete(),
+          ["<C-x><C-o>"] = require "cmp".mapping.complete(),
         }
       }
     end,
