@@ -33,8 +33,7 @@ local sources = {
 	b.formatting.shfmt,
 	b.diagnostics.shellcheck.with({ diagnostics_format = "#{m} [#{c}]" }),
 
-	-- cpp
-	b.formatting.clang_format,
+	-- rust
 	b.formatting.rustfmt,
 
 	-- go
@@ -42,6 +41,10 @@ local sources = {
 
 	-- python
 	b.formatting.yapf,
+
+	-- protobuf
+	b.diagnostics.protolint,
+	b.formatting.protolint,
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
