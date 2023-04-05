@@ -1,6 +1,6 @@
 return {
   {
-   "williamboman/mason.nvim",
+    "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
         "clangd",
@@ -17,40 +17,73 @@ return {
         "typescript-language-server",
         "vue-language-server",
         "yapf",
-      }
-    }
+      },
+    },
   },
   {
     "neovim/nvim-lspconfig",
-    config = function()
+    dependencies = {
+      {
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+          require "custom.configs.null-ls"
+        end,
+      },
+    },
+    opts = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
   },
   -- null-ls
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      require "custom.configs.null-ls"
-    end,
-  },
   -- surround
-  {"kylechui/nvim-surround",
+  {
+    "kylechui/nvim-surround",
     config = function()
       require("nvim-surround").setup {}
     end,
   },
 
-  {"liuchengxu/vista.vim",
+  {
+    "liuchengxu/vista.vim",
     config = function()
       vim.g.vista_default_executive = "nvim_lsp"
       vim.g.vista_close_on_jump = 1
     end,
   },
 
-  {"hrsh7th/nvim-cmp",
-    keys = {
-      {"<C-x><C-o>", require("cmp").mapping.complete(), mode="i","replace omni complete"},
-    }
+  {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      mapping = {
+        ["<C-x><C-o>"] = require("cmp").mapping.complete(),
+        ["<C-Space>"] = nil,
+      },
+    },
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        -- defaults
+        "vim",
+        "lua",
+
+        -- web dev
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "json",
+        -- "vue", "svelte",
+        "vue",
+
+        -- low level
+        "c",
+        "cpp",
+      },
+    },
   },
 }
