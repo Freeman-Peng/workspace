@@ -12,6 +12,11 @@ M.general = {
       "open symbol window",
       opts = { nowait = true },
     },
+    ["<F12>"] = {
+      "<cmd>MarkdownPreview<cr>",
+      "preview markdown",
+      opts = { nowait = true },
+    },
   },
 }
 

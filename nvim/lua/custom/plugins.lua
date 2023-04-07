@@ -29,6 +29,13 @@ return {
           require "custom.configs.null-ls"
         end,
       },
+      {
+        "liuchengxu/vista.vim",
+        config = function()
+          vim.g.vista_default_executive = "nvim_lsp"
+          vim.g.vista_close_on_jump = 1
+        end,
+      },
     },
     opts = function()
       require "plugins.configs.lspconfig"
@@ -41,14 +48,6 @@ return {
     "kylechui/nvim-surround",
     config = function()
       require("nvim-surround").setup {}
-    end,
-  },
-
-  {
-    "liuchengxu/vista.vim",
-    config = function()
-      vim.g.vista_default_executive = "nvim_lsp"
-      vim.g.vista_close_on_jump = 1
     end,
   },
 
@@ -89,9 +88,12 @@ return {
 
   {
     "iamcco/markdown-preview.nvim",
+    ft = { "markdown" },
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
-    cmd = { "MarkdownPreview" },
+    config = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
   },
 }
