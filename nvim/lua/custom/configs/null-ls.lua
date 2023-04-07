@@ -50,7 +50,7 @@ local sources = {
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 null_ls.setup{
-  debug = true,
+	debug = true,
 	sources = sources,
 	on_attach = function(client, bufnr)
 		if client.supports_method("textDocument/formatting") then
