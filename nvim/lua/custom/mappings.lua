@@ -1,14 +1,5 @@
 local M = {}
 
-local function on_list(options)
-  vim.fn.setqflist({}, " ", options)
-  if #options.items > 1 then
-    require("telescope.builtin").quickfix()
-  else
-    vim.api.nvim_command "cfirst"
-  end
-end
-
 M.general = {
   n = {
     ["<leader>ts"] = {
@@ -28,13 +19,13 @@ M.general = {
     },
     ["gr"] = {
       function()
-        vim.lsp.buf.references(nil, { on_list = on_list })
+        require("telescope.builtin").lsp_references()
       end,
       "lsp references",
     },
     ["gd"] = {
       function()
-        vim.lsp.buf.definition { on_list = on_list }
+        require("telescope.builtin").lsp_definitions()
       end,
       "lsp references",
     },
