@@ -7,6 +7,12 @@ M.general = {
       "find workspace symbols",
       opts = { nowait = true },
     },
+    ["<leader>ds"] = {
+      function()
+        require("telescope.builtin").lsp_document_symbols()
+      end,
+      "lsp references",
+    },
     ["<F1>"] = {
       "<cmd>Vista!!<CR>",
       "open symbol window",
