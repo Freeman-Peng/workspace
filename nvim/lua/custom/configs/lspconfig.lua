@@ -3,19 +3,44 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
 
-local servers = { "gopls", "html", "cssls", "tsserver", "volar", "pylsp", "cmake" }
+local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake" }
+local function autofmt(bufnr)
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    buffer = bufnr,
+    callback = function()
+      vim.lsp.buf.format { async = true }
+    end,
+  })
+end
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    on_list = on_list,
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       client.server_capabilities.documentFormattingProvider = lspconfig[lsp].documentFormattingProvider
       client.server_capabilities.documentRangeFormattingProvider = lspconfig[lsp].documentRangeFormattingProvider
+      autofmt(bufnr)
     end,
     capabilities = capabilities,
   }
 end
+
+lspconfig["gopls"].setup {
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    client.server_capabilities.documentFormattingProvider = lspconfig["gopls"].documentFormattingProvider
+    client.server_capabilities.documentRangeFormattingProvider = lspconfig["gopls"].documentRangeFormattingProvider
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
+        vim.lsp.buf.format { async = false }
+      end,
+    })
+  end,
+  capabilities = capabilities,
+}
 
 lspconfig["clangd"].setup {
   -- cmd = {
@@ -30,23 +55,17 @@ lspconfig["clangd"].setup {
   -- },
   on_attach = function(client, bufnr)
     on_attach(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = true
-    client.server_capabilities.documentRangeFormattingProvider = true
+    client.server_capabilities.documentformattingprovider = true
+    client.server_capabilities.documentrangeformattingprovider = true
 
     vim.api.nvim_buf_set_keymap(
       bufnr,
       "n",
       "<leader>w",
-      "<cmd>ClangdSwitchSourceHeader<cr>",
+      "<cmd>clangdswitchsourceheader<cr>",
       { noremap = true, silent = true }
     )
-
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format { async = false }
-      end,
-    })
+    autofmt()
   end,
   capabilities = capabilities,
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
