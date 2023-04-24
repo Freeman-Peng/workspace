@@ -1,6 +1,7 @@
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
+capabilities.textDocument.completion.completionItem.preselectSupport = false
 local lspconfig = require "lspconfig"
 
 local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake" }
@@ -35,7 +36,7 @@ lspconfig["gopls"].setup {
       buffer = bufnr,
       callback = function()
         vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
-        vim.lsp.buf.format { async = false }
+        vim.lsp.buf.format { async = true }
       end,
     })
   end,
