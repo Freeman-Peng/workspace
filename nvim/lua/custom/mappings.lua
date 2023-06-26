@@ -14,7 +14,13 @@ M.general = {
       "lsp references",
     },
     ["<F1>"] = {
-      "<cmd>Vista!!<CR>",
+      function()
+        if vim.lsp.buf.document_symbol then
+          vim.cmd "Telescope lsp_document_symbols"
+        else
+          vim.cmd "Vista!!"
+        end
+      end,
       "open symbol window",
       opts = { nowait = true },
     },
