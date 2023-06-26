@@ -4,7 +4,7 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 capabilities.textDocument.completion.completionItem.preselectSupport = false
 local lspconfig = require "lspconfig"
 
-local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake" }
+local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls" }
 local function autofmt(bufnr)
   vim.api.nvim_create_autocmd("BufWritePre", {
     buffer = bufnr,
@@ -20,28 +20,10 @@ for _, lsp in ipairs(servers) do
       on_attach(client, bufnr)
       client.server_capabilities.documentFormattingProvider = lspconfig[lsp].documentFormattingProvider
       client.server_capabilities.documentRangeFormattingProvider = lspconfig[lsp].documentRangeFormattingProvider
-      autofmt(bufnr)
     end,
     capabilities = capabilities,
   }
 end
-
-lspconfig["gopls"].setup {
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = lspconfig["gopls"].documentFormattingProvider
-    client.server_capabilities.documentRangeFormattingProvider = lspconfig["gopls"].documentRangeFormattingProvider
-
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
-        vim.lsp.buf.format { async = true }
-      end,
-    })
-  end,
-  capabilities = capabilities,
-}
 
 lspconfig["clangd"].setup {
   -- cmd = {
@@ -66,7 +48,6 @@ lspconfig["clangd"].setup {
       "<cmd>clangdswitchsourceheader<cr>",
       { noremap = true, silent = true }
     )
-    autofmt()
   end,
   capabilities = capabilities,
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
