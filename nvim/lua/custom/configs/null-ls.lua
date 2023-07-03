@@ -59,7 +59,7 @@ null_ls.setup {
         group = augroup,
         buffer = bufnr,
         callback = function()
-          if vim.lsp.protocol.CodeActionKind["SourceOrganizeImports"] then
+          if vim.lsp.buf_is_attached() and vim.lsp.protocol.CodeActionKind["SourceOrganizeImports"] ~= nil then
             vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
           end
           vim.lsp.buf.format { async = false }

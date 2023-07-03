@@ -5,14 +5,6 @@ capabilities.textDocument.completion.completionItem.preselectSupport = false
 local lspconfig = require "lspconfig"
 
 local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls" }
-local function autofmt(bufnr)
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    buffer = bufnr,
-    callback = function()
-      vim.lsp.buf.format { async = true }
-    end,
-  })
-end
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -38,14 +30,11 @@ lspconfig["clangd"].setup {
   -- },
   on_attach = function(client, bufnr)
     on_attach(client, bufnr)
-    client.server_capabilities.documentformattingprovider = true
-    client.server_capabilities.documentrangeformattingprovider = true
-
     vim.api.nvim_buf_set_keymap(
       bufnr,
       "n",
       "<leader>w",
-      "<cmd>clangdswitchsourceheader<cr>",
+      "<cmd>ClangdSwitchSourceHeader<cr>",
       { noremap = true, silent = true }
     )
   end,
