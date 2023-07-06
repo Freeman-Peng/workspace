@@ -110,8 +110,6 @@ return {
       require("core.utils").load_mappings "blankline"
       dofile(vim.g.base46_cache .. "blankline")
       require("indent_blankline").setup(opts)
-      vim.opt.list = true
-      vim.opt.listchars:append "eol:↴"
       vim.cmd [[highlight IndentBlanklineContextStart guisp=#536878 gui=bold,underline guibg=nocombine]]
     end,
   },
