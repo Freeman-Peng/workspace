@@ -5,7 +5,7 @@ local M = {}
 M.plugins = "custom.plugins"
 
 M.ui = {
-  theme = "onedark",
+  theme = "doomchad",
   hl_override = {
     Comment = {
       italic = true,

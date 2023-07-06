@@ -97,4 +97,22 @@ return {
       vim.g.mkdp_filetypes = { "markdown" }
     end,
   },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    init = function()
+      require("core.utils").lazy_load "indent-blankline.nvim"
+    end,
+    opts = {
+      show_current_context = true,
+      show_current_context_start = true,
+    },
+    config = function(_, opts)
+      require("core.utils").load_mappings "blankline"
+      dofile(vim.g.base46_cache .. "blankline")
+      require("indent_blankline").setup(opts)
+      vim.opt.list = true
+      vim.opt.listchars:append "eol:↴"
+      vim.cmd [[highlight IndentBlanklineContextStart guisp=#536878 gui=bold,underline guibg=nocombine]]
+    end,
+  },
 }
