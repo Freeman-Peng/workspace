@@ -1,6 +1,6 @@
 return {
   {
-   "williamboman/mason.nvim",
+    "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
         "clangd",
@@ -17,9 +17,10 @@ return {
         "typescript-language-server",
         "vue-language-server",
         "yapf",
-      }
-    }
-  }
+        "jdtls",
+      },
+    },
+  },
   -- Override plugin definition options
   -- {
   --   "neovim/nvim-lspconfig",
@@ -29,52 +30,51 @@ return {
   --   end,
   -- },
 
-
--- null-ls
---   {
---     "jose-elias-alvarez/null-ls.nvim",
---     after = "nvim-lspconfig",
---     config = function()
---       require "custom.plugins.null-ls"
---     end,
---   },
---
---   -- surround
---   {"kylechui/nvim-surround",
---     tag = "*",
---     config = function()
---       require("nvim-surround").setup {}
---     end,
---   },
---
---   {"liuchengxu/vista.vim",
---     config = function()
---       vim.g.vista_default_executive = "nvim_lsp"
---       vim.g.vista_close_on_jump = 1
---     end,
---   },
---
---   {"hrsh7th/nvim-cmp",
---     override_options = function()
---       return {
---         mapping = {
---           ["<C-x><C-o>"] = require("cmp").mapping.complete(),
---         },
---       }
---     end,
---   },
---
---   {"kyazdani42/nvim-tree.lua",
---     override_options = function()
---       return {
---         filters = {
---           dotfiles = true,
---           git_clean = true,
---         },
---         git = {
---           ignore = true,
---         },
---       }
---     end,
---   },
+  -- null-ls
+  --   {
+  --     "jose-elias-alvarez/null-ls.nvim",
+  --     after = "nvim-lspconfig",
+  --     config = function()
+  --       require "custom.plugins.null-ls"
+  --     end,
+  --   },
+  --
+  --   -- surround
+  --   {"kylechui/nvim-surround",
+  --     tag = "*",
+  --     config = function()
+  --       require("nvim-surround").setup {}
+  --     end,
+  --   },
+  --
+  --   {"liuchengxu/vista.vim",
+  --     config = function()
+  --       vim.g.vista_default_executive = "nvim_lsp"
+  --       vim.g.vista_close_on_jump = 1
+  --     end,
+  --   },
+  --
+  --   {"hrsh7th/nvim-cmp",
+  --     override_options = function()
+  --       return {
+  --         mapping = {
+  --           ["<C-x><C-o>"] = require("cmp").mapping.complete(),
+  --         },
+  --       }
+  --     end,
+  --   },
+  --
+  --   {"kyazdani42/nvim-tree.lua",
+  --     override_options = function()
+  --       return {
+  --         filters = {
+  --           dotfiles = true,
+  --           git_clean = true,
+  --         },
+  --         git = {
+  --           ignore = true,
+  --         },
+  --       }
+  --     end,
+  --   },
 }

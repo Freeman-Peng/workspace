@@ -4,16 +4,10 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 capabilities.textDocument.completion.completionItem.preselectSupport = false
 local lspconfig = require "lspconfig"
 
-local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd" }
+local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd", "jdtls" }
 
 for _, lsp in ipairs(servers) do
-  local settings = {}
-  if lsp == "gopls" then
-    local append = { gopls = { semanticTokens = true } }
-    settings = vim.tbl_deep_extend("force", settings, append)
-  end
-  lspconfig[lsp].setup {
-    settings = settings,
+  local config = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       client.server_capabilities.documentFormattingProvider = lspconfig[lsp].documentFormattingProvider
@@ -27,19 +21,21 @@ for _, lsp in ipairs(servers) do
           { noremap = true, silent = true }
         )
       elseif lsp == "gopls" then
-        if not client.server_capabilities.semanticTokensProvider then
-          local semantic = client.config.capabilities.textDocument.semanticTokens
-          client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = {
-              tokenTypes = semantic.tokenTypes,
-              tokenModifiers = semantic.tokenModifiers,
-            },
-            range = true,
-          }
-        end
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*.go",
+          callback = function()
+            vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
+            vim.lsp.buf.format { async = false }
+          end,
+        })
       end
     end,
     capabilities = capabilities,
   }
+
+  if lsp == "gopls" then
+    config.settings = { gopls = { semanticTokens = true } }
+  end
+
+  lspconfig[lsp].setup(config)
 end

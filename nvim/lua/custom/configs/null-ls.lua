@@ -6,6 +6,16 @@ end
 
 local b = null_ls.builtins
 
+local yapf = b.formatting.yapf
+yapf.generator_opts = {
+  command = "yapf",
+  args = require("null-ls.helpers").range_formatting_args_factory({
+    "--quiet",
+    "--style",
+    "{based_on_style: pep8, indent_width: 2}",
+  }, "--lines", nil, { use_rows = true, delimiter = "-" }),
+  to_stdin = true,
+}
 local sources = {
 
   -- webdev stuff
@@ -23,6 +33,7 @@ local sources = {
       "javascript",
       "less",
       "vue",
+      "python",
     },
   },
 
@@ -45,6 +56,9 @@ local sources = {
   -- protobuf
   b.diagnostics.protolint,
   b.formatting.protolint,
+
+  -- c/cpp
+  b.formatting.clang_format,
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
