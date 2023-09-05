@@ -44,6 +44,18 @@ M.general = {
   },
 }
 
+M.lspconfig = {
+  n = {
+    ["<leader>ra"] = {
+      function()
+        require("nvchad_ui.renamer").open()
+        require("cmp").setup.buffer { enabled = false }
+      end,
+      "LSP rename",
+    },
+  },
+}
+
 M.blankline = {
   n = {
     ["<leader>ce"] = {

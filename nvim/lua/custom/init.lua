@@ -5,7 +5,7 @@ vim.diagnostic.config {
   float = { border = "rounded" },
 }
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*" },
   callback = function()
     local path = require "plenary.path"

@@ -29,12 +29,28 @@ for _, lsp in ipairs(servers) do
           end,
         })
       end
+
+      if client.server_capabilities.inlayHintProvider then
+        vim.g.inlay_hints_visible = true
+        vim.lsp.inlay_hint(bufnr, true)
+      end
     end,
     capabilities = capabilities,
   }
 
   if lsp == "gopls" then
-    config.settings = { gopls = { semanticTokens = true } }
+    config.settings = {
+      gopls = { semanticTokens = true },
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    }
   end
 
   lspconfig[lsp].setup(config)
