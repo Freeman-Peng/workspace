@@ -48,7 +48,7 @@ M.lspconfig = {
   n = {
     ["<leader>ra"] = {
       function()
-        require("nvchad_ui.renamer").open()
+        require("nvchad.renamer").open()
         require("cmp").setup.buffer { enabled = false }
       end,
       "LSP rename",

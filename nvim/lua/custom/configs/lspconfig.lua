@@ -6,52 +6,46 @@ local lspconfig = require "lspconfig"
 
 local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd", "jdtls" }
 
-for _, lsp in ipairs(servers) do
-  local config = {
+local config = {
+  clangd = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
-      client.server_capabilities.documentFormattingProvider = lspconfig[lsp].documentFormattingProvider
-      client.server_capabilities.documentRangeFormattingProvider = lspconfig[lsp].documentRangeFormattingProvider
-      if lsp == "clangd" then
-        vim.api.nvim_buf_set_keymap(
-          bufnr,
-          "n",
-          "<leader>w",
-          "<cmd>ClangdSwitchSourceHeader<cr>",
-          { noremap = true, silent = true }
-        )
-      elseif lsp == "gopls" then
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          pattern = "*.go",
-          callback = function()
-            vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
-            vim.lsp.buf.format { async = false }
-          end,
-        })
-      end
-
-      if client.server_capabilities.inlayHintProvider then
-        vim.g.inlay_hints_visible = true
-        vim.lsp.inlay_hint(bufnr, true)
-      end
+      client.server_capabilities.documentFormattingProvider = lspconfig["clangd"].documentFormattingProvider
+      client.server_capabilities.documentRangeFormattingProvider = lspconfig["clangd"].documentRangeFormattingProvider
+      vim.api.nvim_buf_set_keymap(
+        bufnr,
+        "n",
+        "<leader>w",
+        "<cmd>ClangdSwitchSourceHeader<cr>",
+        { noremap = true, silent = true }
+      )
     end,
     capabilities = capabilities,
-  }
+  },
 
-  if lsp == "gopls" then
-    config.settings = {
-      gopls = { semanticTokens = true },
-      hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
-        constantValues = true,
-        functionTypeParameters = true,
-        parameterNames = true,
-        rangeVariableTypes = true,
-      },
+  gopls = {
+    on_attach = function(client, bufnr)
+      client.server_capabilities.documentFormattingProvider = lspconfig["gopls"].documentFormattingProvider
+      client.server_capabilities.documentRangeFormattingProvider = lspconfig["gopls"].documentRangeFormattingProvider
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
+        callback = function()
+          vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
+          vim.lsp.buf.format { async = false }
+        end,
+      })
+    end,
+    capabilities = capabilities,
+  },
+}
+
+for _, lsp in ipairs(servers) do
+  if config[lsp] ~= nil then
+    lspconfig[lsp].setup(config[lsp])
+  else
+    lspconfig[lsp].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
     }
   end
-
-  lspconfig[lsp].setup(config)
 end
