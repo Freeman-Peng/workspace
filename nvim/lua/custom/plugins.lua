@@ -135,4 +135,12 @@ return {
       require("indent_blankline").setup(opts)
     end,
   },
+  {
+    "echasnovski/mini.align",
+    version = false,
+    lazy = false,
+    config = function()
+      require("mini.align").setup(require "custom.configs.align")
+    end,
+  },
 }

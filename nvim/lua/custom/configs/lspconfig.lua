@@ -10,8 +10,6 @@ local config = {
   clangd = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
-      client.server_capabilities.documentFormattingProvider = lspconfig["clangd"].documentFormattingProvider
-      client.server_capabilities.documentRangeFormattingProvider = lspconfig["clangd"].documentRangeFormattingProvider
       vim.api.nvim_buf_set_keymap(
         bufnr,
         "n",
@@ -25,6 +23,7 @@ local config = {
 
   gopls = {
     on_attach = function(client, bufnr)
+      on_attach(client, bufnr)
       client.server_capabilities.documentFormattingProvider = lspconfig["gopls"].documentFormattingProvider
       client.server_capabilities.documentRangeFormattingProvider = lspconfig["gopls"].documentRangeFormattingProvider
       vim.api.nvim_create_autocmd("BufWritePre", {
