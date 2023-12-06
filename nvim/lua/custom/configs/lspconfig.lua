@@ -1,7 +1,6 @@
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
-capabilities.textDocument.completion.completionItem.preselectSupport = false
 local lspconfig = require "lspconfig"
 
 local servers = { "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd", "jdtls" }
@@ -24,8 +23,6 @@ local config = {
   gopls = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
-      client.server_capabilities.documentFormattingProvider = lspconfig["gopls"].documentFormattingProvider
-      client.server_capabilities.documentRangeFormattingProvider = lspconfig["gopls"].documentRangeFormattingProvider
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*.go",
         callback = function()

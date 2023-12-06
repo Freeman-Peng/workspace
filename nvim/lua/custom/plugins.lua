@@ -24,7 +24,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         config = function()
           require "custom.configs.null-ls"
         end,
@@ -42,7 +42,6 @@ return {
       require "custom.configs.lspconfig"
     end,
   },
-  -- null-ls
   -- surround
   {
     "kylechui/nvim-surround",
@@ -83,6 +82,7 @@ return {
         -- low level
         "c",
         "cpp",
+        "glsl",
       },
       highlight = {
         disable = function(_, bufnr)
@@ -141,6 +141,71 @@ return {
     lazy = false,
     config = function()
       require("mini.align").setup(require "custom.configs.align")
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      config = function()
+        require "custom.configs.dap"
+      end,
+    },
+    config = function()
+      require "custom.configs.dapui"
+    end,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    },
+    cmd = "Telescope",
+    init = function()
+      require("core.utils").load_mappings "telescope"
+    end,
+    opts = function()
+      local default_opts = require "plugins.configs.telescope"
+      default_opts.defaults.preview = {
+        mime_hook = function(filepath, bufnr, opts)
+          local is_image = function(filepath)
+            local image_extensions = { "png", "jpg", "jpeg", "webp", "gif" } -- Supported image formats
+            local split_path = vim.split(filepath:lower(), ".", { plain = true })
+            local extension = split_path[#split_path]
+            return vim.tbl_contains(image_extensions, extension)
+          end
+          if is_image(filepath) then
+            local term = vim.api.nvim_open_term(bufnr, {})
+            local function send_output(_, data, _)
+              for _, d in ipairs(data) do
+                vim.api.nvim_chan_send(term, d .. "\r\n")
+              end
+            end
+            vim.fn.jobstart({
+              "chafa",
+              "-c",
+              "full",
+              "-s",
+              vim.api.nvim_win_get_width(opts.winid),
+              filepath, -- Terminal image viewer command
+            }, { on_stdout = send_output, stdout_buffered = true, pty = true })
+          else
+            require("telescope.previewers.utils").set_preview_message(bufnr, opts.winid, "Binary cannot be previewed")
+          end
+        end,
+      }
+      return default_opts
+    end,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "telescope")
+      local telescope = require "telescope"
+      telescope.setup(opts)
+
+      -- load extensions
+      for _, ext in ipairs(opts.extensions_list) do
+        telescope.load_extension(ext)
+      end
     end,
   },
 }
