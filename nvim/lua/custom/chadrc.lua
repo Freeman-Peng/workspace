@@ -6,6 +6,7 @@ M.plugins = "custom.plugins"
 
 M.ui = {
   theme = "doomchad",
+  lsp_semantic_tokens = true, -- needs nvim v0.9, just adds highlight groups for lsp semantic tokens
   hl_override = {
     Comment = {
       italic = true,
