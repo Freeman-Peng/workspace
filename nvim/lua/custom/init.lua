@@ -1,6 +1,7 @@
 vim.env.TERM = "alacritty"
 vim.opt.mouse = ""
 vim.opt.exrc = true
+vim.g.toggle_theme_icon = ""
 vim.diagnostic.config {
   float = { border = "rounded" },
 }

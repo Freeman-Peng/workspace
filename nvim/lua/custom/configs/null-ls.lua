@@ -42,10 +42,7 @@ local sources = {
 
   -- Shell
   b.formatting.shfmt,
-  b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
-
-  -- rust
-  b.formatting.rustfmt,
+  -- b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
 
   -- go
   b.formatting.gofmt,
@@ -66,9 +63,6 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup {
   debug = false,
   sources = sources,
-  on_init = function(new_client, _)
-    new_client.offset_encoding = "utf-8"
-  end,
   on_attach = function(client, bufnr)
     if client.supports_method "textDocument/formatting" then
       vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
