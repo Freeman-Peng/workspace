@@ -19,7 +19,14 @@ local config = {
         "<cmd>ClangdSwitchSourceHeader<cr>",
         { noremap = true, silent = true }
       )
-      vim.lsp.inlay_hint.enable(bufnr, true)
+
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ih", "", {
+        nowait = true,
+        desc = "toggle inlay hints",
+        callback = function()
+          vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
+        end,
+      })
     end,
     capabilities = capabilities,
   },
@@ -34,7 +41,15 @@ local config = {
           vim.lsp.buf.format { async = false }
         end,
       })
-      vim.lsp.inlay_hint.enable(bufnr, true)
+
+      vim.api.nvim_set_keymap("n", "<leader>ih", "", {
+        nowait = true,
+        desc = "toggle inlay hints",
+        callback = function()
+          vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
+        end,
+        { buffer = true },
+      })
     end,
     capabilities = capabilities,
     settings = {
@@ -83,13 +98,15 @@ local config = {
   },
 }
 
-for _, lsp in ipairs(servers) do
-  if config[lsp] ~= nil then
-    lspconfig[lsp].setup(config[lsp])
-  else
-    lspconfig[lsp].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-    }
+if not vim.o.diff then
+  for _, lsp in ipairs(servers) do
+    if config[lsp] ~= nil then
+      lspconfig[lsp].setup(config[lsp])
+    else
+      lspconfig[lsp].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+    end
   end
 end

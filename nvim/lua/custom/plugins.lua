@@ -25,6 +25,7 @@ return {
     dependencies = {
       {
         "nvimtools/none-ls.nvim",
+        opts = { inlay_hints = { enabled = true } },
         config = function()
           require "custom.configs.null-ls"
         end,
@@ -54,9 +55,14 @@ return {
   {
     "hrsh7th/nvim-cmp",
     opts = {
-      mapping = {
+      mappings = {
         ["<C-x><C-o>"] = require("cmp").mapping.complete(),
         ["<C-Space>"] = nil,
+      },
+      view = {
+        entries = {
+          follow_cursor = true,
+        },
       },
     },
   },
@@ -160,6 +166,8 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      { "Marskey/telescope-sg" },
+      { "debugloop/telescope-undo.nvim" },
     },
     cmd = "Telescope",
     init = function()
@@ -195,6 +203,31 @@ return {
           end
         end,
       }
+
+      default_opts.extensions = {
+        extensions = {
+          undo = {
+            use_delta = true,
+            use_custom_command = nil, -- setting this implies `use_delta = false`. Accepted format is: { "bash", "-c", "echo '$DIFF' | delta" }
+            side_by_side = false,
+            diff_context_lines = vim.o.scrolloff,
+            entry_format = "state #$ID, $STAT, $TIME",
+            time_format = "",
+            saved_only = false,
+          },
+          ast_grep = {
+            command = {
+              "ast-gerp ",
+              "run",
+              "--json=stream",
+            },                       -- must have --json=stream
+            grep_open_files = false, -- search in opened files
+            lang = nil,              -- string value, specify language for ast-grep `nil` for default
+          },
+        },
+      }
+      table.insert(default_opts.extensions_list, "ast_grep")
+      table.insert(default_opts.extensions_list, "undo")
       return default_opts
     end,
     config = function(_, opts)
@@ -206,6 +239,7 @@ return {
       for _, ext in ipairs(opts.extensions_list) do
         telescope.load_extension(ext)
       end
+      vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
     end,
   },
 }
