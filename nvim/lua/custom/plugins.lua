@@ -69,35 +69,41 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        -- defaults
-        "vim",
-        "lua",
+    opts = function()
+      local default_opts = require "plugins.configs.treesitter"
+      local addtion = {
+        ensure_installed = {
+          -- defaults
+          "vim",
+          "lua",
 
-        -- web dev
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "tsx",
-        "json",
-        -- "vue", "svelte",
-        "vue",
+          -- web dev
+          "html",
+          "css",
+          "javascript",
+          "typescript",
+          "tsx",
+          "json",
+          -- "vue", "svelte",
+          "vue",
 
-        -- low level
-        "c",
-        "cpp",
-        "glsl",
-      },
-      highlight = {
-        disable = function(_, bufnr)
-          local buf_name = vim.api.nvim_buf_get_name(bufnr)
-          local file_size = vim.api.nvim_call_function("getfsize", { buf_name })
-          return file_size > 256 * 1024
-        end,
-      },
-    },
+          -- low level
+          "c",
+          "cpp",
+          "glsl",
+        },
+        highlight = {
+          disable = function(lang, buf)
+            local max_filesize = 1 * 1024 * 1024 -- 100 KB
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+            if ok and stats and stats.size > max_filesize then
+              return true
+            end
+          end,
+        },
+      }
+      return vim.tbl_extend("force", default_opts, addtion)
+    end,
   },
 
   {

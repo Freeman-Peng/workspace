@@ -1,4 +1,5 @@
 vim.env.TERM = "alacritty"
+
 vim.opt.mouse = ""
 vim.opt.exrc = true
 vim.g.toggle_theme_icon = ""
@@ -52,5 +53,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         vim.cmd "MarkdownPreview"
       end,
     })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  group = custom_auto_group,
+  callback = function(args)
+    local max_filesize = 512 * 1024
+    local buf = vim.api.nvim_get_current_buf()
+    local line_cnt = vim.fn.line("$", vim.fn.bufwinid(buf))
+    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+    if ok and stats and stats.size > max_filesize and line_cnt < 5 then
+      vim.api.nvim_del_augroup_by_name "matchparen"
+    end
   end,
 })
