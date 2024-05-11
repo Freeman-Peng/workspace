@@ -72,6 +72,7 @@ local config = {
     end,
     capabilities = capabilities,
     settings = {
+      completions = { completeFunctionCalls = true },
       javascript = {
         inlayHints = {
           includeInlayEnumMemberValueHints = true,
