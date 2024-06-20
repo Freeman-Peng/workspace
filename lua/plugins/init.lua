@@ -99,7 +99,7 @@ return {
   {
     "phaazon/hop.nvim",
     keys = {
-      { "<CR>", "<cmd>HopWord<cr>", desc = "easy move" },
+      { "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
     },
     config = function()
       require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
