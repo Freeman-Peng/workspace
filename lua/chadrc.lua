@@ -13,14 +13,8 @@ M.ui = {
     ["@comment"] = { italic = true },
   },
   tabufline = {
-    overriden_modules = function()
-      return {
-        buttons = function()
-          return ""
-        end,
-      }
-    end,
-  }
+    order = { "treeOffset", "buffers", "tabs" },
+  },
 }
 
 return M
