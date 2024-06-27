@@ -7,19 +7,25 @@ local servers =
   { "lua_ls", "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd", "jdtls", "emmet_ls" }
 local map = vim.keymap.set
 
-local custom_map = function()
-  map("n", "<F1>", ":Telescope lsp_document_symbols<CR>")
-  map("n", "]d", vim.diagnostic.goto_next)
-  map("n", "[d", vim.diagnostic.goto_prev)
-  map("n", "<leader>lf", vim.diagnostic.open_float)
+local custom_map = function(bufnr)
+  local function opts(desc)
+    return { buffer = bufnr, desc = "LSP " .. desc }
+  end
+  map("n", "<F1>", ":Telescope lsp_document_symbols<CR>", opts "show current symbols")
+  map("n", "<leader>ds", ":Telescope lsp_document_symbols<CR>", opts "show current symbols")
+  map("n", "<leader>q", ":Telescope diagnostics<CR>", opts "show diagnostics window")
+  map("n", "]d", vim.diagnostic.goto_next, opts "goto prev dignositc")
+  map("n", "[d", vim.diagnostic.goto_prev, opts "goto prev dignositc")
+  map("n", "<leader>lf", vim.diagnostic.open_float, opts "show float diagnostic")
+  map("n", "gr", ":Telescope lsp_references<CR>", opts "show reference")
 end
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = function(client, bufnr)
-      custom_map()
       on_attach(client, bufnr)
+      custom_map(bufnr)
     end,
     on_init = on_init,
     capabilities = capabilities,
@@ -34,8 +40,8 @@ require("lspconfig").jsonls.setup {
     },
   },
   on_attach = function(client, bufnr)
-    custom_map()
     on_attach(client, bufnr)
+    custom_map(bufnr)
   end,
   on_init = on_init,
   capabilities = capabilities,
