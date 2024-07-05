@@ -18,7 +18,7 @@ local custom_map = function(bufnr)
   map("n", "[d", vim.diagnostic.goto_prev, opts "goto prev dignositc")
   map("n", "<leader>lf", vim.diagnostic.open_float, opts "show float diagnostic")
   map("n", "gr", ":Telescope lsp_references<CR>", opts "show reference")
-  map("n", "gD", ":Telescope vim.lsp.buf.declaration<CR>", opts "Go to declaration")
+  map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
 end
 
 -- lsps with default config
