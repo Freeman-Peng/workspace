@@ -100,6 +100,7 @@ return {
     "phaazon/hop.nvim",
     keys = {
       { "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
+      { "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
     },
     config = function()
       require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
