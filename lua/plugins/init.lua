@@ -51,14 +51,13 @@ return {
   {
     "iamcco/markdown-preview.nvim",
     ft = { "markdown" },
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
-    keys = {
-      { "<F12>", "<cmd>MarkdownPreview<CR>", desc = "markdown preview" },
-    },
     config = function()
       vim.g.mkdp_filetypes = { "markdown" }
+      vim.keymap.set("n", "<F12>", "<cmd>MarkdownPreview<CR>")
     end,
   },
   -- These are some examples, uncomment them if you want to see them work!
@@ -110,6 +109,56 @@ return {
     "hrsh7th/nvim-cmp",
     opts = function()
       return require "configs.cmp"
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      {
+        "mfussenegger/nvim-dap",
+        config = function()
+          require "configs.dapconfig"
+        end,
+      },
+      "nvim-neotest/nvim-nio",
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        config = function()
+          require("nvim-dap-virtual-text").setup()
+        end,
+      },
+    },
+    keys = {
+      {
+        "<F5>",
+        function()
+          require("dap").continue()
+        end,
+      },
+      {
+        "<F10>",
+        function()
+          require("dap").step_over()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<F11>",
+        function()
+          require("dap").step_into()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<F12>",
+        function()
+          require("dap").step_out()
+        end,
+        mode = { "n" },
+      },
+    },
+    config = function()
+      require "configs.dapuiconfig"
     end,
   },
 }
