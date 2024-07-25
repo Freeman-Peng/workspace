@@ -112,15 +112,18 @@ return {
     end,
   },
   {
-    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap",
+    ft = function()
+      return require("configs.dapconfig").filetypes()
+    end,
+    config = function()
+      require("configs.dapconfig").setup()
+    end,
     dependencies = {
       {
-        "mfussenegger/nvim-dap",
-        ft = function()
-          return require("configs.dapconfig").filetypes()
-        end,
+        "rcarriga/nvim-dap-ui",
         config = function()
-          require("configs.dapconfig").setup()
+          require("configs.dapuiconfig").setup()
         end,
       },
       "nvim-neotest/nvim-nio",
@@ -131,44 +134,5 @@ return {
         end,
       },
     },
-    keys = {
-      {
-        "<F5>",
-        function()
-          require("dap").continue()
-        end,
-      },
-      {
-        "<F10>",
-        function()
-          require("dap").step_over()
-        end,
-        mode = { "n" },
-      },
-      {
-        "<F11>",
-        function()
-          require("dap").step_into()
-        end,
-        mode = { "n" },
-      },
-      {
-        "<F12>",
-        function()
-          require("dap").step_out()
-        end,
-        mode = { "n" },
-      },
-      {
-        "<leader>B",
-        function()
-          require("dap").toggle_breakpoint()
-        end,
-        mode = { "n" },
-      },
-    },
-    config = function()
-      require("configs.dapuiconfig").setup {}
-    end,
   },
 }
