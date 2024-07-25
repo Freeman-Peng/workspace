@@ -159,6 +159,13 @@ return {
         end,
         mode = { "n" },
       },
+      {
+        "<leader>B",
+        function()
+          require("dap").toggle_breakpoint()
+        end,
+        mode = { "n" },
+      },
     },
     config = function()
       require("configs.dapuiconfig").setup {}
