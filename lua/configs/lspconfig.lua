@@ -3,8 +3,20 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers =
-  { "lua_ls", "html", "cssls", "tsserver", "volar", "pylsp", "cmake", "gopls", "clangd", "jdtls", "emmet_ls" }
+local servers = {
+  "lua_ls",
+  "html",
+  "cssls",
+  "tsserver",
+  "volar",
+  "pylsp",
+  "cmake",
+  "gopls",
+  "clangd",
+  "jdtls",
+  "emmet_ls",
+  "jsonls",
+}
 local map = vim.keymap.set
 
 local custom_map = function(bufnr)
@@ -21,27 +33,40 @@ local custom_map = function(bufnr)
   map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
 end
 
+local settings = {
+  pylsp = {
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle = {
+            -- ignore = { "E402" },
+          },
+        },
+      },
+    },
+  },
+  jsonls = {
+    settings = {
+      json = {
+        schemas = require("schemastore").json.schemas(),
+        validate = { enable = true },
+      },
+    },
+  },
+}
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  local opts = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       custom_map(bufnr)
     end,
     capabilities = capabilities,
   }
-end
+  if settings[lsp] ~= nil then
+    opts = vim.tbl_extend("keep", opts, settings[lsp])
+  end
 
-require("lspconfig").jsonls.setup {
-  settings = {
-    json = {
-      schemas = require("schemastore").json.schemas(),
-      validate = { enable = true },
-    },
-  },
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-    custom_map(bufnr)
-  end,
-  capabilities = capabilities,
-}
+  lspconfig[lsp].setup(opts)
+end
