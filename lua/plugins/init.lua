@@ -116,8 +116,11 @@ return {
     dependencies = {
       {
         "mfussenegger/nvim-dap",
+        ft = function()
+          return require("configs.dapconfig").filetypes()
+        end,
         config = function()
-          require "configs.dapconfig"
+          require("configs.dapconfig").setup()
         end,
       },
       "nvim-neotest/nvim-nio",
@@ -158,7 +161,7 @@ return {
       },
     },
     config = function()
-      require "configs.dapuiconfig"
+      require("configs.dapuiconfig").setup {}
     end,
   },
 }

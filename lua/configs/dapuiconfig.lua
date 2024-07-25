@@ -1,3 +1,4 @@
+local M = {}
 local dap, dapui = require "dap", require "dapui"
 dap.listeners.before.attach.dapui_config = function()
   dapui.open()
@@ -11,4 +12,7 @@ end
 dap.listeners.before.event_exited.dapui_config = function()
   dapui.close()
 end
-dapui.setup()
+
+M.setup = dapui.setup
+
+return M
