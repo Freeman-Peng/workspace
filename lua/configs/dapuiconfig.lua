@@ -1,16 +1,32 @@
 local M = {}
 local dap, dapui = require "dap", require "dapui"
+
+local function toggle_mouse()
+  if vim.o.mouse ~= "" then
+    vim.o.mouse = ""
+    vim.o.mousemodel = ""
+  else
+    vim.o.mouse = "a"
+    vim.o.mousemodel = "extend"
+  end
+end
+
 dap.listeners.before.attach.dapui_config = function()
   dapui.open()
+  toggle_mouse()
 end
+
 dap.listeners.before.launch.dapui_config = function()
   dapui.open()
+  toggle_mouse()
 end
 dap.listeners.before.event_terminated.dapui_config = function()
   dapui.close()
+  toggle_mouse()
 end
 dap.listeners.before.event_exited.dapui_config = function()
   dapui.close()
+  toggle_mouse()
 end
 
 M.setup = function(opts)
