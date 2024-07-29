@@ -78,8 +78,14 @@ M.mapping["<Tab>"] = cmp.mapping(function(fallback)
   end
 end, { "i", "s" })
 
-M.mapping["<CR>"] = nil
+M.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+  if require("luasnip").jumpable(-1) then
+    require("luasnip").jump(-1)
+  else
+    fallback()
+  end
+end, { "i", "s" })
 
-M.mapping["<S-Tab>"] = nil
+M.mapping["<CR>"] = nil
 
 return M
