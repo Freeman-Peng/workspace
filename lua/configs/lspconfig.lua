@@ -35,17 +35,18 @@ local custom_map = function(bufnr)
 end
 
 local settings = {
-  -- pylsp = {
-  --   settings = {
-  --     pylsp = {
-  --       plugins = {
-  --         pycodestyle = {
-  --           ignore = { "E402" },
-  --         },
-  --       },
-  --     },
-  --   },
-  -- },
+  pylsp = {
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle = {
+            enable = true,
+            maxLineLength = 120,
+          },
+        },
+      },
+    },
+  },
   jsonls = {
     settings = {
       json = {
