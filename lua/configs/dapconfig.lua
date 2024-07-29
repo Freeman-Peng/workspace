@@ -75,7 +75,6 @@ local function add_keymap()
         dap.continue()
       end
     end,
-    ["<F6>"] = dap.terminate,
     ["<F10>"] = dap.step_over,
     ["<F11>"] = dap.step_into,
     ["<F23>"] = dap.step_out,
