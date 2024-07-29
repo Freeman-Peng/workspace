@@ -69,7 +69,7 @@ local function add_keymap()
       end
     end,
     ["<F5>"] = function()
-      if dap.session() == nil then
+      if dap.session() ~= nil then
         dap.restart()
       else
         dap.continue()
