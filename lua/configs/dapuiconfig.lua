@@ -38,11 +38,11 @@ M.setup = function(opts)
           elements = {
             {
               id = "repl",
-              size = 0.5,
+              size = 0.75,
             },
             {
               id = "console",
-              size = 0.5,
+              size = 0.25,
             },
           },
           position = "bottom",

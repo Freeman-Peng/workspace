@@ -48,6 +48,12 @@ local function add_custom_repl_cmd()
   })
 end
 
+local function enable_mouse()
+  local repl = require "dap.repl"
+  local open = repl.open
+  repl.open = function() end
+end
+
 local function add_keymap()
   local maps = {
     -- <S-F5>
@@ -62,7 +68,13 @@ local function add_keymap()
         dap.run_to_cursor()
       end
     end,
-    ["<F5>"] = dap.continue,
+    ["<F5>"] = function()
+      if dap.session() == nil then
+        dap.restart()
+      else
+        dap.continue()
+      end
+    end,
     ["<F10>"] = dap.step_over,
     ["<F11>"] = dap.step_into,
     ["<F23>"] = dap.step_out,

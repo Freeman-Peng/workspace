@@ -31,20 +31,21 @@ local custom_map = function(bufnr)
   map("n", "<leader>lf", vim.diagnostic.open_float, opts "show float diagnostic")
   map("n", "gr", ":Telescope lsp_references<CR>", opts "show reference")
   map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+  map("n", "gd", ":Telescope lsp_definitions<CR>", opts "Go to declaration")
 end
 
 local settings = {
-  pylsp = {
-    settings = {
-      pylsp = {
-        plugins = {
-          pycodestyle = {
-            -- ignore = { "E402" },
-          },
-        },
-      },
-    },
-  },
+  -- pylsp = {
+  --   settings = {
+  --     pylsp = {
+  --       plugins = {
+  --         pycodestyle = {
+  --           ignore = { "E402" },
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
   jsonls = {
     settings = {
       json = {
