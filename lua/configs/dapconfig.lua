@@ -15,11 +15,23 @@ local M = {
           request = "launch",
           name = "Launch Python",
           program = "${file}",
+          console = "integratedTerminal",
           pythonPath = function()
             return "/usr/bin/python"
           end,
-          env = {
-            qt = "pyqt5",
+          autoReload = {
+            enabled = true,
+            exclude = {
+              "**/.git/**",
+              "**/__pycache__/**",
+              "**/node_modules/**",
+              "**/.metadata/**",
+              "**/site-packages/**",
+            },
+            include = {
+              "**/*.py",
+              "**/*.pyw",
+            },
           },
         },
       },
@@ -94,7 +106,7 @@ end
 local function custom_ui()
   vim.api.nvim_set_hl(0, "DapBreakpoint", { ctermbg = 0, fg = "#993939", bg = "#31353f" })
   vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef", bg = "#31353f" })
-  vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, fg = "#98c379", bg = "#31353f" })
+  vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, fg = "#eac379", bg = "#31353f" })
 
   vim.fn.sign_define(
     "DapBreakpoint",
