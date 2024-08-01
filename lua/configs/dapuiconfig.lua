@@ -38,11 +38,7 @@ M.setup = function(opts)
           elements = {
             {
               id = "repl",
-              size = 0.75,
-            },
-            {
-              id = "console",
-              size = 0.25,
+              size = 1,
             },
           },
           position = "bottom",
@@ -52,19 +48,23 @@ M.setup = function(opts)
           elements = {
             {
               id = "scopes",
-              size = 0.25,
+              size = 0.2,
             },
             {
               id = "breakpoints",
-              size = 0.25,
+              size = 0.2,
             },
             {
               id = "stacks",
-              size = 0.25,
+              size = 0.2,
             },
             {
               id = "watches",
-              size = 0.25,
+              size = 0.2,
+            },
+            {
+              id = "console",
+              size = 0.2,
             },
           },
           position = "right",
