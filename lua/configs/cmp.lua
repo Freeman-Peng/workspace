@@ -86,6 +86,10 @@ M.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
   end
 end, { "i", "s" })
 
+M.mapping["<C-X><C-O>"] = cmp.mapping(function(callback)
+  cmp.complete()
+end)
+
 M.mapping["<CR>"] = nil
 
 return M
