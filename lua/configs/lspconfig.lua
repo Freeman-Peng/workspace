@@ -3,20 +3,6 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers = {
-  "lua_ls",
-  "html",
-  "cssls",
-  "tsserver",
-  "volar",
-  "pylsp",
-  "cmake",
-  "gopls",
-  "clangd",
-  "jdtls",
-  "emmet_ls",
-  "jsonls",
-}
 local map = vim.keymap.set
 
 local custom_map = function(bufnr)
@@ -35,6 +21,15 @@ local custom_map = function(bufnr)
 end
 
 local settings = {
+  "lua_ls",
+  "html",
+  "cssls",
+  "tsserver",
+  "volar",
+  "cmake",
+  "gopls",
+  "jdtls",
+  "emmet_ls",
   pylsp = {
     settings = {
       pylsp = {
@@ -55,20 +50,41 @@ local settings = {
       },
     },
   },
+  clangd = {
+    cmd = {
+      "clangd",
+      "--completion-style=detailed",
+      "--pch-storage=memory",
+    },
+  },
 }
 
 -- lsps with default config
-for _, lsp in ipairs(servers) do
+for k, v in pairs(settings) do
   local opts = {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       custom_map(bufnr)
+      if client.supports_method "textDocument/signatureHelp" then
+        vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
+          group = vim.api.nvim_create_augroup("LspSignature", {}),
+          callback = function()
+            vim.lsp.buf.signature_help()
+          end,
+        })
+      end
     end,
     capabilities = capabilities,
   }
-  if settings[lsp] ~= nil then
-    opts = vim.tbl_extend("keep", opts, settings[lsp])
-  end
 
-  lspconfig[lsp].setup(opts)
+  if type(v) == "table" then
+    opts = vim.tbl_extend("keep", opts, v)
+  end
+  -- assert(false, vim.inspect(opts))
+
+  if type(k) == "string" then
+    lspconfig[k].setup(opts)
+  elseif type(v) == "string" then
+    lspconfig[v].setup(opts)
+  end
 end
