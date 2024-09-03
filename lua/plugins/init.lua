@@ -57,7 +57,12 @@ return {
     end,
     config = function()
       vim.g.mkdp_filetypes = { "markdown" }
-      vim.keymap.set("n", "<F12>", "<cmd>MarkdownPreview<CR>")
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "markdown" },
+        callback = function(ev)
+          vim.api.nvim_buf_set_keymap(0, "n", "<F12>", "<cmd>MarkdownPreview<CR>", { nowait = true })
+        end,
+      })
     end,
   },
   -- These are some examples, uncomment them if you want to see them work!
