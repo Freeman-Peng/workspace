@@ -24,12 +24,33 @@ local settings = {
   "lua_ls",
   "html",
   "cssls",
-  "tsserver",
-  "volar",
   "cmake",
   "gopls",
   "jdtls",
+  "rust_analyzer",
   "emmet_ls",
+  "volar",
+  tsserver = {
+    init_options = {
+      plugins = {
+        {
+          name = "@vue/typescript-plugin",
+          location = require("mason-registry").get_package("vue-language-server"):get_install_path()
+            .. "/node_modules/@vue/language-server",
+          languages = { "vue" },
+        },
+      },
+    },
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "javascript.jsx",
+      "typescript",
+      "typescriptreact",
+      "typescript.tsx",
+      "vue",
+    },
+  },
   pylsp = {
     settings = {
       pylsp = {
@@ -71,6 +92,7 @@ for k, v in pairs(settings) do
           callback = function()
             vim.lsp.buf.signature_help()
           end,
+          buffer = bufnr,
         })
       end
     end,
@@ -78,7 +100,7 @@ for k, v in pairs(settings) do
   }
 
   if type(v) == "table" then
-    opts = vim.tbl_extend("keep", opts, v)
+    opts = vim.tbl_deep_extend("keep", opts, v)
   end
   -- assert(false, vim.inspect(opts))
 
