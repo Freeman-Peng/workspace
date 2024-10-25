@@ -5,7 +5,6 @@
 local M = {}
 
 M.ui = {
-  theme = "doomchad",
   lsp_semantic_tokens = true,
 
   hl_override = {
@@ -15,6 +14,15 @@ M.ui = {
   tabufline = {
     order = { "treeOffset", "buffers", "tabs" },
   },
+  cmp = {
+    format_colors = {
+      tailwind = true,
+    },
+  },
+}
+
+M.base46 = {
+  theme = "doomchad",
 }
 
 return M
