@@ -29,8 +29,14 @@ local settings = {
   "jdtls",
   "rust_analyzer",
   "emmet_ls",
-  "volar",
   "tailwindcss",
+  volar = {
+    init_options = {
+      vue = {
+        hybridMode = false,
+      },
+    },
+  },
   ts_ls = {
     init_options = {
       plugins = {
@@ -49,7 +55,6 @@ local settings = {
       "typescript",
       "typescriptreact",
       "typescript.tsx",
-      "vue",
     },
   },
   pylsp = {
