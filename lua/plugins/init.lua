@@ -193,4 +193,46 @@ return {
 			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 		},
 	},
+	{
+		"Wansmer/treesj",
+		keys = {
+			{ "<leader>j", "<cmd>TSJToggle<cr>", desc = "toggle blocks of code splitting/joining" },
+		},
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		opts = {
+			use_default_keymaps = true,
+			---@type boolean Node with syntax error will not be formatted
+			check_syntax_error = true,
+			---If line after join will be longer than max value,
+			---@type number If line after join will be longer than max value, node will not be formatted
+			max_join_length = 120,
+			---Cursor behavior:
+			---hold - cursor follows the node/place on which it was called
+			---start - cursor jumps to the first symbol of the node being formatted
+			---end - cursor jumps to the last symbol of the node being formatted
+			---@type 'hold'|'start'|'end'
+			cursor_behavior = "hold",
+			---@type boolean Notify about possible problems or not
+			notify = true,
+			---@type boolean Use `dot` for repeat action
+			dot_repeat = true,
+			---@type nil|function Callback for treesj error handler. func (err_text, level, ...other_text)
+			on_error = nil,
+			---@type table Presets for languages
+			-- langs = {}, -- See the default presets in lua/treesj/langs
+		},
+		cmd = { "TSJToggle" },
+	},
+	{
+		"dhananjaylatkar/cscope_maps.nvim",
+		cmd = { "Cscope", "Cs" },
+		opts = {
+			skip_input_prompt = true,
+			cscope = {
+				db_file = "GTAGS",
+				exec = "gtags-cscope",
+				picker = "telescope",
+			},
+		},
+	},
 }
