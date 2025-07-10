@@ -10,13 +10,7 @@ local settings = {
 	"rust_analyzer",
 	"emmet_ls",
 	"tailwindcss",
-	omnisharp = {
-		settings = {
-			Msbuild = {
-				enabled = true,
-			},
-		},
-	},
+	"csharp_ls",
 	ts_ls = {
 		init_options = {
 			plugins = {
