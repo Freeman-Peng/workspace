@@ -1,4 +1,4 @@
-require "nvchad.options"
+require("nvchad.options")
 
 -- add yours here!
 
@@ -9,29 +9,30 @@ o.mouse = ""
 o.backup = true
 o.backupskip = ""
 o.updatetime = 250
+o.expandtab = false
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  callback = function()
-    local path = vim.fn.expand "%:p:h"
-    if path == "" then
-      path = vim.fn.getcwd()
-    end
-    local full_path = vim.fn.stdpath "state" .. "/backup" .. path
-    if not vim.fn.filereadable(full_path) then
-      vim.fn.mkdir(full_path, "pR")
-    end
-    o.backupdir = full_path
-  end,
+	callback = function()
+		local path = vim.fn.expand("%:p:h")
+		if path == "" then
+			path = vim.fn.getcwd()
+		end
+		local full_path = vim.fn.stdpath("state") .. "/backup" .. path
+		if not vim.fn.filereadable(full_path) then
+			vim.fn.mkdir(full_path, "pR")
+		end
+		o.backupdir = full_path
+	end,
 })
 
 -- autocmds
 -- local custom_auto_group = vim.api.nvim_create_augroup("custom_grp", { clear = false })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "c", "cpp" },
-  callback = function()
-    vim.bo.commentstring = "// %s"
-  end,
+	pattern = { "c", "cpp" },
+	callback = function()
+		vim.bo.commentstring = "// %s"
+	end,
 })
 
 -- vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -53,3 +54,28 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 --     ok = pcall(require, path .. "/.nvim")
 --   end,
 -- })
+
+-- for wsl
+if vim.env.WSL2_GUI_APPS_ENABLED then
+	vim.g.clipboard = {
+		name = "WslClipboard",
+		copy = {
+			["+"] = "/home/fpeng/.local/bin/win32yank.exe -i --crlf",
+			["*"] = "/home/fpeng/.local/bin/win32yank.exe -i --crlf",
+		},
+		paste = {
+			["+"] = "/home/fpeng/.local/bin/win32yank.exe -o --lf",
+			["*"] = "home/fpeng/.local/bin/win32yank.exe -o --lf",
+		},
+		cache_enabled = 0,
+	}
+end
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "yaml" },
+	callback = function()
+		vim.cmd("compiler! make")
+		vim.b.current_compiler = "make"
+		vim.g.current_compiler = "make"
+	end,
+})
