@@ -118,7 +118,7 @@ M.on_attach = function(client, bufnr, lsp_name)
 	end, opts("List workspace folders"))
 
 	if lsp_name == "clangd" then
-		map("n", "<leader>w", ":ClangdSwitchSourceHeader<CR>", opts("Go to declaration"))
+		map("n", "<leader>w", ":LspClangdSwitchSourceHeader<CR>", opts("Go to declaration"))
 	end
 end
 
