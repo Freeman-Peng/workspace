@@ -2,7 +2,7 @@ return {
 	{
 		"stevearc/conform.nvim",
 		opts = function()
-			return require("config.conform")
+			return require("configs.conform")
 		end,
 	},
 	{
@@ -215,10 +215,11 @@ return {
 		},
 	},
 	{ "nvim-autopairs", event = "InsertEnter", config = true },
+	{ import = "nvchad.blink.lazyspec" },
 	{
 		"saghen/blink.cmp",
 		opts = function()
-			local opts = require "nvchad.blink.config"
+			local opts = require("nvchad.blink.config")
 			opts.keymap["<tab>"] = {
 				function(cmp)
 					if cmp.snippet_active() then
@@ -233,19 +234,18 @@ return {
 			return opts
 		end,
 	},
-	{ import = "nvchad.blink.lazyspec" },
 	{
-		'kevinhwang91/nvim-bqf',
+		"kevinhwang91/nvim-bqf",
 		dependencies = {
-				"junegunn/fzf",
+			"junegunn/fzf",
 		},
-		ft='qf',
-		opts = {
-			filter = {
-					fzf = {
-						extra_opts = {'--bind', 'ctrl-o:toggle-all', '--delimiter', '│'}
-					}
-				}
-			}
-	}
+		ft = "qf",
+		-- opts = {
+		-- 	filter = {
+		-- 		fzf = {
+		-- 			extra_opts = { '--bind', 'ctrl-o:toggle-all', '--delimiter', '│' }
+		-- 		}
+		-- 	}
+		-- }
+	},
 }
