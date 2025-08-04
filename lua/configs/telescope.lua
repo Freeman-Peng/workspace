@@ -32,4 +32,6 @@ opts.defaults.preview = {
     end,
   }
 
+opts.defaults.layout_config.vertical = {width = 0.88}
+opts.defaults.layout_strategy = "vertical"
 return opts

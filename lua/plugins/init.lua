@@ -1,22 +1,8 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		event = { "BufWritePre" },
-		cmd = { "ConformInfo" },
-		opts = {
-			formatters_by_ft = {
-				lua = { "stylua" },
-				javascript = { { "prettierd", "prettier" } },
-				go = { "goimports", "gofmt" },
-			},
-			format_on_save = {
-				timeout_ms = 500,
-				lsp_format = "fallback",
-			},
-		},
-		init = function()
-			-- If you want the formatexpr, here is the place to set it
-			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+		opts = function()
+			return require("config.conform")
 		end,
 	},
 	{
@@ -232,7 +218,7 @@ return {
 	{
 		"saghen/blink.cmp",
 		opts = function()
-			local opts = require("nvchad.blink.config")
+			local opts = require "nvchad.blink.config"
 			opts.keymap["<tab>"] = {
 				function(cmp)
 					if cmp.snippet_active() then
