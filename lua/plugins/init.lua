@@ -234,4 +234,18 @@ return {
 		end,
 	},
 	{ import = "nvchad.blink.lazyspec" },
+	{
+		'kevinhwang91/nvim-bqf',
+		dependencies = {
+				"junegunn/fzf",
+		},
+		ft='qf',
+		opts = {
+			filter = {
+					fzf = {
+						extra_opts = {'--bind', 'ctrl-o:toggle-all', '--delimiter', '│'}
+					}
+				}
+			}
+	}
 }
