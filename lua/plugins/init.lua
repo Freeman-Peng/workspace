@@ -220,7 +220,7 @@ return {
 		"saghen/blink.cmp",
 		opts = function()
 			local opts = require("nvchad.blink.config")
-			opts.keymap["<tab>"] = {
+			opts.keymap["<Tab>"] = {
 				function(cmp)
 					if cmp.snippet_active() then
 						return cmp.accept()
