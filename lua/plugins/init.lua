@@ -80,7 +80,9 @@ return {
 		keys = {
 			{ "<leader>u", "<cmd>Telescope undo<CR>", desc = "open telescope undo extensions" },
 		},
-	end,
+		config = function()
+			require("configs.telescope")
+		end,
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
@@ -247,5 +249,13 @@ return {
 		-- 		}
 		-- 	}
 		-- }
+	},
+	{
+		"echasnovski/mini.align",
+		version = false,
+		event = "VeryLazy",
+		config = function(opt)
+			require("mini.align").setup(opt)
+		end,
 	},
 }
