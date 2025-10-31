@@ -1,9 +1,9 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		opts = function()
-			return require("configs.conform")
-		end,
+		-- enabled = false,
+		ft = require("configs.conform").ft,
+		opts = require("configs.conform").opts,
 	},
 	{
 		"williamboman/mason.nvim",
@@ -80,7 +80,7 @@ return {
 		keys = {
 			{ "<leader>u", "<cmd>Telescope undo<CR>", desc = "open telescope undo extensions" },
 		},
-		opts = require("configs.telescope"),
+	end,
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
