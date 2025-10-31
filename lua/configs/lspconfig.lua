@@ -11,6 +11,10 @@ local settings = {
 	"emmet_ls",
 	"tailwindcss",
 	"csharp_ls",
+	gradle_ls = {
+		filetypes = { "gradle", "groovy", "kotlin" },
+		allowParallelRun = true,
+	},
 	ts_ls = {
 		init_options = {
 			plugins = {
