@@ -11,6 +11,7 @@ o.backupskip = ""
 o.updatetime = 250
 o.expandtab = false
 o.diffopt = "iwhite," .. o.diffopt
+o.showbreak= 'ͱ'
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	callback = function()
