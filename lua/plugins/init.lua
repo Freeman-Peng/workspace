@@ -258,4 +258,13 @@ return {
 			require("mini.align").setup(opt)
 		end,
 	},
+	{
+		"monkoose/matchparen.nvim",
+		event = "VeryLazy",
+		opts = {
+			enabled = true,
+			hl_group = "MatchParen",
+			debounce_time = 60,
+		},
+	},
 }
