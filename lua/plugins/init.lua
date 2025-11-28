@@ -124,29 +124,29 @@ return {
 			},
 		},
 	},
-	{
-		"sphamba/smear-cursor.nvim",
-		event = "VeryLazy",
-		opts = {
-			-- Smear cursor when switching buffers or windows.
-			smear_between_buffers = true,
-
-			-- Smear cursor when moving within line or to neighbor lines.
-			-- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
-			smear_between_neighbor_lines = true,
-
-			-- Draw the smear in buffer space instead of screen space when scrolling
-			scroll_buffer_space = true,
-
-			-- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-			-- Smears will blend better on all backgrounds.
-			legacy_computing_symbols_support = false,
-
-			-- Smear cursor in insert mode.
-			-- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
-			smear_insert_mode = true,
-		},
-	},
+	-- {
+	-- 	"sphamba/smear-cursor.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {
+	-- 		-- Smear cursor when switching buffers or windows.
+	-- 		smear_between_buffers = true,
+	--
+	-- 		-- Smear cursor when moving within line or to neighbor lines.
+	-- 		-- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
+	-- 		smear_between_neighbor_lines = true,
+	--
+	-- 		-- Draw the smear in buffer space instead of screen space when scrolling
+	-- 		scroll_buffer_space = true,
+	--
+	-- 		-- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+	-- 		-- Smears will blend better on all backgrounds.
+	-- 		legacy_computing_symbols_support = false,
+	--
+	-- 		-- Smear cursor in insert mode.
+	-- 		-- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
+	-- 		smear_insert_mode = true,
+	-- 	},
+	-- },
 	{
 		"echasnovski/mini.cursorword",
 		version = "*",
@@ -161,7 +161,7 @@ return {
 		opts = {
 			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
 			multiwindow = false, -- Enable multiwindow support.
-			max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+			max_lines = 5, -- How many lines the window should span. Values <= 0 mean no limit.
 			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
 			line_numbers = true,
 			multiline_threshold = 20, -- Maximum number of lines to show for a single context
@@ -177,7 +177,7 @@ return {
 	{
 		"Wansmer/treesj",
 		keys = {
-			{ "<leader>j", "<cmd>TSJToggle<cr>", desc = "toggle blocks of code splitting/joining" },
+			{ "<leader>j", "<leader>s", "<cmd>TSJToggle<cr>", desc = "toggle blocks of code splitting/joining" },
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {
@@ -266,5 +266,18 @@ return {
 			hl_group = "MatchParen",
 			debounce_time = 60,
 		},
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		lazy = false,
+		opts = {
+			select = { enable = true },
+			move = { enable = true, set_jumps = true },
+		},
+		config = function(opts)
+			require("nvim-treesitter-textobjects").setup(opts)
+			require("configs.textobjects")
+		end,
 	},
 }
