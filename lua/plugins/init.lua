@@ -233,6 +233,7 @@ return {
 				"snippet_forward",
 				"fallback",
 			}
+			opts.keymap["<CR>"] = { "hide" }
 			return opts
 		end,
 	},
