@@ -222,19 +222,14 @@ return {
 		"saghen/blink.cmp",
 		opts = function()
 			local opts = require("nvchad.blink.config")
-			opts.keymap["<Tab>"] = {
-				function(cmp)
-					if cmp.snippet_active() then
-						return cmp.accept()
-					else
-						return cmp.select_and_accept()
-					end
-				end,
-				"snippet_forward",
-				"fallback",
-			}
+			opts.keymap = { preset = "super-tab" }
 			opts.keymap["<CR>"] = { "hide", "fallback" }
+			opts.completion.menu.draw.columns = {
+				{ "kind_icon", gap = 1 },
+				{ "label", "label_description" },
+			}
 			return opts
+			-- return opts
 		end,
 	},
 	{
