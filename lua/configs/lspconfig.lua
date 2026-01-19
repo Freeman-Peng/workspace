@@ -59,6 +59,8 @@ local settings = {
 			"clangd",
 			"--completion-style=detailed",
 			"--pch-storage=memory",
+			"-j",
+			"4",
 		},
 	},
 	lua_ls = {

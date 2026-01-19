@@ -224,6 +224,17 @@ return {
 			local opts = require("nvchad.blink.config")
 			opts.keymap = { preset = "super-tab" }
 			opts.keymap["<CR>"] = { "hide", "fallback" }
+			-- opts.completion.menu.auto_show = true
+			opts.completion.menu.draw.components.label = {
+				text = function(ctx)
+					-- kind == function
+					if ctx.item.client_name == "clangd" and ctx.item.kind == 3 then
+						local detail = ctx.item.detail or ""
+						return ctx.label .. " -> " .. detail
+					end
+					return ctx.label
+				end,
+			}
 			opts.completion.menu.draw.columns = {
 				{ "kind_icon", gap = 1 },
 				{ "label", "label_description" },
