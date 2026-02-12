@@ -1,5 +1,13 @@
+local version = vim.version()
+if version.minor < 11 or version.patch < 6 then
+	error("nvim-lspconfig may not support current version")
+end
+
+require("lspconfig")
 local M = {}
+
 local map = vim.keymap.set
+local navic = require("nvim-navic")
 
 local settings = {
 	"html",
@@ -82,6 +90,11 @@ M.on_attach = function(client, bufnr, lsp_name)
 		return { buffer = bufnr, desc = "LSP " .. desc }
 	end
 
+	if client.server_capabilities.documentSymbolProvider then
+		vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+		navic.attach(client, bufnr)
+	end
+
 	if client.supports_method("textDocument/signatureHelp") then
 		vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
 			group = vim.api.nvim_create_augroup("LspSignature", {}),
@@ -154,7 +167,7 @@ M.capabilities.textDocument.completion.completionItem = {
 	},
 }
 
-M.defaults = function()
+M.setup = function()
 	dofile(vim.g.base46_cache .. "lsp")
 	require("nvchad.lsp").diagnostic_config()
 
@@ -168,22 +181,12 @@ M.defaults = function()
 			end,
 		})
 
-		if vim.lsp.config then
-			if type(v) == "table" then
-				vim.lsp.config(name, v)
-			end
-			vim.lsp.enable(name)
-		else
-			local opts = {
-				capabilities = M.capabilities,
-				on_init = M.on_init,
-			}
-			if type(v) == "table" then
-				opts = vim.tbl_deep_extend("keep", opts, v)
-			end
-
-			require("lspconfig")[name].setup(opts)
+		if type(v) ~= "table" then
+			v = {}
 		end
+
+		vim.lsp.config(name, v)
+		vim.lsp.enable(name)
 	end
 end
 

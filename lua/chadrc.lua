@@ -5,24 +5,38 @@
 local M = {}
 
 M.ui = {
-  lsp_semantic_tokens = true,
+	lsp_semantic_tokens = true,
 
-  hl_override = {
-    Comment = { italic = true },
-    ["@comment"] = { italic = true },
-  },
-  tabufline = {
-    order = { "treeOffset", "buffers", "tabs" },
-  },
-  cmp = {
-    format_colors = {
-      tailwind = true,
-    },
-  },
+	hl_override = {
+		Comment = { italic = true },
+		["@comment"] = { italic = true },
+	},
+	tabufline = {
+		order = { "treeOffset", "buffers", "tabs" },
+	},
+	cmp = {
+		format_colors = {
+			tailwind = true,
+		},
+	},
+
+	statusline = {
+		theme = "default",
+		separator_style = "default",
+		order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "lsp", "cwd", "xyz", "abc" },
+		modules = {
+			abc = function()
+				return "hi"
+			end,
+
+			xyz = "hi",
+			f = "%F",
+		},
+	},
 }
 
 M.base46 = {
-  theme = "doomchad",
+	theme = "onedark",
 }
 
 return M

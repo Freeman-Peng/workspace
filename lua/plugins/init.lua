@@ -57,8 +57,9 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = "User FilePost",
+		dependencies = { "SmiteshP/nvim-navic" },
 		config = function()
-			require("configs.lspconfig").defaults()
+			require("configs.lspconfig").setup()
 		end,
 	},
 	{
@@ -67,6 +68,9 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
 		opts = require("configs.treesitter"),
 	},
 	{
@@ -124,64 +128,41 @@ return {
 			},
 		},
 	},
-	-- {
-	-- 	"sphamba/smear-cursor.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {
-	-- 		-- Smear cursor when switching buffers or windows.
-	-- 		smear_between_buffers = true,
-	--
-	-- 		-- Smear cursor when moving within line or to neighbor lines.
-	-- 		-- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
-	-- 		smear_between_neighbor_lines = true,
-	--
-	-- 		-- Draw the smear in buffer space instead of screen space when scrolling
-	-- 		scroll_buffer_space = true,
-	--
-	-- 		-- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-	-- 		-- Smears will blend better on all backgrounds.
-	-- 		legacy_computing_symbols_support = false,
-	--
-	-- 		-- Smear cursor in insert mode.
-	-- 		-- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
-	-- 		smear_insert_mode = true,
-	-- 	},
-	-- },
 	{
 		"echasnovski/mini.cursorword",
 		version = "*",
 		opts = { delay = 100 },
 	},
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-		event = "VeryLazy",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-		},
-		opts = {
-			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-			multiwindow = false, -- Enable multiwindow support.
-			max_lines = 5, -- How many lines the window should span. Values <= 0 mean no limit.
-			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-			line_numbers = true,
-			multiline_threshold = 20, -- Maximum number of lines to show for a single context
-			trim_scope = "inner", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-			-- Separator between context and content. Should be a single character string, like '-'.
-			-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-			separator = nil,
-			zindex = 20, -- The Z-index of the context window
-			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-		},
-	},
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter-context",
+	-- 	event = "VeryLazy",
+	-- 	dependencies = {
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	},
+	-- 	opts = {
+	-- 		enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+	-- 		multiwindow = false, -- Enable multiwindow support.
+	-- 		max_lines = 5, -- How many lines the window should span. Values <= 0 mean no limit.
+	-- 		min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+	-- 		line_numbers = true,
+	-- 		multiline_threshold = 20, -- Maximum number of lines to show for a single context
+	-- 		trim_scope = "inner", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+	-- 		mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+	-- 		-- Separator between context and content. Should be a single character string, like '-'.
+	-- 		-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+	-- 		separator = nil,
+	-- 		zindex = 20, -- The Z-index of the context window
+	-- 		on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+	-- 	},
+	-- },
 	{
 		"Wansmer/treesj",
 		keys = {
-			{ "<leader>j", "<leader>s", "<cmd>TSJToggle<cr>", desc = "toggle blocks of code splitting/joining" },
+			{ "<leader>m", "<cmd>TSJToggle<cr>", desc = "toggle blocks of code splitting/joining" },
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {
-			use_default_keymaps = true,
+			use_default_keymaps = false,
 			---@type boolean Node with syntax error will not be formatted
 			check_syntax_error = true,
 			---If line after join will be longer than max value,
@@ -202,7 +183,6 @@ return {
 			---@type table Presets for languages
 			-- langs = {}, -- See the default presets in lua/treesj/langs
 		},
-		cmd = { "TSJToggle" },
 	},
 	{
 		"dhananjaylatkar/cscope_maps.nvim",
@@ -275,16 +255,33 @@ return {
 		},
 	},
 	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		branch = "main",
-		lazy = false,
-		opts = {
-			select = { enable = true },
-			move = { enable = true, set_jumps = true },
-		},
-		config = function(opts)
-			require("nvim-treesitter-textobjects").setup(opts)
-			require("configs.textobjects")
+		"RRethy/vim-illuminate",
+		event = "VeryLazy",
+		config = function()
+			require("illuminate").configure({})
 		end,
+	},
+	{
+		"sphamba/smear-cursor.nvim",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
+		"karb94/neoscroll.nvim",
+		event = "VeryLazy",
+		opts = {
+			hide_cursor = false,
+			duration_multiplier = 0.1,
+		},
+	},
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown" },
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
 	},
 }
