@@ -31,3 +31,7 @@ map("n", "<leader>ce", function()
 		vim.api.nvim_feedkeys("_", "n", true)
 	end
 end, { desc = "blankline jump to current context" })
+
+vim.keymap.del("n", "<leader>h")
+
+vim.keymap.del("n", "<leader>v")
