@@ -38,6 +38,7 @@ opts.defaults.layout_strategy = "vertical"
 
 require("telescope").setup(opts)
 require("telescope").load_extension("ui-select")
+require("telescope").load_extension("ast_grep")
 
 local is_inside_work_tree = {}
 
