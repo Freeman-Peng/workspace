@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 		if not vim.fn.filereadable(full_path) then
 			vim.fn.mkdir(full_path, "pR")
 		end
-		o.backupdir = full_path
+		vim.o.backupdir = full_path
 	end,
 })
 
