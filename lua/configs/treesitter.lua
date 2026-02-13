@@ -20,6 +20,7 @@ return {
 		"vue",
 	},
 	highlight = {
+		enable = false,
 		use_languagetree = true,
 	},
 	indent = { enable = false },
