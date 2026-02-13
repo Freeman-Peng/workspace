@@ -75,14 +75,16 @@ return {
 	},
 	{
 		"nvim-telescope/telescope.nvim",
+		event = { "LspAttach" },
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 			{ "Marskey/telescope-sg" },
 			{ "debugloop/telescope-undo.nvim" },
+			{ "nvim-telescope/telescope-ui-select.nvim" },
 		},
 		keys = {
-			{ "<leader>u", "<cmd>Telescope undo<CR>", desc = "open telescope undo extensions" },
+			{ "<leader>fu", "<cmd>Telescope undo<CR>", desc = "open telescope undo extensions" },
 		},
 		config = function()
 			require("configs.telescope")
@@ -283,5 +285,12 @@ return {
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
 		opts = {},
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		event = "User FilePost",
+		opts = function()
+			return require("configs.gitsigns")
+		end,
 	},
 }

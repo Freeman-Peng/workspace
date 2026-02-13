@@ -37,6 +37,7 @@ opts.defaults.layout_config.vertical = { width = 0.88 }
 opts.defaults.layout_strategy = "vertical"
 
 require("telescope").setup(opts)
+require("telescope").load_extension("ui-select")
 
 local is_inside_work_tree = {}
 

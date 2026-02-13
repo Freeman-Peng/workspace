@@ -81,3 +81,10 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 		vim.g.current_compiler = "make"
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+	pattern = { "*.mjs", "*.min.js" }, -- add large file extensions
+	callback = function()
+		vim.treesitter.stop()
+	end,
+})
