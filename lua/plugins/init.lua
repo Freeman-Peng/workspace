@@ -128,7 +128,8 @@ return {
 	},
 	{
 		"echasnovski/mini.cursorword",
-		version = "*",
+		event = "VeryLazy",
+		version = false,
 		opts = { delay = 100 },
 	},
 	-- {
