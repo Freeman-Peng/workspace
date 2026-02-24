@@ -57,14 +57,10 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = "User FilePost",
-		dependencies = { "SmiteshP/nvim-navic" },
+		dependencies = { "SmiteshP/nvim-navic", "b0o/schemastore.nvim" },
 		config = function()
 			require("configs.lspconfig").setup()
 		end,
-	},
-	{
-		"b0o/schemastore.nvim",
-		ft = { "json" },
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -255,13 +251,6 @@ return {
 			hl_group = "MatchParen",
 			debounce_time = 60,
 		},
-	},
-	{
-		"RRethy/vim-illuminate",
-		event = "VeryLazy",
-		config = function()
-			require("illuminate").configure({})
-		end,
 	},
 	{
 		"sphamba/smear-cursor.nvim",
