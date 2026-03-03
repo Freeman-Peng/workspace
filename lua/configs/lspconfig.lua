@@ -91,7 +91,6 @@ M.on_attach = function(client, bufnr, lsp_name)
 	end
 
 	if client.server_capabilities.documentSymbolProvider then
-		vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 		navic.attach(client, bufnr)
 	end
 
@@ -113,7 +112,13 @@ M.on_attach = function(client, bufnr, lsp_name)
 	end, opts("List workspace folders"))
 
 	map("n", "<F1>", ":Telescope lsp_document_symbols<CR>", opts("show current symbols"))
-	map("n", "<leader>ds", ":Telescope lsp_document_symbols<CR>", opts("show current symbols"))
+	map("n", "<leader>ds", function()
+		require("telescope.builtin").lsp_document_symbols({
+			symbol_width = 0.6,
+			symbol_type_width = 0.1,
+			fname_width = 0.3,
+		})
+	end, opts("show current symbols"))
 	map("n", "<leader>q", ":Telescope diagnostics<CR>", opts("show diagnostics window"))
 	map("n", "]d", function()
 		vim.diagnostic.jump({ count = 1 })

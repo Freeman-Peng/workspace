@@ -132,6 +132,7 @@ return {
 		version = false,
 		opts = { delay = 100 },
 	},
+	{ "nvim-mini/mini.ai", event = "VeryLazy", version = false },
 	-- {
 	-- 	"nvim-treesitter/nvim-treesitter-context",
 	-- 	event = "VeryLazy",
@@ -281,6 +282,14 @@ return {
 		event = "User FilePost",
 		opts = function()
 			return require("configs.gitsigns")
+		end,
+	},
+	{
+		"b0o/incline.nvim",
+		event = "LspAttach",
+		dependencies = { "nvim-navic", "nvim-web-devicons" },
+		config = function()
+			require("configs.incline")
 		end,
 	},
 }
