@@ -11,7 +11,9 @@ o.backupskip = ""
 o.updatetime = 250
 o.expandtab = false
 o.diffopt = "iwhite," .. o.diffopt
-o.showbreak = "ͱ"
+o.showbreak = "󱞪 "
+o.scrolloff = 8
+o.sidescrolloff = 8
 
 -- for wsl
 if vim.env.WSL2_GUI_APPS_ENABLED then
