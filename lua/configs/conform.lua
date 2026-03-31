@@ -4,6 +4,7 @@ local M = {
 			lua = { "stylua" },
 			css = { "prettier" },
 			html = { "prettierd" },
+			vue = { "prettierd" },
 			javascript = { "prettierd" },
 			typescript = { "prettierd" },
 			markdown = { "prettierd", "prettier", stop_after_first = true },
