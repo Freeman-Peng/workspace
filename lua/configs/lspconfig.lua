@@ -28,7 +28,15 @@ local settings = {
 			plugins = {
 				{
 					name = "@vue/typescript-plugin",
-					location = vim.fn.expand("$MASON/packages/vue-language-server//node_modules/@vue/language-server"),
+					location = vim.fs.joinpath(
+						vim.fn.stdpath("data"),
+						"mason",
+						"packages",
+						"vue-language-server",
+						"node_modules",
+						"@vue",
+						"language-server"
+					),
 					languages = { "vue" },
 				},
 			},
@@ -40,6 +48,7 @@ local settings = {
 			"typescript",
 			"typescriptreact",
 			"typescript.tsx",
+			"vue",
 		},
 	},
 	pylsp = {
