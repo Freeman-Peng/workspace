@@ -23,6 +23,6 @@ return {
 		enable = false,
 		use_languagetree = true,
 	},
-	indent = { enable = false },
+	indent = { enable = true },
 	incremental_selection = { enable = true },
 }
