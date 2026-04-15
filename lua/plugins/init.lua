@@ -57,7 +57,21 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = "User FilePost",
-		dependencies = { "SmiteshP/nvim-navic", "b0o/schemastore.nvim" },
+		dependencies = {
+			{
+				"SmiteshP/nvim-navic",
+				opts = function()
+					return {
+						icons = { enabled = true },
+						highlight = true,
+						lsp = {
+							auto_attach = true,
+						},
+					}
+				end,
+			},
+			"b0o/schemastore.nvim",
+		},
 		config = function()
 			require("configs.lspconfig").setup()
 		end,
@@ -254,11 +268,20 @@ return {
 			debounce_time = 60,
 		},
 	},
-	{
-		"sphamba/smear-cursor.nvim",
-		event = "VeryLazy",
-		opts = {},
-	},
+	-- {
+	-- 	"sphamba/smear-cursor.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {
+	-- 		time_interval = 7,
+	-- 		stiffness = 0.9,
+	-- 		trailing_stiffness = 0.8,
+	-- 		stiffness_insert_mode = 0.7,
+	-- 		trailing_stiffness_insert_mode = 0.7,
+	-- 		damping = 0.95,
+	-- 		damping_insert_mode = 0.95,
+	-- 		distance_stop_animating = 0.8,
+	-- 	},
+	-- },
 	{
 		"karb94/neoscroll.nvim",
 		event = "VeryLazy",
@@ -291,5 +314,14 @@ return {
 		config = function()
 			require("configs.incline")
 		end,
+	},
+	{
+		"hat0uma/csvview.nvim",
+		cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+		opts = {
+			view = {
+				display_mode = "border",
+			},
+		},
 	},
 }
