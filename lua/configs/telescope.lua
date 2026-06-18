@@ -84,7 +84,7 @@ end
 
 vim.api.nvim_set_keymap(
 	"n",
-	"<Leader>fw",
+	"<Leader>fg",
 	"",
 	{ noremap = true, silent = true, callback = live_grep_from_project_git_root }
 )
