@@ -47,7 +47,7 @@ return {
 			vim.g.mkdp_filetypes = { "markdown" }
 			vim.api.nvim_create_autocmd({ "FileType" }, {
 				pattern = { "markdown" },
-				callback = function(ev)
+				callback = function()
 					vim.api.nvim_buf_set_keymap(0, "n", "<F12>", "<cmd>MarkdownPreview<CR>", { nowait = true })
 				end,
 			})
@@ -268,28 +268,6 @@ return {
 			debounce_time = 60,
 		},
 	},
-	-- {
-	-- 	"sphamba/smear-cursor.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {
-	-- 		time_interval = 7,
-	-- 		stiffness = 0.9,
-	-- 		trailing_stiffness = 0.8,
-	-- 		stiffness_insert_mode = 0.7,
-	-- 		trailing_stiffness_insert_mode = 0.7,
-	-- 		damping = 0.95,
-	-- 		damping_insert_mode = 0.95,
-	-- 		distance_stop_animating = 0.8,
-	-- 	},
-	-- },
-	{
-		"karb94/neoscroll.nvim",
-		event = "VeryLazy",
-		opts = {
-			hide_cursor = false,
-			duration_multiplier = 0.1,
-		},
-	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		ft = { "markdown" },
@@ -322,6 +300,23 @@ return {
 			view = {
 				display_mode = "border",
 			},
+		},
+	},
+	{
+		"j-hui/fidget.nvim",
+		lazy = false,
+		opts = {
+			notification = {
+				override_vim_notify = true, -- Automatically override vim.notify() with Fidget
+			},
+		},
+	},
+	{
+		"NeogitOrg/neogit",
+		lazy = true,
+		cmd = "Neogit",
+		keys = {
+			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
 		},
 	},
 }
