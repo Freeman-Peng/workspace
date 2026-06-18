@@ -11,7 +11,7 @@ o.backupskip = ""
 o.updatetime = 250
 o.expandtab = false
 o.diffopt = "iwhite," .. o.diffopt
-o.showbreak = "󱞪 "
+o.showbreak = "»"
 o.scrolloff = 8
 o.sidescrolloff = 8
 
