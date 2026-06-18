@@ -19,6 +19,7 @@ local settings = {
 	"emmet_ls",
 	"tailwindcss",
 	"csharp_ls",
+	"bashls",
 	gradle_ls = {
 		filetypes = { "gradle", "groovy", "kotlin" },
 		allowParallelRun = true,
@@ -82,6 +83,9 @@ local settings = {
 	},
 	lua_ls = {
 		settings = {
+			diagnostics = {
+				globals = { "vim" },
+			},
 			workspace = {
 				library = {
 					vim.fn.expand("$VIMRUNTIME/lua"),
