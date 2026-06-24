@@ -107,7 +107,7 @@ M.on_attach = function(client, bufnr, lsp_name)
 		navic.attach(client, bufnr)
 	end
 
-	if client.supports_method("textDocument/signatureHelp") then
+	if client:supports_method("textDocument/signatureHelp") then
 		vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
 			group = vim.api.nvim_create_augroup("LspSignature", {}),
 			callback = function()
