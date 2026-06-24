@@ -107,7 +107,8 @@ return {
 		end,
 	},
 	{
-		"phaazon/hop.nvim",
+		-- "phaazon/hop.nvim",
+		"smoka7/hop.nvim",
 		keys = {
 			{ "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
 			{ "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
@@ -265,7 +266,6 @@ return {
 		opts = {
 			enabled = true,
 			hl_group = "MatchParen",
-			debounce_time = 60,
 		},
 	},
 	{
