@@ -319,4 +319,13 @@ return {
 			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
 		},
 	},
+	{
+		"rachartier/tiny-cmdline.nvim",
+		lazy = false,
+		config = function()
+			vim.o.cmdheight = 0
+			require("vim._core.ui2").enable({})
+			require("tiny-cmdline").setup()
+		end,
+	},
 }
