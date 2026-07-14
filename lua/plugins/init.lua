@@ -80,6 +80,10 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
+			{
+				"LiadOz/nvim-dap-repl-highlights",
+				opts = { highlight = { enable = true } },
+			},
 		},
 		opts = require("configs.treesitter"),
 	},
@@ -303,15 +307,6 @@ return {
 		},
 	},
 	{
-		"j-hui/fidget.nvim",
-		lazy = false,
-		opts = {
-			notification = {
-				override_vim_notify = true, -- Automatically override vim.notify() with Fidget
-			},
-		},
-	},
-	{
 		"NeogitOrg/neogit",
 		lazy = true,
 		cmd = "Neogit",
@@ -320,12 +315,8 @@ return {
 		},
 	},
 	{
-		"rachartier/tiny-cmdline.nvim",
+		"folke/noice.nvim",
 		lazy = false,
-		config = function()
-			vim.o.cmdheight = 0
-			require("vim._core.ui2").enable({})
-			require("tiny-cmdline").setup()
-		end,
+		opts = {},
 	},
 }
