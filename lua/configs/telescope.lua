@@ -40,25 +40,6 @@ require("telescope").setup(opts)
 require("telescope").load_extension("ui-select")
 require("telescope").load_extension("ast_grep")
 
-local is_inside_work_tree = {}
-
-local project_files = function()
-	local opts = {} -- define here if you want to define something
-
-	local cwd = vim.fn.getcwd()
-	if is_inside_work_tree[cwd] == nil then
-		vim.fn.system("git rev-parse --is-inside-work-tree")
-		is_inside_work_tree[cwd] = vim.v.shell_error == 0
-	end
-
-	if is_inside_work_tree[cwd] then
-		require("telescope.builtin").git_files(opts)
-	else
-		require("telescope.builtin").find_files(opts)
-	end
-end
-vim.api.nvim_set_keymap("n", "<Leader>ff", "", { noremap = true, silent = true, callback = project_files })
-
 local live_grep_from_project_git_root = function()
 	local function is_git_repo()
 		vim.fn.system("git rev-parse --is-inside-work-tree")
