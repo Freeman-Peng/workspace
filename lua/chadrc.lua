@@ -36,7 +36,7 @@ M.ui = {
 }
 
 M.base46 = {
-	theme = "onedark",
+	theme = "kanagawa",
 }
 
 return M
