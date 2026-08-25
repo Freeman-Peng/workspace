@@ -20,7 +20,7 @@ return {
 				"python-lsp-server",
 				"shfmt",
 				"stylua",
-				"typescript-language-server",
+				"tsc",
 				"vue-language-server",
 				"yapf",
 				"emmet-ls",
@@ -110,17 +110,17 @@ return {
 			require("configs.ibl")
 		end,
 	},
-	{
-		-- "phaazon/hop.nvim",
-		"smoka7/hop.nvim",
-		keys = {
-			{ "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
-			{ "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
-		},
-		config = function()
-			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-		end,
-	},
+	-- {
+	-- 	-- "phaazon/hop.nvim",
+	-- 	"smoka7/hop.nvim",
+	-- 	keys = {
+	-- 		{ "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
+	-- 		{ "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
+	-- 	},
+	-- 	config = function()
+	-- 		require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+	-- 	end,
+	-- },
 	{
 		"mfussenegger/nvim-dap",
 		ft = function()
@@ -221,7 +221,10 @@ return {
 		"saghen/blink.cmp",
 		opts = function()
 			local opts = require("nvchad.blink.config")
-			opts.keymap = { preset = "super-tab" }
+			opts.keymap = {
+				preset = "super-tab",
+				["<C-n>"] = { "select_next", "show", "fallback" },
+			}
 			opts.keymap["<CR>"] = { "hide", "fallback" }
 			-- opts.completion.menu.auto_show = true
 			opts.completion.menu.draw.components.label = {
@@ -314,9 +317,16 @@ return {
 			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
 		},
 	},
+	{ "sindrets/diffview.nvim", lazy = false },
 	{
-		"folke/noice.nvim",
-		lazy = false,
-		opts = {},
+		"folke/lazydev.nvim",
+		ft = { "lua" },
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
 	},
 }
