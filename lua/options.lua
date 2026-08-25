@@ -14,6 +14,8 @@ o.diffopt = "iwhite," .. o.diffopt
 o.showbreak = "»"
 o.scrolloff = 8
 o.sidescrolloff = 8
+o.shada = "!,'100,<50,s10,h,r/private/"
+o.modeline = false
 
 -- for wsl
 if vim.env.WSL2_GUI_APPS_ENABLED then
