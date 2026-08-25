@@ -24,34 +24,37 @@ local settings = {
 		filetypes = { "gradle", "groovy", "kotlin" },
 		allowParallelRun = true,
 	},
-	ts_ls = {
-		init_options = {
-			plugins = {
-				{
-					name = "@vue/typescript-plugin",
-					location = vim.fs.joinpath(
-						vim.fn.stdpath("data"),
-						"mason",
-						"packages",
-						"vue-language-server",
-						"node_modules",
-						"@vue",
-						"language-server"
-					),
-					languages = { "vue" },
-				},
-			},
-		},
-		filetypes = {
-			"javascript",
-			"javascriptreact",
-			"javascript.jsx",
-			"typescript",
-			"typescriptreact",
-			"typescript.tsx",
-			"vue",
-		},
+	tsgo = {
+		cmd = { vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin", "tsc"), "--lsp", "--stdio" },
 	},
+	-- ts_ls = {
+	-- 	init_options = {
+	-- 		plugins = {
+	-- 			{
+	-- 				name = "@vue/typescript-plugin",
+	-- 				location = vim.fs.joinpath(
+	-- 					vim.fn.stdpath("data"),
+	-- 					"mason",
+	-- 					"packages",
+	-- 					"vue-language-server",
+	-- 					"node_modules",
+	-- 					"@vue",
+	-- 					"language-server"
+	-- 				),
+	-- 				languages = { "vue" },
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	filetypes = {
+	-- 		"javascript",
+	-- 		"javascriptreact",
+	-- 		"javascript.jsx",
+	-- 		"typescript",
+	-- 		"typescriptreact",
+	-- 		"typescript.tsx",
+	-- 		"vue",
+	-- 	},
+	-- },
 	pylsp = {
 		settings = {
 			pylsp = {
@@ -83,9 +86,9 @@ local settings = {
 	},
 	lua_ls = {
 		settings = {
-			diagnostics = {
-				globals = { "vim" },
-			},
+			-- diagnostics = {
+			-- 	globals = { "vim" },
+			-- },
 			workspace = {
 				library = {
 					vim.fn.expand("$VIMRUNTIME/lua"),
