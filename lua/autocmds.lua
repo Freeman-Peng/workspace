@@ -46,6 +46,7 @@ end, {})
 
 -- custom
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	pattern = "*",
 	callback = function()
 		local path = vim.fn.expand("%:p:h")
 		if path == "" then
@@ -55,7 +56,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 		if not vim.fn.filereadable(full_path) then
 			vim.fn.mkdir(full_path, "pR")
 		end
-		vim.o.backupdir = full_path
+		vim.opt_local.backupdir = full_path
 	end,
 })
 
