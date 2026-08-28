@@ -1,3 +1,4 @@
+local func = require("vim.func")
 return {
 	{
 		"stevearc/conform.nvim",
@@ -79,13 +80,19 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
 			{
 				"LiadOz/nvim-dap-repl-highlights",
 				opts = { highlight = { enable = true } },
 			},
 		},
 		opts = require("configs.treesitter"),
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		lazy = false,
+		config = function()
+			require("configs.textobjects")
+		end,
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -110,17 +117,17 @@ return {
 			require("configs.ibl")
 		end,
 	},
-	-- {
-	-- 	-- "phaazon/hop.nvim",
-	-- 	"smoka7/hop.nvim",
-	-- 	keys = {
-	-- 		{ "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
-	-- 		{ "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
-	-- 	},
-	-- 	config = function()
-	-- 		require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-	-- 	end,
-	-- },
+	{
+		-- "phaazon/hop.nvim",
+		"smoka7/hop.nvim",
+		keys = {
+			{ "gl", "<cmd>HopLine<cr>", desc = "easy move", mode = { "n", "v", "x" } },
+			{ "\\", "<cmd>HopChar1<cr>", desc = "global j", mode = { "n", "v", "x" } },
+		},
+		config = function()
+			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+		end,
+	},
 	{
 		"mfussenegger/nvim-dap",
 		ft = function()
@@ -275,6 +282,10 @@ return {
 			hl_group = "MatchParen",
 		},
 	},
+	-- {
+	-- 	"OXY2DEV/markview.nvim",
+	-- 	lazy = false,
+	-- },
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		ft = { "markdown" },
@@ -328,5 +339,10 @@ return {
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
+	},
+	{
+		"j-hui/fidget.nvim",
+		event = "LspAttach",
+		opts = {},
 	},
 }
